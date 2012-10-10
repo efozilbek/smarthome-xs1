@@ -39,15 +39,15 @@ public class Add_Tim extends Activity {
 	 ***********************************************************************************************************************************************************/
 	// TODO: Die deutschen Namen funktionieren beim senden als type nicht!!
 	Boolean[] days = new Boolean[7];
-	// Das Xsone Objekt für diese Aktivity
+	// Das Xsone Objekt fï¿½r diese Aktivity
 	private Xsone myXsone;
-	// Dialog für Ladevorgang
+	// Dialog fï¿½r Ladevorgang
 	private Dialog dialog;
-	//Aktuatorliste für den Spinner 
+	//Aktuatorliste fï¿½r den Spinner 
 	private LinkedList<Actuator> act_list = new LinkedList<Actuator>();
 	private int mHour;
 	private int mMinute;
-	// aus Folgenter Quelle übernommen:
+	// aus Folgenter Quelle ï¿½bernommen:
 	// http://developer.android.com/resources/tutorials/views/hello-timepicker.html
 	static final int TIME_DIALOG_ID = 0;
 
@@ -66,20 +66,20 @@ public class Add_Tim extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Maske für IP und Passwort anzeigen
+		// Maske fï¿½r IP und Passwort anzeigen
 		setContentView(R.layout.add_tim_frame);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
 		myXsone = RuntimeStorage.getMyXsone();
 
-		// Alle Aktuatoren für den Spinner holen
+		// Alle Aktuatoren fï¿½r den Spinner holen
 		for (XS_Object obj : myXsone.getMyActuatorList()) {
 			if (!obj.getType().equals("disabled"))
 				act_list.add((Actuator) obj);
 		}
 
-		// Array mit Namen anlegen für Spinner Adapter
+		// Array mit Namen anlegen fï¿½r Spinner Adapter
 		String[] act_names = new String[act_list.size()];
 		int i = 0;
 		for (Actuator a : act_list) {
@@ -92,31 +92,30 @@ public class Add_Tim extends Activity {
 		time.setInputType(InputType.TYPE_NULL);
 		time.setText("12:00:00");
 		time.setOnClickListener(new View.OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				showDialog(TIME_DIALOG_ID);
 			}
 		});
 
-		// Die Spinner befüllen
+		// Die Spinner befï¿½llen
 		Spinner typ_sp = (Spinner) findViewById(R.id.spinner_tim_typ);
 		ArrayAdapter<String> adapter_typ = new ArrayAdapter<String>(
 				Add_Tim.this, android.R.layout.simple_spinner_item, RuntimeStorage.getTim_types());
 		typ_sp.setAdapter(adapter_typ);
-		// Beim Act Spinner muss auf Änderungen reagiert werden. Der Funktion
-		// Spinner hängt vom Wert hier ab
+		// Beim Act Spinner muss auf ï¿½nderungen reagiert werden. Der Funktion
+		// Spinner hï¿½ngt vom Wert hier ab
 		Spinner act_sp = (Spinner) findViewById(R.id.spinner_tim_act);
 		ArrayAdapter<String> adapter_act = new ArrayAdapter<String>(
 				Add_Tim.this, android.R.layout.simple_spinner_item, act_names);
 		act_sp.setAdapter(adapter_act);
 		act_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-				// ist ein Element gewählt muss der Funktionsspinner gesetzt
+				// ist ein Element gewï¿½hlt muss der Funktionsspinner gesetzt
 				// werden
-				// zuerst muss das gewählte Objekt geholt werden
+				// zuerst muss das gewï¿½hlte Objekt geholt werden
 				String name = ((TextView) arg1).getText().toString();
 				Actuator comp = new Actuator();
 				comp.setName(name);
@@ -126,7 +125,7 @@ public class Add_Tim extends Activity {
 						break;
 					}
 				}
-				// Dann müssen alle Funktionen ausgelesen werden falls nicht
+				// Dann mï¿½ssen alle Funktionen ausgelesen werden falls nicht
 				// null und als String[] gesetzt
 				ArrayList<String> fn_list = new ArrayList<String>();
 				if (comp.getMyFunction() != null) {
@@ -146,17 +145,16 @@ public class Add_Tim extends Activity {
 
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
 
 		// den Button holen
 		Button button = (Button) findViewById(R.id.button_tim);
-		// dem Button die Click Action hinzu fügen
+		// dem Button die Click Action hinzu fï¿½gen
 		button.setOnClickListener(new OnClickListener() {
 
-			// der Button wurde gedrückt
+			// der Button wurde gedrï¿½ckt
 			@SuppressWarnings("unchecked")
 			public void onClick(View v) {
 				// Ladevorgang anzeigen
@@ -177,7 +175,7 @@ public class Add_Tim extends Activity {
 				timerData.add(act.getSelectedItem().toString());
 				Spinner fnkt = (Spinner) findViewById(R.id.spinner_tim_func);
 				timerData.add(String.valueOf(fnkt.getSelectedItemPosition()));
-				// Die Checkboxen der Wochentage prüfen
+				// Die Checkboxen der Wochentage prï¿½fen
 				CheckBox cb;
 				cb = (CheckBox) findViewById(R.id.cb_tin_mo);
 				if (cb.isChecked())
@@ -234,7 +232,7 @@ public class Add_Tim extends Activity {
 	}
 
 	/**
-	 * bei einstelliger Stunde eine zweistelligen Wert für die Ausgabe zurück
+	 * bei einstelliger Stunde eine zweistelligen Wert fï¿½r die Ausgabe zurï¿½ck
 	 * 
 	 * @param c
 	 *            - Der Stunden/Minuten Wert

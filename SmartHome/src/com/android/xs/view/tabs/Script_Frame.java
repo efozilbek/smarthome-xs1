@@ -22,7 +22,7 @@ import android.widget.ArrayAdapter;
 /**
  * Die Activity aller Timer. Jeder Timer wird aus dem Xsone Objekt ausgelesen
  * und ein String mit dem Wert des Timerss generiert. Dieses wird in eine Liste
- * von TextViews hinzu gefügt und dieses dann ausgegeben. Bei keinem Timer wird
+ * von TextViews hinzu gefï¿½gt und dieses dann ausgegeben. Bei keinem Timer wird
  * ein Info Text ausgegeben. Das erste Element ist ein PullToRefresh bzw bei
  * wenigen Elementen TapToRefresh
  * 
@@ -35,7 +35,7 @@ public class Script_Frame extends ListActivity {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 
-	// Das Xsone Objekt für diese Aktivity
+	// Das Xsone Objekt fï¿½r diese Aktivity
 	private Xsone myXsone;
 	// Liste der auszugebenden Strings
 	private LinkedList<String> script_list;
@@ -61,11 +61,11 @@ public class Script_Frame extends ListActivity {
 		// diese bereit stellt
 		myXsone = RuntimeStorage.getMyXsone();
 
-		// übernommen aus markupartist
+		// ï¿½bernommen aus markupartist
 		// Set a listener to be invoked when the list should be refreshed.
 		((PullToRefreshListView) getListView())
 				.setOnRefreshListener(new OnRefreshListener() {
-					@Override
+					
 					public void onRefresh() {
 						// Do work to refresh the list here.
 						new GetDataTask().execute();
@@ -84,7 +84,7 @@ public class Script_Frame extends ListActivity {
 	/**
 	 * Ausgelagerte Funktion, da an mehrerern Stellen verwendet. Liest die Liste
 	 * der Sensoren aus dem XS1 neu ein und gibt diese als List von Strings
-	 * zurück
+	 * zurï¿½ck
 	 * 
 	 * @return LinkedList<String> Liste der Strings mit Sensordaten.bei keinen
 	 *         Sensoren ein Infotext
@@ -93,16 +93,16 @@ public class Script_Frame extends ListActivity {
 		// Die Liste Der Sensordaten als String
 		LinkedList<String> script_dataList = new LinkedList<String>();
 
-		// Für jeden vorhandenen Sensor wird ein String angelegt
+		// Fï¿½r jeden vorhandenen Sensor wird ein String angelegt
 		for (XS_Object rem : myXsone.getMyScriptList()) {
 
 			if (!rem.getType().equals("disabled")) {
 				// Cast zum Timer
 				Script scrpt = (Script) rem;
-				// Die daten werden für die Darstellung ausgelesen
+				// Die daten werden fï¿½r die Darstellung ausgelesen
 				String name = scrpt.getName();
 				String typ = scrpt.getType();
-				// Den Text für die Ausgabe setzen falls timer nicht disabled
+				// Den Text fï¿½r die Ausgabe setzen falls timer nicht disabled
 				script_dataList.add(name + " (" + typ + ")");
 			}
 		}
@@ -117,7 +117,7 @@ public class Script_Frame extends ListActivity {
 	}
 
 	/**
-	 * Die GetData Klasse stellt eine Aktivität dar. sie wird durch das Pull
+	 * Die GetData Klasse stellt eine Aktivitï¿½t dar. sie wird durch das Pull
 	 * Update gestartet und aktualisiert die Liste der Timer. Die Liste wird
 	 * dabei geleert und eine Neue aus der Abfrage des XS1 erstellt
 	 * 
@@ -128,9 +128,9 @@ public class Script_Frame extends ListActivity {
 
 		@Override
 		protected String[] doInBackground(Void... params) {
-			// Hier darf keine Aktion erfolgen, führt sonst zu einer
+			// Hier darf keine Aktion erfolgen, fï¿½hrt sonst zu einer
 			// IllegalStateException
-			// Der Listenionhalt darf nur innerhalb des Kontext geändert werden
+			// Der Listenionhalt darf nur innerhalb des Kontext geï¿½ndert werden
 			return null;
 		}
 
@@ -140,7 +140,7 @@ public class Script_Frame extends ListActivity {
 			script_list.clear();
 			// Liste neu holen
 			List<XS_Object> tmp = Http.getInstance().get_list_scripts();
-			// falls ein Verbinsungsfehler bestand kommt null zurück
+			// falls ein Verbinsungsfehler bestand kommt null zurï¿½ck
 			if (tmp == null) {
 				XsError.printError(getBaseContext());
 			} else {
@@ -157,7 +157,7 @@ public class Script_Frame extends ListActivity {
 	}
 
 	/**
-	 * Der Tab übernimmt die Aktionen des Tabhost für Menu und Back Button
+	 * Der Tab ï¿½bernimmt die Aktionen des Tabhost fï¿½r Menu und Back Button
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

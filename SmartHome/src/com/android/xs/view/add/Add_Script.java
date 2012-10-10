@@ -35,13 +35,13 @@ public class Add_Script extends Activity {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 
-	// Das Xsone Objekt für diese Aktivity
+	// Das Xsone Objekt fï¿½r diese Aktivity
 	private Xsone myXsone;
-	// Dialog für Ladevorgang
+	// Dialog fï¿½r Ladevorgang
 	private Dialog dialog;
 	// Spinner Array
 	private String[] script_type = { "disabled", "onchange" };
-	// Aktuatorliste für den Spinner
+	// Aktuatorliste fï¿½r den Spinner
 	private LinkedList<AorS_Object> obj_list = new LinkedList<AorS_Object>();
 
 	/**
@@ -59,7 +59,7 @@ public class Add_Script extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Maske für IP und Passwort anzeigen
+		// Maske fï¿½r IP und Passwort anzeigen
 		setContentView(R.layout.add_script_frame);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
@@ -69,13 +69,13 @@ public class Add_Script extends Activity {
 		LinkedList<XS_Object> a_or_s_List = new LinkedList<XS_Object>();
 		a_or_s_List.addAll(myXsone.getMyActuatorList());
 		a_or_s_List.addAll(myXsone.getMySensorList());
-		// Alle Aktuatoren und Sensoren für den Spinner holen
+		// Alle Aktuatoren und Sensoren fï¿½r den Spinner holen
 		for (XS_Object obj : a_or_s_List) {
 			if (!obj.getType().equals("disabled"))
 				obj_list.add((AorS_Object) obj);
 		}
 
-		// Array mit Namen anlegen für Spinner Adapter
+		// Array mit Namen anlegen fï¿½r Spinner Adapter
 		String[] obj_names = new String[obj_list.size()+1];
 		obj_names[0] = "";
 		int i = 1;
@@ -84,7 +84,7 @@ public class Add_Script extends Activity {
 			i++;
 		}
 
-		// Die Spinner befüllen
+		// Die Spinner befï¿½llen
 		// Typ Spinner
 		Spinner typ_sp = (Spinner) findViewById(R.id.spinner_script_typ);
 		ArrayAdapter<String> script_typ = new ArrayAdapter<String>(
@@ -98,11 +98,10 @@ public class Add_Script extends Activity {
 				Add_Script.this, android.R.layout.simple_spinner_item,
 				obj_names);
 		obj_sp.setAdapter(adapter_sys);
-		// Itemseletcted Listener hinzufügen (bei gewähltem Item wird der Text
+		// Itemseletcted Listener hinzufï¿½gen (bei gewï¿½hltem Item wird der Text
 		// in das Textfeld kopiert
 		obj_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				String obj_name = ((TextView)arg1).getText().toString();
@@ -111,7 +110,6 @@ public class Add_Script extends Activity {
 				
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 			
@@ -119,10 +117,10 @@ public class Add_Script extends Activity {
 
 		// den Button holen
 		Button button = (Button) findViewById(R.id.button_script);
-		// dem Button die Click Action hinzu fügen
+		// dem Button die Click Action hinzu fï¿½gen
 		button.setOnClickListener(new OnClickListener() {
 
-			// der Button wurde gedrückt
+			// der Button wurde gedrï¿½ckt
 			public void onClick(View v) {
 				// Ladevorgang anzeigen
 				dialog = ProgressDialog.show(Add_Script.this, "",

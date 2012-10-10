@@ -103,12 +103,12 @@ public class MainFrame extends TabActivity {
 	}
 
 	/**
-	 * für die Tabs wird der KeyDown für Back sowie Menü überschrieben
+	 * fï¿½r die Tabs wird der KeyDown fï¿½r Back sowie Menï¿½ ï¿½berschrieben
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		// Beim Back Button wird in für die Tabs ein Hinweis ausgegeben, ob die
+		// Beim Back Button wird in fï¿½r die Tabs ein Hinweis ausgegeben, ob die
 		// Anwendung beendet werden soll
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Abfrage, ob das Programm beendet werden soll
@@ -118,20 +118,20 @@ public class MainFrame extends TabActivity {
 			ad.setMessage("Anwendung wirklich beenden?");
 			// Die beiden Auswahlbuttons setzen
 			ad.setButton("Beenden", new DialogInterface.OnClickListener() {
-				@Override
+				
 				public void onClick(DialogInterface dialog, int which) {
-					// Makro löschen falls noch aktiv
+					// Makro lï¿½schen falls noch aktiv
 					if (MakroController.getInstance().MakroEnabled() != null)
 						MakroController.getInstance().stopMakro(null);
-					// Dialog schließen und Activity beenden
+					// Dialog schlieï¿½en und Activity beenden
 					dialog.dismiss();
 					finish();
 				}
 			});
-			ad.setButton2("Zurück", new DialogInterface.OnClickListener() {
-				@Override
+			ad.setButton2("Zurï¿½ck", new DialogInterface.OnClickListener() {
+				
 				public void onClick(DialogInterface dialog, int which) {
-					// Dialog schließen
+					// Dialog schlieï¿½en
 					dialog.dismiss();
 				}
 			});
@@ -145,7 +145,7 @@ public class MainFrame extends TabActivity {
 	}
 
 	/**
-	 * Das Menü für Makros
+	 * Das Menï¿½ fï¿½r Makros
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,7 +165,7 @@ public class MainFrame extends TabActivity {
 		
 		if (item.getTitle().equals("stoppen")) {
 			if (MakroController.getInstance().MakroEnabled() != null) {
-				// Namen holen für Makro
+				// Namen holen fï¿½r Makro
 
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 

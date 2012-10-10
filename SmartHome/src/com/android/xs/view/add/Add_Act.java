@@ -41,11 +41,11 @@ public class Add_Act extends Activity {
 			"HELLER", "DUNKLER" };
 	String[] percent = new String[100];
 	String[] degree = new String[31];
-	// Das Xsone Objekt für diese Aktivity
+	// Das Xsone Objekt fï¿½r diese Aktivity
 	private Xsone myXsone;
-	// Dialog für Ladevorgang
+	// Dialog fï¿½r Ladevorgang
 	private Dialog dialog;
-	// Zum anzeigen variabel benötigter Felder
+	// Zum anzeigen variabel benï¿½tigter Felder
 	private OnItemSelectedListener inputUnhider;
 	// Liste mit allen Funktionsnamen, da Temp und Prozent dynamisch erzeugt
 	// werden
@@ -76,28 +76,28 @@ public class Add_Act extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Maske für IP und Passwort anzeigen
+		// Maske fï¿½r IP und Passwort anzeigen
 		setContentView(R.layout.add_act_frame);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
 		myXsone = RuntimeStorage.getMyXsone();
 
-		// Prozentangaben befüllen für den Spinner
+		// Prozentangaben befï¿½llen fï¿½r den Spinner
 		int i;
 		for (i = 1; i < 101; i++) {
 			percent[i - 1] = i + "%";
 		}
-		// Grad befüllen frü den Spinner
+		// Grad befï¿½llen frï¿½ den Spinner
 		for (i = 5; i < 36; i++) {
-			degree[i - 5] = i + "°C";
+			degree[i - 5] = i + "ï¿½C";
 		}
-		// Die Gesamtliste für Funktionsnamen erstellen
+		// Die Gesamtliste fï¿½r Funktionsnamen erstellen
 		fn_names_all.addAll(Arrays.asList(fn_names));
 		fn_names_all.addAll(Arrays.asList(percent));
 		fn_names_all.addAll(Arrays.asList(degree));
 
-		// Die Eingabefelder für Wert, die dynamisch ein bzw ausgeblendet werden
+		// Die Eingabefelder fï¿½r Wert, die dynamisch ein bzw ausgeblendet werden
 		layouts_val[0] = (LinearLayout) findViewById(R.id.linearLayout_val1);
 		layouts_val[1] = (LinearLayout) findViewById(R.id.linearLayout_val2);
 		layouts_val[2] = (LinearLayout) findViewById(R.id.linearLayout_val3);
@@ -114,11 +114,10 @@ public class Add_Act extends Activity {
 		rows[2] = (TableRow) findViewById(R.id.row_fnct3);
 		rows[3] = (TableRow) findViewById(R.id.row_fnct4);
 
-		// Der Event Listener für den Spinner typ blendet bei Auswahl von
-		// "an,warten,aus" sowie "absolut" die nötigen Felder ein
+		// Der Event Listener fï¿½r den Spinner typ blendet bei Auswahl von
+		// "an,warten,aus" sowie "absolut" die nï¿½tigen Felder ein
 		inputUnhider = new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				int num = (Integer) ((Spinner) arg0).getTag();
@@ -149,7 +148,7 @@ public class Add_Act extends Activity {
 						rows[num].setVisibility(TableRow.GONE);
 					}
 				} else {
-					// Für das FHT sytem werden gesonerte Typen benötigt
+					// Fï¿½r das FHT sytem werden gesonerte Typen benï¿½tigt
 					// (Temperatur)
 					for (RF_System s : RuntimeStorage.getSystems()) {
 						if (s.getName().equals(chosen)) {
@@ -166,13 +165,12 @@ public class Add_Act extends Activity {
 				}
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 
 		};
 
-		// Die Spinner befüllen für Typ und System
+		// Die Spinner befï¿½llen fï¿½r Typ und System
 		final Spinner typ_sp = (Spinner) findViewById(R.id.spinner_act_typ);
 		ArrayAdapter<String> adapter_typ = new ArrayAdapter<String>(
 				Add_Act.this, android.R.layout.simple_spinner_item,
@@ -190,7 +188,7 @@ public class Add_Act extends Activity {
 		sys_sp.setOnItemSelectedListener(inputUnhider);
 		sys_sp.setTag(10);
 
-		// Funktionsnamen Spinner befüllen
+		// Funktionsnamen Spinner befï¿½llen
 		final Spinner typ_sp_fn1 = (Spinner) findViewById(R.id.spinner_act_fn_one);
 		ArrayAdapter<String> adapter_typ_fn = new ArrayAdapter<String>(
 				Add_Act.this, android.R.layout.simple_spinner_item,
@@ -206,7 +204,7 @@ public class Add_Act extends Activity {
 		final Spinner typ_sp_fn4 = (Spinner) findViewById(R.id.spinner_act_fn_four);
 		typ_sp_fn4.setAdapter(adapter_typ_fn);
 
-		// Funktionstyp Spinner befüllen und den Listener hinzu fügen
+		// Funktionstyp Spinner befï¿½llen und den Listener hinzu fï¿½gen
 		typ_sp_typ1 = (Spinner) findViewById(R.id.spinner_act_typ_one);
 		typ_sp_typ1.setTag(0);
 		typ_sp_typ1.setOnItemSelectedListener(inputUnhider);
@@ -225,19 +223,19 @@ public class Add_Act extends Activity {
 
 		// den Button holen
 		Button button = (Button) findViewById(R.id.button_act_ok);
-		// dem Button die Click Action hinzu fügen
+		// dem Button die Click Action hinzu fï¿½gen
 		button.setOnClickListener(new OnClickListener() {
 
-			// der Button wurde gedrückt
+			// der Button wurde gedrï¿½ckt
 			public void onClick(View v) {
 				// Ladevorgang anzeigen
 				dialog = ProgressDialog.show(Add_Act.this, "",
 						"Aktuator anlegen...", true, false);
 				dialog.show();
 
-				// Das Daten array für die Eingabewerte
+				// Das Daten array fï¿½r die Eingabewerte
 				String[] data = new String[22];
-				// Das Array wird mit den Werten der Felder befüllt
+				// Das Array wird mit den Werten der Felder befï¿½llt
 				data[0] = Translator.translate(typ_sp.getSelectedItem()
 						.toString());
 				data[1] = sys_sp.getSelectedItem().toString();
@@ -290,7 +288,7 @@ public class Add_Act extends Activity {
 	}
 
 	/**
-	 * Ausgelagerter Task um Dialog anzeigen zu können. Der neue Aktuator wird
+	 * Ausgelagerter Task um Dialog anzeigen zu kï¿½nnen. Der neue Aktuator wird
 	 * an das XS1 gesendet
 	 * 
 	 * @author Viktor Mayer

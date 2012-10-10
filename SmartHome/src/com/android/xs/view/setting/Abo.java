@@ -18,7 +18,7 @@ import android.widget.Toast;
  * Die Activity Abo baut in Verbindung zur XS1 auf, welche durch chunked tranfer
  * mode offen gehalten wird. Bi eintreffnden Events wird eine Nachricht von der
  * XS1 gesendet, wlche ausgegeben wird. Hierzu werden zwei Threads gstartet.
- * einer, welcher das request sendet und einen Input Stram bereit hält sowie
+ * einer, welcher das request sendet und einen Input Stram bereit hï¿½lt sowie
  * einer, welcher periodisch den TextView aktualisiert.
  * 
  * @author Viktor Mayer
@@ -39,7 +39,6 @@ public class Abo extends Activity {
 	private Runnable updateTextView = new Runnable() {
 		int old_length = 0;
 
-		@Override
 		public void run() {
 			if (RuntimeStorage.getAbo_data_list().size() > old_length) {
 				while (old_length < RuntimeStorage.getAbo_data_list().size()) {
@@ -62,7 +61,7 @@ public class Abo extends Activity {
 
 	/**
 	 * Die Startfunktion der Activity holt das XSone Objekt und initialisiert
-	 * den Textview für die Ausgabe. Daraufhin wird der Thread zum anmelden an
+	 * den Textview fï¿½r die Ausgabe. Daraufhin wird der Thread zum anmelden an
 	 * der XS1 gestartet sowie der Handler zum aktualisieren der TextView.
 	 */
 	@Override
@@ -83,7 +82,7 @@ public class Abo extends Activity {
 			startService(new Intent(this, Abo_Service.class));
 		}
 
-		// regelmäßige Aktualisierung der Ausgabe
+		// regelmï¿½ï¿½ige Aktualisierung der Ausgabe
 		mHandler.postDelayed(updateTextView, 500);
 
 		tv.append("Verbindung wird hergestellt...");
@@ -102,16 +101,16 @@ public class Abo extends Activity {
 	}
 
 	/**
-	 * bei erneuter Ausführung müssen nur der Request sowie der Handler zum
+	 * bei erneuter Ausfï¿½hrung mï¿½ssen nur der Request sowie der Handler zum
 	 * Updaten des Textes neu gestartet werden
 	 */
 	@Override
 	public void onRestart() {
 		super.onRestart();
 
-		// prüfen ob service läuft
+		// prï¿½fen ob service lï¿½uft
 		if (Abo_Service.isInstanceCreated())
-			Toast.makeText(this, "XS Abo Service läuft bereits...",
+			Toast.makeText(this, "XS Abo Service lï¿½uft bereits...",
 					Toast.LENGTH_LONG).show();
 		else {
 			startService(new Intent(this, Abo_Service.class));
@@ -120,12 +119,12 @@ public class Abo extends Activity {
 	}
 
 	/**
-	 * für die Tabs wird der KeyDown für Back sowie Menü überschrieben
+	 * fï¿½r die Tabs wird der KeyDown fï¿½r Back sowie Menï¿½ ï¿½berschrieben
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		// Beim Back Button wird in für die Tabs ein Hinweis ausgegeben, ob die
+		// Beim Back Button wird in fï¿½r die Tabs ein Hinweis ausgegeben, ob die
 		// Anwendung beendet werden soll
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Bei Pause muss gefragt werden, ob der Service gestoppt werden soll
@@ -133,10 +132,10 @@ public class Abo extends Activity {
 			AlertDialog ad = new AlertDialog.Builder(this).create();
 			ad.setCancelable(false); // This blocks the 'BACK' button
 			ad.setTitle("Hinweis");
-			ad.setMessage("Möchten sie den XS Abo Service aktiv lassen?");
+			ad.setMessage("Mï¿½chten sie den XS Abo Service aktiv lassen?");
 			// Die beiden Auswahlbuttons setzen
 			ad.setButton("Nein", new DialogInterface.OnClickListener() {
-				@Override
+				
 				public void onClick(DialogInterface dialog, int which) {
 					stopService(new Intent(getBaseContext(), Abo_Service.class));
 					go = false;
@@ -145,9 +144,9 @@ public class Abo extends Activity {
 				}
 			});
 			ad.setButton2("Ja", new DialogInterface.OnClickListener() {
-				@Override
+				
 				public void onClick(DialogInterface dialog, int which) {
-					// Dialog schließen
+					// Dialog schlieï¿½en
 					dialog.dismiss();
 					finish();
 				}

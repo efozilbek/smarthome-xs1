@@ -26,8 +26,8 @@ public class Options_Frame extends ListActivity {
 	/**
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
-	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen",
-			"Abonnement", "Über" };
+	private String[] options = { "Gerï¿½teinfo", "Konfiguration", "Hinzufï¿½gen", "Entfernen",
+			"Abonnement", "ï¿½ber" };
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
@@ -57,7 +57,7 @@ public class Options_Frame extends ListActivity {
 
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
+			
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
@@ -95,7 +95,7 @@ public class Options_Frame extends ListActivity {
 	}
 	
 	/**
-	 * Der Tab übernimmt die Aktionen des Tabhost für Menu und Back Button
+	 * Der Tab ï¿½bernimmt die Aktionen des Tabhost fï¿½r Menu und Back Button
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

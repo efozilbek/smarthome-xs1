@@ -39,8 +39,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 /**
- * Die Activity für den Frame der Actuatoren. eine Liste aller Aktuatoren wird
- * erstellt und für jeden ein ToggleButton erzeugt. Diesem wird dann ein
+ * Die Activity fï¿½r den Frame der Actuatoren. eine Liste aller Aktuatoren wird
+ * erstellt und fï¿½r jeden ein ToggleButton erzeugt. Diesem wird dann ein
  * Listener angebunden und die Liste aller Buttons angezeigt
  * 
  * @author Viktor Mayer
@@ -52,7 +52,7 @@ public class Act_Frame extends Activity {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 
-	// Das Xsone Objekt für diese Aktivity
+	// Das Xsone Objekt fï¿½r diese Aktivity
 	private Xsone myXsone;
 	// Eine Liste von Views, welche mit der Anzahl ausgelesener Aktuatoren
 	// angepasst und erweitert wird. Beinhaltet Schalter etc
@@ -80,7 +80,7 @@ public class Act_Frame extends Activity {
 	 * Die OnCreate Funtion stellt den Einstiegspunkt dieser Activity dar. Alle
 	 * Aktuatoren werden nochmals einzeln aus der XS1 ausgelesen (Zustand etc)
 	 * um die einzelnen ToggleButtons und die Beschriftung entsprechend setzen
-	 * zu können.
+	 * zu kï¿½nnen.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,17 +101,17 @@ public class Act_Frame extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		// falls sich die Länge der Aktuatorliste geändert hat muss dennoch
+		// falls sich die Lï¿½nge der Aktuatorliste geï¿½ndert hat muss dennoch
 		// upgedatet werden. Zuerst werden die Aktuatoren neu ausgelesen
 		act_list.clear();
 		for (XS_Object o : myXsone.getMyActuatorList()) {
 			if (!o.getType().equals("disabled")) {
-				// Der Liste der Aktuatoren für den AddObjectsProzess hinzu
-				// fügen
+				// Der Liste der Aktuatoren fï¿½r den AddObjectsProzess hinzu
+				// fï¿½gen
 				act_list.add((Actuator) o);
 			}
 		}
-		// und die Länge überprüft
+		// und die Lï¿½nge ï¿½berprï¿½ft
 		if (act_list.size() != old_size) {
 			// Ladevorgang anzeigen
 			dialog = ProgressDialog.show(Act_Frame.this, "",
@@ -122,7 +122,7 @@ public class Act_Frame extends Activity {
 			new AddObjects().execute(act_list);
 			old_size = act_list.size();
 		} else {
-			// Die ständige Prüfung der Buttons erfolgt nur bei eingeschaltetem
+			// Die stï¿½ndige Prï¿½fung der Buttons erfolgt nur bei eingeschaltetem
 			// WLAN und wenn nich alles aktualisiert wurde wegen hocher Netzlast
 			WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			if (wifi.isWifiEnabled() || !RuntimeStorage.isStatusValid()) {
@@ -146,8 +146,8 @@ public class Act_Frame extends Activity {
 	}
 
 	/**
-	 * update view aktualisiert einen übergebenen view indem der Zustand des
-	 * zugehöreigen Aktuators neu geladen wird
+	 * update view aktualisiert einen ï¿½bergebenen view indem der Zustand des
+	 * zugehï¿½reigen Aktuators neu geladen wird
 	 * 
 	 * @param v
 	 *            - der zu aktualisierende View
@@ -168,12 +168,12 @@ public class Act_Frame extends Activity {
 				// update Dimmers TextView
 				TextView tv = (TextView) findViewById(v.getId() + ID_BUFFER);
 				tv.setText(actual.getName() + " ("
-						+ new Double(actual.getValue()).intValue() + "%)");
+						+ Double.valueOf(actual.getValue()).intValue() + "%)");
 			} else if (actual.getType().equals("temperature")) {
 				// Mit der Funktion (x -10)/2 werden die Temperaturwerte
 				// zwischen 10 und 34 Grad auf die Listenwerte des
 				// Spinners 0-10 gemappt
-				int selection = (new Double(actual.getValue()).intValue() - 10) / 2;
+				int selection = (Double.valueOf(actual.getValue()).intValue() - 10) / 2;
 				if (selection > 12)
 					selection = 12;
 				if (selection < 0)
@@ -189,8 +189,8 @@ public class Act_Frame extends Activity {
 	}
 
 	/**
-	 * Der Prozess baut Die Aktor Objekt efür den View auf, je nach Typ. Hier
-	 * können zukünftige neue Typen erweitert werden. Der Typ wird anhand des
+	 * Der Prozess baut Die Aktor Objekt efï¿½r den View auf, je nach Typ. Hier
+	 * kï¿½nnen zukï¿½nftige neue Typen erweitert werden. Der Typ wird anhand des
 	 * Namens abgefragt, da dieser vom XS1 definiert ist. Im PostExecute wird
 	 * dann die generierte Liste ausgegeben.
 	 * 
@@ -200,7 +200,7 @@ public class Act_Frame extends Activity {
 	private class AddObjects extends
 			AsyncTask<LinkedList<Actuator>, Boolean, LinkedList<View>> {
 		/**
-		 * Der Parameter zur Prüfung der Verbindung
+		 * Der Parameter zur Prï¿½fung der Verbindung
 		 */
 		private boolean check = true;
 
@@ -217,7 +217,7 @@ public class Act_Frame extends Activity {
 			for (final Actuator rem : acts[0]) {
 
 				/**
-				 * Für den Fall "Dimmbar" muss ein Schieberegler zurück gegeben
+				 * Fï¿½r den Fall "Dimmbar" muss ein Schieberegler zurï¿½ck gegeben
 				 * werden......................................................
 				 */
 				if (rem.isDimmable()) {
@@ -225,20 +225,19 @@ public class Act_Frame extends Activity {
 					seek.setId(rem.getNumber());
 					seek.setMinimumWidth(250);
 
-					// der Seekbar wird ein Listener hinzugefügt
+					// der Seekbar wird ein Listener hinzugefï¿½gt
 					seek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
-						@Override
 						public void onProgressChanged(SeekBar seekBar,
 								int progress, boolean fromUser) {
-							// lädt der Dialog gerade stimmt der Kontext nicht!
+							// lï¿½dt der Dialog gerade stimmt der Kontext nicht!
 							// der Text darf dann nicht neu gesetzt werden!
 							if (!dialog.isShowing()) {
 								// den Textview aktualisieren direkt bei der
 								// Bewegung
 								TextView tv = (TextView) findViewById(seekBar
 										.getId() + ID_BUFFER);
-								// nötig, da bei erstem Aufruf noch nicht
+								// nï¿½tig, da bei erstem Aufruf noch nicht
 								// vorhanden!!
 								if (tv != null)
 									tv.setText(rem.getName() + " ("
@@ -246,25 +245,23 @@ public class Act_Frame extends Activity {
 							}
 						}
 
-						@Override
 						public void onStartTrackingTouch(SeekBar seekBar) {
 
 						}
 
 						/**
-						 * beim Ändern des Wertes wird dieser gesendet
+						 * beim ï¿½ndern des Wertes wird dieser gesendet
 						 */
-						@Override
 						public void onStopTrackingTouch(SeekBar seekBar) {
 							if (rem.setValue(seek.getProgress(), true)) {
-								// Der Neue alte Wert für die Seekbar
+								// Der Neue alte Wert fï¿½r die Seekbar
 								seek.setTag(R.string.tag_seekbar,
 										seek.getProgress());
 								// den Textview aktualisieren
 								TextView tv = (TextView) findViewById(seekBar
 										.getId() + ID_BUFFER);
 								tv.setText(rem.getName() + " ("
-										+ new Double(rem.getValue()).intValue()
+										+ Double.valueOf(rem.getValue()).intValue()
 										+ "%)");
 								// Makro aufzeichnen falls eingestellt
 								makro_call(rem, seek.getProgress());
@@ -281,21 +278,21 @@ public class Act_Frame extends Activity {
 						check = false;
 					seek.setProgress((int) rem.getValue());
 					seek.setTag(rem.getName() + " ("
-							+ new Double(rem.getValue()).intValue() + "%)");
-					// der alte Stand falls zurück gesetzt werden muss
+							+ Double.valueOf(rem.getValue()).intValue() + "%)");
+					// der alte Stand falls zurï¿½ck gesetzt werden muss
 					// (Verbindungfehler)
 					seek.setTag(R.string.tag_seekbar, seek.getProgress());
-					// Wichtig für die spätere suche beim Longclick auf den Text
+					// Wichtig fï¿½r die spï¿½tere suche beim Longclick auf den Text
 					seek.setTag(R.string.obj_name, rem.getName());
 					views.add(seek);
 				}
 
 				/**
-				 * Für den Fall Temperatursteuerung wird ein Spinner
+				 * Fï¿½r den Fall Temperatursteuerung wird ein Spinner
 				 * ausgegeben.......................................
 				 */
 				else if (rem.getType().equals("temperature")) {
-					// Die Werte für den Temperatur Spinner setzen
+					// Die Werte fï¿½r den Temperatur Spinner setzen
 					String[] vals = { "10", "12", "14", "16", "18", "20", "22",
 							"24", "26", "28", "30", "32", "34" };
 					// Den Spinner anlegen
@@ -303,13 +300,13 @@ public class Act_Frame extends Activity {
 					// Name und ID setzen
 					temp_spin.setTag(rem.getName());
 					temp_spin.setId(rem.getNumber());
-					// Den Adapter für den Spinner anlegen
+					// Den Adapter fï¿½r den Spinner anlegen
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 							Act_Frame.this,
 							android.R.layout.simple_spinner_item, vals);
 					// und setzen
 					temp_spin.setAdapter(adapter);
-					// Den Listener für Änderungen setzen
+					// Den Listener fï¿½r ï¿½nderungen setzen
 					temp_spin
 							.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 								public void onItemSelected(
@@ -344,7 +341,7 @@ public class Act_Frame extends Activity {
 					// Mit der Funktion (x -10)/2 werden die Temperaturwerte
 					// zwischen 10 und 34 Grad auf die Listenwerte des Spinners
 					// 0-10 gemappt
-					int selection = (new Double(rem.getValue()).intValue() - 10) / 2;
+					int selection = (Double.valueOf(rem.getValue()).intValue() - 10) / 2;
 					if (selection > 12)
 						selection = 12;
 					if (selection < 0)
@@ -352,14 +349,14 @@ public class Act_Frame extends Activity {
 					temp_spin.setSelection(selection);
 					// Der alte Wert, der gesetzt wird bei Verbindzngsfehlern
 					temp_spin.setTag(R.string.tag_spin, selection);
-					// Wichtig für die spätere suche beim Longclick auf den Text
+					// Wichtig fï¿½r die spï¿½tere suche beim Longclick auf den Text
 					temp_spin.setTag(R.string.obj_name, rem.getName());
 					views.add(temp_spin);
 
 				}
 
 				/**
-				 * Für alle übrigen Fälle muss ein Button angelegt
+				 * Fï¿½r alle ï¿½brigen Fï¿½lle muss ein Button angelegt
 				 * werden...............................................
 				 */
 				else {
@@ -369,12 +366,12 @@ public class Act_Frame extends Activity {
 					tbutton.setGravity(Gravity.CENTER_VERTICAL);
 					tbutton.setId(rem.getNumber());
 					tbutton.setTag(rem.getName());
-					// Wichtig für die spätere suche beim Longclick auf den Text
+					// Wichtig fï¿½r die spï¿½tere suche beim Longclick auf den Text
 					tbutton.setTag(R.string.obj_name, rem.getName());
 					tbutton.setTextOn("Schalter an");
 					tbutton.setTextOff("Schalter aus");
 					// dem Button wird ein Listener aller AktuatorButtons hinzu
-					// gefügt
+					// gefï¿½gt
 					tbutton.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							if (tbutton.isChecked()) {
@@ -416,10 +413,10 @@ public class Act_Frame extends Activity {
 		 */
 		protected void onPostExecute(LinkedList<View> result) {
 			super.onPostExecute(result);
-			// Die Globale Objektliste setzen für zukünftige Änderungen
+			// Die Globale Objektliste setzen fï¿½r zukï¿½nftige ï¿½nderungen
 			object_list = result;
 
-			// das bestehende Layout für den Tab holen
+			// das bestehende Layout fï¿½r den Tab holen
 			table = (TableLayout) findViewById(R.id.tab_table);
 			table.removeAllViews();
 
@@ -436,26 +433,26 @@ public class Act_Frame extends Activity {
 				tv = new TextView(Act_Frame.this);
 				tv.setWidth(350);
 				tv.setHeight(70);
-				// id der TexteObjekte darf sich nicht überschneiden mit der der
-				// übrigen Objekte!
+				// id der TexteObjekte darf sich nicht ï¿½berschneiden mit der der
+				// ï¿½brigen Objekte!
 				tv.setId(obj.getId() + ID_BUFFER);
 				tv.setPadding(20, 0, 0, 0);
 				tv.setGravity(Gravity.CENTER_VERTICAL);
 				tv.setTextSize(20);
-				// Der Object Tag enthält den Namen zum Remote Objekt
+				// Der Object Tag enthï¿½lt den Namen zum Remote Objekt
 				tv.setText((String) obj.getTag());
 				tv.setTag((String) obj.getTag(R.string.obj_name));
-				// Beim Click auf Textview werden die für die Aktuatoren
+				// Beim Click auf Textview werden die fï¿½r die Aktuatoren
 				// festgelegten functions gezeigt
 				tv.setClickable(true);
-				// Für die LongClickOption registrieren
+				// Fï¿½r die LongClickOption registrieren
 				registerForContextMenu(tv);
 
-				// den Button und Text zur Zeile hinzu fügen
+				// den Button und Text zur Zeile hinzu fï¿½gen
 				row.addView(obj);
 				row.addView(tv);
 
-				// die Zeile zum TabelLayout hinzu fügen
+				// die Zeile zum TabelLayout hinzu fï¿½gen
 				table.addView(row);
 			}
 			if (dialog.isShowing())
@@ -474,19 +471,19 @@ public class Act_Frame extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		boolean no_functions = true;
-		// den View für den folgenden update setzen
+		// den View fï¿½r den folgenden update setzen
 		toBeUpdated = v;
 		Actuator comparator = new Actuator();
 		comparator.setName((String) v.getTag());
 		int id = act_list.indexOf(comparator);
 		longClickAct = act_list.get(id);
-		// Die Liste mit den Funktionen für das Objekt holen
+		// Die Liste mit den Funktionen fï¿½r das Objekt holen
 		List<Function> fn_list = longClickAct.getMyFunction();
 		menu.setHeaderTitle("Funktionen");
 
 		int i = 1;
 		for (Function f : fn_list) {
-			// Für jede Funktion, die nicht disabled ist wird ein Menüpunkt
+			// Fï¿½r jede Funktion, die nicht disabled ist wird ein Menï¿½punkt
 			// gesetzt
 			if (!f.getType().equals("disabled")) {
 				menu.add(Menu.NONE, i, i, f.getDsc());
@@ -501,7 +498,7 @@ public class Act_Frame extends Activity {
 
 	/**
 	 * In der Funktion wird beschrieben, was passiert, wenn nach dem Langen
-	 * Click auf einen Text eine Auswahl (Funktion) gewählt wurde.
+	 * Click auf einen Text eine Auswahl (Funktion) gewï¿½hlt wurde.
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -510,7 +507,7 @@ public class Act_Frame extends Activity {
 			check = longClickAct.doFunction(item.getItemId());
 			// Makrofunktion ggf speichern
 			makro_call(longClickAct, item.getItemId());
-			// muss ausgeführt werden, da sonst die Views nicht mehr überein
+			// muss ausgefï¿½hrt werden, da sonst die Views nicht mehr ï¿½berein
 			// stimmen, jedoch nur bei Erfolg und falls View gesetzt
 			if (check && toBeUpdated != null)
 				update_view(findViewById(toBeUpdated.getId() - ID_BUFFER));
@@ -559,7 +556,7 @@ public class Act_Frame extends Activity {
 	}
 
 	/**
-	 * Der Tab übernimmt die Aktionen des Tabhost für Menu und Back Button
+	 * Der Tab ï¿½bernimmt die Aktionen des Tabhost fï¿½r Menu und Back Button
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

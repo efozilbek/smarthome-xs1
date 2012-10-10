@@ -26,9 +26,9 @@ public class Abo_Service extends Service {
 	private static Xsone myXsone = null;
 	// Abo Thread
 	private Thread t;
-	// Wird zur Prüfung genutzt, ob der Service läuft
+	// Wird zur Prï¿½fung genutzt, ob der Service lï¿½uft
 	private static Abo_Service instance = null;
-	// Timer zur Verbindungsprüfung
+	// Timer zur Verbindungsprï¿½fung
 	private Timer check_timer;
 
 	/**
@@ -40,9 +40,9 @@ public class Abo_Service extends Service {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * Gibt zurück, ob der Service läuft
+	 * Gibt zurï¿½ck, ob der Service lï¿½uft
 	 * 
-	 * @return - true, wenn eine Instanz vorliegt, also der Service läuft, sonst
+	 * @return - true, wenn eine Instanz vorliegt, also der Service lï¿½uft, sonst
 	 *         false
 	 */
 	public static boolean isInstanceCreated() {
@@ -66,7 +66,7 @@ public class Abo_Service extends Service {
 	}
 
 	/**
-	 * Beim beenden wird die Instanz gelöscht. Zudem der thread gestoppt und die
+	 * Beim beenden wird die Instanz gelï¿½scht. Zudem der thread gestoppt und die
 	 * Liste geleert
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class Abo_Service extends Service {
 
 	/**
 	 * Beim erneuten starten wird der Thread gestartet, falls er nicht schon
-	 * läuft. Zudem wir die Liste geleert
+	 * lï¿½uft. Zudem wir die Liste geleert
 	 */
 	@Override
 	public void onStart(Intent intent, int startid) {
@@ -98,7 +98,6 @@ public class Abo_Service extends Service {
 		 */
 		t = new Thread(new Runnable() {
 
-			@Override
 			public void run() {
 				try {
 					if (myXsone != null)
@@ -109,7 +108,7 @@ public class Abo_Service extends Service {
 							"Verbindung abgebrochen!\n");
 					return;
 				} catch (Exception e) {
-					// bei den übrigen Exceptions ist nichts zu tun
+					// bei den ï¿½brigen Exceptions ist nichts zu tun
 				}
 			}
 		});
@@ -141,7 +140,7 @@ public class Abo_Service extends Service {
 					RuntimeStorage.getAbo_data_list().add(
 							"Verbindung abgebrochen!\n");
 				} catch (Exception e) {
-					// bei den übrigen Exceptions ist nichts zu tun
+					// bei den ï¿½brigen Exceptions ist nichts zu tun
 				}
 			}
 		}

@@ -34,7 +34,7 @@ public class Makros_Frame extends ListActivity {
 
 	private Xsone myXsone = null;
 	private LinkedList<String> makro_list = new LinkedList<String>();
-	// Abfrage, ob Element gelöscht werden soll
+	// Abfrage, ob Element gelï¿½scht werden soll
 	private AlertDialog ad;
 	private ProgressDialog dialog1;
 
@@ -48,8 +48,8 @@ public class Makros_Frame extends ListActivity {
 
 	/**
 	 * Hier wird eine Liste mit allen Makros der XS1 ausgegeben. Einfaches
-	 * klicken auf ein Element führt das makro aus, während langes klicken zu
-	 * einer Abfrage führt, ob das Makro gelöscht werden soll
+	 * klicken auf ein Element fï¿½hrt das makro aus, wï¿½hrend langes klicken zu
+	 * einer Abfrage fï¿½hrt, ob das Makro gelï¿½scht werden soll
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,49 +80,47 @@ public class Makros_Frame extends ListActivity {
 		final ListView lv = getListView();
 		
 		/**
-		 * Der einfache click listener zum Ausführen des Makros
+		 * Der einfache click listener zum Ausfï¿½hren des Makros
 		 */
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// geklickte Makro ausführen
+				// geklickte Makro ausfï¿½hren
 				dialog1 = ProgressDialog.show(Makros_Frame.this, "",
-						"Makro wird ausgeführt...", true, false);
+						"Makro wird ausgefï¿½hrt...", true, false);
 				dialog1.show();
 				new ExecuteMakro().execute((int) id);
 			}
 		});
 
 		/**
-		 * der long click listener zum löschen eines Makros
+		 * der long click listener zum lï¿½schen eines Makros
 		 */
 		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					final int arg2, long arg3) {
 
 				ad.setCancelable(false); // This blocks the 'BACK' button
 				ad.setTitle("Hinweis");
-				ad.setMessage("Makro löschen?");
+				ad.setMessage("Makro lï¿½schen?");
 				// Die beiden Auswahlbuttons setzen
 				ad.setButton("Ja", new DialogInterface.OnClickListener() {
-					@Override
+					
 					public void onClick(DialogInterface dialog, int which) {
-						// Dialog schließen
+						// Dialog schlieï¿½en
 						dialog.dismiss();
-						// Makro löschen
+						// Makro lï¿½schen
 						myXsone.getMyMakroList().remove(arg2);
 						MakroController.getInstance().saveMakros();
 						finish();
 					}
 				});
 				ad.setButton2("Nein", new DialogInterface.OnClickListener() {
-					@Override
+					
 					public void onClick(DialogInterface dialog, int which) {
-						// Dialog schließen
+						// Dialog schlieï¿½en
 						dialog.dismiss();
 					}
 				});
@@ -133,7 +131,7 @@ public class Makros_Frame extends ListActivity {
 	}
 
 	/**
-	 * Die Klasse führt das makro als eigenen Task aus. Dabei wird eine
+	 * Die Klasse fï¿½hrt das makro als eigenen Task aus. Dabei wird eine
 	 * Ladeanzeige gezeigt
 	 * 
 	 * @author Viktor Mayer
@@ -149,7 +147,7 @@ public class Makros_Frame extends ListActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				Toast.makeText(getBaseContext(), "Makro wurde ausgeführt!",
+				Toast.makeText(getBaseContext(), "Makro wurde ausgefï¿½hrt!",
 						Toast.LENGTH_SHORT).show();
 				// Status invalidieren
 				RuntimeStorage.setStatusValid(false);

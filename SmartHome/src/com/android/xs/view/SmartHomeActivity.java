@@ -16,7 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 /**
- * stellt die Schnittstelle zur View Komponente dar und enthält das Xsone Objekt
+ * stellt die Schnittstelle zur View Komponente dar und enthï¿½lt das Xsone Objekt
  * mit allen darzustellenden Daten wird beim Systemstart aufgerufen und ruft die
  * weiteren Activities auf.
  * 
@@ -38,7 +38,7 @@ public class SmartHomeActivity extends Activity {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * wird beim Ausführen zuerst aufgerufen. Prüft ob bereits Daten gespeichert
+	 * wird beim Ausfï¿½hren zuerst aufgerufen. Prï¿½ft ob bereits Daten gespeichert
 	 * wurden, falls nicht wird die FirstRun Activity aufgerufen
 	 */
 	@Override
@@ -82,15 +82,15 @@ public class SmartHomeActivity extends Activity {
 		super.onRestart();
 
 		// Das Objekt sollte nun fertig angelegt sein und kann verwendet werden
-		// prüfen (Benutzer könnte zurück gedrückt haben!!)
+		// prï¿½fen (Benutzer kï¿½nnte zurï¿½ck gedrï¿½ckt haben!!)
 		if (Config.isConn_validated()) {
-			// Die XS_Daten müssen nun persistent gespeichert werden
+			// Die XS_Daten mï¿½ssen nun persistent gespeichert werden
 			String[] data = {
 					RuntimeStorage.getMyXsone().getMyIpSetting().getIp(),
 					RuntimeStorage.getMyXsone().getUsername(),
 					RuntimeStorage.getMyXsone().getPassword() };
 			RuntimeStorage.setXsdata(data);
-			// den Content für Spinner holen
+			// den Content fï¿½r Spinner holen
 			RuntimeStorage.get_content();
 			// Ist die Verbindung gelungen kann zum Mainframe gewechselt werden
 			Intent intent = new Intent(this, MainFrame.class);
@@ -118,17 +118,17 @@ public class SmartHomeActivity extends Activity {
 		ad.setMessage(txt);
 		// Die beiden Auswahlbuttons setzen
 		ad.setButton("Beenden", new DialogInterface.OnClickListener() {
-			@Override
+			
 			public void onClick(DialogInterface dialog, int which) {
-				// Dialog schließen und Activity beenden
+				// Dialog schlieï¿½en und Activity beenden
 				dialog.dismiss();
 				finish();
 			}
 		});
 		ad.setButton2("Konfigurieren", new DialogInterface.OnClickListener() {
-			@Override
+			
 			public void onClick(DialogInterface dialog, int which) {
-				// Dialog schließen und Konfiguration starten
+				// Dialog schlieï¿½en und Konfiguration starten
 				dialog.dismiss();
 				Intent intent = new Intent(SmartHomeActivity.this,
 						Config.class);
@@ -152,7 +152,7 @@ public class SmartHomeActivity extends Activity {
 
 		/**
 		 * Im Hintergrundprozess wird das XSone angelegt. hier Kann es wegen
-		 * Netzverkehr zu verzögerung kommen. Bei Fehler wird false zurück
+		 * Netzverkehr zu verzï¿½gerung kommen. Bei Fehler wird false zurï¿½ck
 		 * gegeben
 		 * 
 		 * @return - False, falls keine Verbindung hergestellt werden konnte
@@ -168,7 +168,7 @@ public class SmartHomeActivity extends Activity {
 			} catch (ConnectionException e) {
 				return false;
 			}
-			// den Content für die Spinner holen
+			// den Content fï¿½r die Spinner holen
 			RuntimeStorage.get_content();
 
 			// nun kann zum Hauptprozess gewechselt werden
@@ -182,7 +182,7 @@ public class SmartHomeActivity extends Activity {
 
 		/**
 		 * Konnte keine Verbindung aufgebaut werden muss der Alert Dialog mit
-		 * den Auswahlmöglichkeiten aufgerufen werden
+		 * den Auswahlmï¿½glichkeiten aufgerufen werden
 		 */
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
