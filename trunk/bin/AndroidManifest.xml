@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.android.xs.view"
+      android:versionCode="1"
+      android:versionName="@string/version">
+    <uses-sdk android:targetSdkVersion="10" android:minSdkVersion="8"/>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name"
+    android:debuggable="true">
+        <activity android:name="SmartHomeActivity"
+                  android:label="@string/app_name" android:launchMode="standard" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="com.android.xs.view.MainFrame" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.tabs.Act_Frame" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.tabs.Sens_Frame" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.tabs.Tim_Frame" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.tabs.Options_Frame" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.tabs.Script_Frame" android:screenOrientation="portrait" android:launchMode="standard"></activity><activity android:name="com.android.xs.view.setting.Config" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.setting.Abo" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.setting.About" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.setting.Add" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.setting.GInfo" android:launchMode="standard" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.android.xs.view.setting.Remove" android:screenOrientation="portrait" android:launchMode="standard"></activity>
+        <activity android:screenOrientation="portrait" android:name="com.android.xs.view.add.Add_Act" android:launchMode="standard"></activity>
+        <activity android:screenOrientation="portrait" android:name="com.android.xs.view.add.Add_Sens" android:launchMode="standard"></activity>
+        <activity android:screenOrientation="portrait" android:name="com.android.xs.view.add.Add_Tim" android:launchMode="standard"></activity>
+        <activity android:screenOrientation="portrait" android:name="com.android.xs.view.add.Add_Script" android:launchMode="standard"></activity>
+        <service android:name="com.android.xs.controller.services.Abo_Service" android:enabled="true"></service>
+        <activity android:name="com.android.xs.view.Makros_Frame" android:screenOrientation="portrait" android:launchMode="standard"></activity>
+        <activity android:screenOrientation="portrait" android:name="com.android.xs.controller.intent.XSIntent" android:launchMode="standard"><intent-filter>
+      <action android:name="com.android.xs.controller.SEND_XS" />
+      <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter></activity>       
+
+    </application>
+</manifest>
