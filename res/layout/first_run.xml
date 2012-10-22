@@ -57,7 +57,9 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/topic_user"
         android:maxLength="19"
-        android:singleLine="true" >
+        android:singleLine="true"
+        android:text="@string/std_user" >
+
     </EditText>
 
     <TextView

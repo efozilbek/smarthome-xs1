@@ -114,13 +114,14 @@ public class Sens_Frame extends ListActivity {
 				String typ = remS.getType();
 				double val = remS.getValue();
 				String unit = remS.getUnit();
+				String status = remS.getStatus();
 				Calendar time = Calendar.getInstance();
 				// da, Java in Millis hier * 1000!!
 				time.setTimeInMillis(remS.getUtime() * 1000);
 				String recv = time.getTime().toLocaleString();
 				// Den Text f�r die Ausgabe setzen falls typ nicht disabled
 				sensor_dataList.add("Empfangszeit: " + recv + "\nSensortyp: " + typ
-						+ "\nName: " + name + "\nWert: " + val + unit);
+						+ "\nName: " + name + "\nWert: " + val + unit + "\nStatus: "+status);
 			}
 		}
 

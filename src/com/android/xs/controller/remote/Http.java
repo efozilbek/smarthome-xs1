@@ -26,8 +26,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -53,8 +54,10 @@ public class Http {
 	 ***********************************************************************************************************************************************************/
 
 	private static Http http = null;
+	private String user_BASIC = "";
+	private String pass_BASIC = "";
 
-	// die Verbidnung für das subscribe
+	// die Verbidnung fï¿½r das subscribe
 	static HttpURLConnection url_subscribe_c = null;
 
 	/**
@@ -62,7 +65,7 @@ public class Http {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * privater Konstruktor für Singleton
+	 * privater Konstruktor fï¿½r Singleton
 	 */
 	private Http() {
 	};
@@ -72,7 +75,7 @@ public class Http {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * getInstance gibt das Objekt der Klasse zurück, falls angelegt, sonst legt
+	 * getInstance gibt das Objekt der Klasse zurï¿½ck, falls angelegt, sonst legt
 	 * es zuvor eins an (Singleton)
 	 * 
 	 * @return - Das Singlton Objekt der Klasse Http
@@ -84,19 +87,21 @@ public class Http {
 	}
 
 	/**
-	 * Liest die XS1 Daten aus dem Gerät aus und speichert sie in einem Xsone
-	 * Objekt ab, welches dann zurück gegeben wird
+	 * Liest die XS1 Daten aus dem Gerï¿½t aus und speichert sie in einem Xsone
+	 * Objekt ab, welches dann zurï¿½ck gegeben wird
 	 * 
 	 * @param device
 	 *            - Das abzufragende Objekt (mindestens IP muss gesetzt sein)
-	 * @return - Gibt das abzufragende Objekt mit aktualisierten Daten zurück,
+	 * @return - Gibt das abzufragende Objekt mit aktualisierten Daten zurï¿½ck,
 	 *         bei Fehler NULL
 	 */
 	public Xsone get_config_info(Xsone device) {
-		// IP für zukünftige Http Anfragen speichern
+		// IP fï¿½r zukï¿½nftige Http Anfragen speichern
 		CommandBuilder.setIp(device.getMyIpSetting().getIp());
 		CommandBuilder.setUser(device.getUsername());
 		CommandBuilder.setPass(device.getPassword());
+		user_BASIC = device.getUsername();
+		pass_BASIC = device.getPassword();
 
 		// Die Abfrage wird angelegt
 		Uri uri = CommandBuilder.buildUri("get_config_info");
@@ -122,7 +127,7 @@ public class Http {
 			return null;
 		}
 
-		// Das übergebene Xsone Objekt wird aktualisiert
+		// Das ï¿½bergebene Xsone Objekt wird aktualisiert
 		try {
 			device.setDeviceName(json_info.getString("devicename"));
 			device.setHardware(json_info.getString("hardware"));
@@ -159,9 +164,9 @@ public class Http {
 	}
 
 	/**
-	 * Fragt bim XS1 alle gespeicherten Aktuatoren ab und gibt diese zurück
+	 * Fragt bim XS1 alle gespeicherten Aktuatoren ab und gibt diese zurï¿½ck
 	 * 
-	 * @return - eine Liste von RemObjects, welche alle Aktuatoren enthält, bei
+	 * @return - eine Liste von RemObjects, welche alle Aktuatoren enthï¿½lt, bei
 	 *         Fehler NULL, bei keinen Aktuatoren eine leere Liste
 	 */
 	public List<XS_Object> get_list_actuators() {
@@ -211,7 +216,7 @@ public class Http {
 				}
 
 				// Actuator wird angelegt und der Liste der Aktuatoren hinzu
-				// gefügt
+				// gefï¿½gt
 				act.add(new Actuator(num + 1, json_actual.getString("name"),
 						json_actual.getString("type"), json_actual
 								.getDouble("value"), json_actual
@@ -257,7 +262,7 @@ public class Http {
 
 	/**
 	 * sendet einen neuen Wert an die XS1. Dieser wird als Funktionswert
-	 * übergeben. Die Funktionen müssen zuvor definiert worden sein
+	 * ï¿½bergeben. Die Funktionen mï¿½ssen zuvor definiert worden sein
 	 * 
 	 * @param act
 	 *            - Das RemoteObject (Actuator)
@@ -272,7 +277,7 @@ public class Http {
 		JSONObject json_main;
 		try {
 			json_main = request(uri);
-			// Prüfen ob Befehl ausgeführt wurde und true zurück geben
+			// Prï¿½fen ob Befehl ausgefï¿½hrt wurde und true zurï¿½ck geben
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
 				Log.e("XSRequest",
@@ -289,11 +294,11 @@ public class Http {
 	 * Fragt den Zustand eines Aktuators ab. Sendet dazu ein Http Request an die
 	 * XS1 und holt den Zustand eines Aktuatoren. als JSONObjekt. die Daten
 	 * wrden in einem neuen Aktuator Objekt gespeichert und bei Erfolg dieses
-	 * dann zurück gegeben.
+	 * dann zurï¿½ck gegeben.
 	 * 
 	 * @param act
-	 *            - der zu Prüfende Actuator
-	 * @return - gibt den Aktuator mit neuen Werten zurück, NULL bei Fehler
+	 *            - der zu Prï¿½fende Actuator
+	 * @return - gibt den Aktuator mit neuen Werten zurï¿½ck, NULL bei Fehler
 	 */
 	public Actuator get_state_actuator(Actuator act) {
 
@@ -328,7 +333,7 @@ public class Http {
 			updated.setValue(json_actuator.getDouble("value"), false);
 			updated.setUnit(json_actuator.getString("unit"));
 			updated.setUtime(json_actuator.getLong("utime"));
-			// prüfen ob dimmbar, da default Konstruktor verwendet wurde
+			// prï¿½fen ob dimmbar, da default Konstruktor verwendet wurde
 			updated.checkDimmable();
 		} catch (JSONException e) {
 			return null;
@@ -339,11 +344,11 @@ public class Http {
 
 	/**
 	 * Holt die Liste aller Sensoren aus dem XS1 und gibt Diese als eine Liste
-	 * von Objekten der Klasse Remote Object zurück
+	 * von Objekten der Klasse Remote Object zurï¿½ck
 	 * 
 	 * @param device
-	 *            - Xsone. Das Xsone Objekt, welches die RemObjekte enthält
-	 * @return - Gibt eine Liste von Remote Objekten mit allen Sensoren zurück,
+	 *            - Xsone. Das Xsone Objekt, welches die RemObjekte enthï¿½lt
+	 * @return - Gibt eine Liste von Remote Objekten mit allen Sensoren zurï¿½ck,
 	 *         null bei Fehler
 	 */
 	public List<XS_Object> get_list_sensors() {
@@ -378,14 +383,19 @@ public class Http {
 			try {
 				json_actual = senors.getJSONObject(num);
 
+				// status ist neu in firmware 3
+				String state = null;
+				JSONArray status = json_actual.getJSONArray("state");
+				if (status.length() > 0)
+					state = status.getString(0);
 				// Sensor wird angelegt und der Liste der Remote Objects hinzu
-				// gefügt
+				// gefï¿½gt
 				// if (!json_actual.getString("type").equals("disabled"))
 				sens.add(new Sensor(num + 1, json_actual.getString("name"),
 						json_actual.getString("type"), json_actual
 								.getDouble("value"), json_actual
 								.getLong("utime"), json_actual
-								.getString("unit")));
+								.getString("unit"), state));
 
 			} catch (JSONException e) {
 				return null;
@@ -396,8 +406,8 @@ public class Http {
 	}
 
 	/**
-	 * Liest für einen übergebenen Sensor aktuelle Sensorwerte aus und gibt
-	 * diese als ein Sensorobjekt zurück
+	 * Liest fï¿½r einen ï¿½bergebenen Sensor aktuelle Sensorwerte aus und gibt
+	 * diese als ein Sensorobjekt zurï¿½ck
 	 * 
 	 * @param sens
 	 *            - Sensor. Das auszulesende Sensor Objekt
@@ -444,13 +454,13 @@ public class Http {
 	}
 
 	/**
-	 * Nur in Ausnahmefällen bei „virtuellen“ Sensoren sinnvoll. Es können so
+	 * Nur in Ausnahmefï¿½llen bei ï¿½virtuellenï¿½ Sensoren sinnvoll. Es kï¿½nnen so
 	 * z.B. auch externe Datenquellen auf der Speicherkarte mitgeloggt werden
 	 * oder in Skriptentscheidungen miteinbezogen werden. Das Sensorsystem muss
-	 * vom Type virtual sein, damit die Werte gesetzt werden dürfen.
+	 * vom Type virtual sein, damit die Werte gesetzt werden dï¿½rfen.
 	 * 
 	 * @param sens
-	 *            - Das zu ändernde Sensorobjekt
+	 *            - Das zu ï¿½ndernde Sensorobjekt
 	 * @return - boolean. TRUE bei erfolg, sonst FALSE
 	 */
 	public boolean set_state_sensor(Sensor sens) {
@@ -477,7 +487,7 @@ public class Http {
 
 	/**
 	 * Liest alle Timer aus der XS1 und gibt diese als eine Liste aller Timer
-	 * Objekte zurück
+	 * Objekte zurï¿½ck
 	 * 
 	 * @param - Xsone. Stellt das auszulesende XS1 dar
 	 * @return - Eine Liste aller Timer, die nicht deaktiviert sind
@@ -515,7 +525,7 @@ public class Http {
 				json_actual = timers.getJSONObject(num);
 
 				// Timer wird angelegt und der Liste der Timer hinzu
-				// gefügt
+				// gefï¿½gt
 				// if (!json_actual.getString("type").equals("disabled"))
 				tim.add(new Timer(json_actual.getString("name"), json_actual
 						.getString("type"), json_actual.getLong("next"),
@@ -531,7 +541,7 @@ public class Http {
 
 	/**
 	 * Liest alle Scripts aus der XS1 und gibt diese als eine Liste aller Script
-	 * Objekte zurück
+	 * Objekte zurï¿½ck
 	 * 
 	 * @param - Xsone. Stellt das auszulesende XS1 dar
 	 * @return - Eine Liste aller Scripts
@@ -568,7 +578,7 @@ public class Http {
 				json_actual = scripts.getJSONObject(num);
 
 				// Script wird angelegt und der Liste der Scripts hinzu
-				// gefügt
+				// gefï¿½gt
 				// if (!json_actual.getString("type").equals("disabled"))
 				script_list.add(new Script(json_actual.getString("name"),
 						num + 1, json_actual.getString("type")));
@@ -787,7 +797,7 @@ public class Http {
 
 	/**
 	 * Startet ein Abonnement von allen Aktor / Sensor Ereignissen. Das XS1
-	 * behält die aktuelle Verbindung offen und liefert bei einen
+	 * behï¿½lt die aktuelle Verbindung offen und liefert bei einen
 	 * Schaltereignis, bzw. empfangenen Sensorwert eine Zeile mit Zeitstempel
 	 * und Wert aus.
 	 * 
@@ -823,11 +833,11 @@ public class Http {
 
 		isr = new InputStreamReader(url_subscribe_c.getInputStream());
 
-		// Der Buffered Reader empfängt die Daten der Verbindung zur XS1
+		// Der Buffered Reader empfï¿½ngt die Daten der Verbindung zur XS1
 		subscribe_reader = new BufferedReader(isr);
 
-		// Charbuffer ist eine alternative Lösung, da readline blockierend
-		// aufgerufen wird, und dadurch immer eins verzögert, weil schon
+		// Charbuffer ist eine alternative Lï¿½sung, da readline blockierend
+		// aufgerufen wird, und dadurch immer eins verzï¿½gert, weil schon
 		// getInputStream blockiert
 		CharBuffer c = CharBuffer.allocate(100);
 		while (subscribe_reader.read(c) > 0) {
@@ -842,13 +852,13 @@ public class Http {
 	}
 
 	/**
-	 * Liest die Protokollinformationen aus dem XS1 und gibt diese zurück
+	 * Liest die Protokollinformationen aus dem XS1 und gibt diese zurï¿½ck
 	 * 
 	 * @return - gibt eine Array von Strings mit zwei Werten (Version und
-	 *         Typ)zurück. NULL bei Fehler
+	 *         Typ)zurï¿½ck. NULL bei Fehler
 	 */
 	public String[] get_protocol_info() {
-		// das zurück zu gebende String Array mit den Protokoll Informationen
+		// das zurï¿½ck zu gebende String Array mit den Protokoll Informationen
 		String[] prot_info = new String[2];
 
 		// Die Abfrage wird angelegt
@@ -870,7 +880,7 @@ public class Http {
 			return null;
 		}
 
-		// Die Daten auslesen und zurück geben
+		// Die Daten auslesen und zurï¿½ck geben
 		try {
 			prot_info[0] = json_main.getString("version");
 			prot_info[1] = json_main.getString("type");
@@ -882,13 +892,13 @@ public class Http {
 	}
 
 	/**
-	 * Liest die XS1 interne Batterie gestützte Echtzeit Uhr (RTC) arbeitet mit
+	 * Liest die XS1 interne Batterie gestï¿½tzte Echtzeit Uhr (RTC) arbeitet mit
 	 * UTC / GMT Zeit.
 	 * 
 	 * @return - Die Zeit des XS1 als Calendar Objekt. NULL bei Fehler
 	 */
 	public Calendar get_date_time() {
-		// das zurück zu gebende String Array mit den Protokoll Informationen
+		// das zurï¿½ck zu gebende String Array mit den Protokoll Informationen
 		Calendar dat_tim = Calendar.getInstance();
 
 		// Die Abfrage wird angelegt
@@ -914,7 +924,7 @@ public class Http {
 			return null;
 		}
 
-		// die Ausgelesenen Werte setzen und zurück geben
+		// die Ausgelesenen Werte setzen und zurï¿½ck geben
 		try {
 			dat_tim.set(date.getInt("year"), date.getInt("month"),
 					date.getInt("day"), time.getInt("hour"),
@@ -1036,11 +1046,11 @@ public class Http {
 	}
 
 	/**
-	 * Löscht ein Objekt aus dem XS1. castet nach dem Typ das Objekt und setzt
+	 * Lï¿½scht ein Objekt aus dem XS1. castet nach dem Typ das Objekt und setzt
 	 * es anhand der Nummer auf disabled
 	 * 
 	 * @param Obj
-	 *            - das zu löschende Objekt
+	 *            - das zu lï¿½schende Objekt
 	 * @return - true bei erfolg, sonst false
 	 */
 	public boolean remove_Object(Object Obj) {
@@ -1065,7 +1075,7 @@ public class Http {
 	}
 
 	/**
-	 * Setter für die IP, mit der Das Http Objekt zukünftig Verbindungen zum XS1
+	 * Setter fï¿½r die IP, mit der Das Http Objekt zukï¿½nftig Verbindungen zum XS1
 	 * aufbaut. wird an den CommandBuilder durch gereicht
 	 * 
 	 * @param ip
@@ -1076,9 +1086,9 @@ public class Http {
 	}
 
 	// /**
-	// * Getter für die im Http Objekt gespeicherte IP des XS1
+	// * Getter fï¿½r die im Http Objekt gespeicherte IP des XS1
 	// *
-	// * @return - gibt die gespeicherte IP als String zurück
+	// * @return - gibt die gespeicherte IP als String zurï¿½ck
 	// */
 	// public String getIp() {
 	//
@@ -1086,10 +1096,10 @@ public class Http {
 
 	/**
 	 * sendt die Anfrage und parst zuglich die Antwort in ein JSON Objekt,
-	 * welches dann zurück gegeben wird
+	 * welches dann zurï¿½ck gegeben wird
 	 * 
 	 * @param uri
-	 *            - Das Uri Objekt, welches die Adresse enthält
+	 *            - Das Uri Objekt, welches die Adresse enthï¿½lt
 	 * @return - Ein geparstes JSON Objekt mit allen Daten , NULL bei Fehler
 	 * @throws JSONException
 	 */
@@ -1107,7 +1117,16 @@ public class Http {
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
 		// Client Request und Response wird angelegt
-		HttpClient client = new DefaultHttpClient(httpParameters);
+		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
+
+		// BASIC authent
+		if (!pass_BASIC.equals("")) {
+			client.getCredentialsProvider().setCredentials(
+					new AuthScope(uri.getHost(), uri.getPort(),
+							AuthScope.ANY_SCHEME),
+					new UsernamePasswordCredentials(user_BASIC, pass_BASIC));
+		}
+
 		HttpGet request = new HttpGet(uri.toString());
 
 		HttpResponse response;
