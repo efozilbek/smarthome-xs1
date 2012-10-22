@@ -21,7 +21,9 @@ public class CommandBuilder {
 	 ***********************************************************************************************************************************************************/
 
 	private static String ip;
+	@SuppressWarnings("unused")
 	private static String user;
+	@SuppressWarnings("unused")
 	private static String pass;
 
 	/**
@@ -41,105 +43,105 @@ public class CommandBuilder {
 
 		if (cmd.equals("get_config_info")) {
 			return new Uri.Builder().scheme("http").authority(ip)
-					.path("control").appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
-					.appendQueryParameter("callback", "cname")
+					.path("control").appendQueryParameter("callback", "cname")
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_config_info").build();
 		}
 
 		else if (cmd.equals("get_date_time")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_date_time").build();
 		}
 
 		else if (cmd.equals("get_list_actuators")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_actuators").build();
 		}
 
 		else if (cmd.equals("get_list_functions")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_functions").build();
 		}
 
 		else if (cmd.equals("get_list_scripts")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_scripts").build();
 		}
 
 		else if (cmd.equals("get_list_sensors")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_sensors").build();
 		}
 
 		else if (cmd.equals("get_list_systems")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_systems").build();
 		}
 
 		else if (cmd.equals("get_list_timers")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_list_timers").build();
 		}
 
 		else if (cmd.equals("get_protocol_info")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_protocol_info").build();
 		}
 
 		else if (cmd.equals("get_types_actuators")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_types_actuators").build();
 		}
 
 		else if (cmd.equals("get_types_sensors")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_types_sensors").build();
 		}
 
 		else if (cmd.equals("get_types_timers")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "get_types_timers").build();
 		}
 		
 		else if (cmd.equals("subscribe")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "subscribe")
 					.appendQueryParameter("format", "htxt").build();
 		}
@@ -160,8 +162,8 @@ public class CommandBuilder {
 		if (cmd.equals("add_actuator")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("type", data[0])
 					.appendQueryParameter("system", data[1])
@@ -193,8 +195,8 @@ public class CommandBuilder {
 		else if (cmd.equals("add_script")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("name", data[0])
 					.appendQueryParameter("type", data[1])
@@ -205,8 +207,8 @@ public class CommandBuilder {
 		else if (cmd.equals("add_sensor")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("type", data[0])
 					.appendQueryParameter("system", data[1])
@@ -242,8 +244,8 @@ public class CommandBuilder {
 
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", String.valueOf(num))
 					.appendQueryParameter("name", data.get(0))
 					.appendQueryParameter("type", data.get(1))
@@ -274,8 +276,8 @@ public class CommandBuilder {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
 					.appendQueryParameter("cmd", "get_state_actuator")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", num).build();
 		}
 
@@ -283,8 +285,8 @@ public class CommandBuilder {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
 					.appendQueryParameter("cmd", "get_state_sensor")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", num).build();
 		}
 
@@ -324,8 +326,8 @@ public class CommandBuilder {
 
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("number", String.valueOf(num))
 					.appendQueryParameter("type", "disabled")
 					.appendQueryParameter("name", name)
@@ -346,8 +348,8 @@ public class CommandBuilder {
 		if (cmd.equals("set_value_actuator")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "set_state_actuator")
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("value", val).build();
@@ -356,8 +358,8 @@ public class CommandBuilder {
 		if (cmd.equals("set_function_actuator")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "set_state_actuator")
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("function", val).build();
@@ -366,8 +368,8 @@ public class CommandBuilder {
 		if (cmd.equals("set_state_sensor")) {
 			return new Uri.Builder().scheme("http").authority(ip)
 					.path("control").appendQueryParameter("callback", "cname")
-					.appendQueryParameter("user", user)
-					.appendQueryParameter("pwd", pass)
+//					.appendQueryParameter("user", user)
+//					.appendQueryParameter("pwd", pass)
 					.appendQueryParameter("cmd", "set_state_sensor")
 					.appendQueryParameter("number", num)
 					.appendQueryParameter("value", val).build();

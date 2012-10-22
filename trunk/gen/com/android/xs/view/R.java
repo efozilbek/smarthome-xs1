@@ -220,6 +220,7 @@ public final class R {
         public static final int remove=0x7f040028;
         public static final int sa=0x7f040020;
         public static final int so=0x7f040021;
+        public static final int std_user=0x7f040032;
         public static final int system=0x7f04000d;
         public static final int tag_seekbar=0x7f04002d;
         public static final int tag_spin=0x7f04002e;

@@ -39,26 +39,26 @@ public class Config extends Activity {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * Beim Aufruf der Activity wird die Eingabemaske für IP und Passwort
-	 * aingezeigt. Beim senden wird eine Validitätsprüfung der IP vorgenommen.
+	 * Beim Aufruf der Activity wird die Eingabemaske fï¿½r IP und Passwort
+	 * aingezeigt. Beim senden wird eine Validitï¿½tsprï¿½fung der IP vorgenommen.
 	 * und ein Objekt der Klasse Xsone in der SmartHomeActivity angelegt. Dieses
-	 * enthält nr die IP, fragt sich jedoch selber ab und ergänzt die fehlenden
+	 * enthï¿½lt nr die IP, fragt sich jedoch selber ab und ergï¿½nzt die fehlenden
 	 * Daten.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// solange Verbindung zum XS1 nicht bestätigt wurde
+		// solange Verbindung zum XS1 nicht bestï¿½tigt wurde
 		setConn_validated(false);
 
-		// Maske für IP und Passwort anzeigen
+		// Maske fï¿½r IP und Passwort anzeigen
 		setContentView(R.layout.first_run);
 
 		final Button button = (Button) findViewById(R.id.button_firstrun);
 		button.setOnClickListener(new OnClickListener() {
 
-			// der Button wurde gedrückt
+			// der Button wurde gedrï¿½ckt
 			public void onClick(View v) {
 
 				// Ladevorgang anzeigen
@@ -73,11 +73,11 @@ public class Config extends Activity {
 
 				// Das Passwort wird zum String konvertiert
 				EditText pw = (EditText) findViewById(R.id.text_pw);
-				userData[1] = pw.getText().toString();
+				userData[2] = pw.getText().toString();
 
 				// Das Passwort wird zum String konvertiert
 				EditText user = (EditText) findViewById(R.id.text_user);
-				userData[2] = user.getText().toString();
+				userData[1] = user.getText().toString();
 
 				// Die Ladeprozess aufrufen
 				new LoadXSone().execute(userData);
@@ -88,7 +88,7 @@ public class Config extends Activity {
 
 	private class LoadXSone extends AsyncTask<String, Xsone, Xsone> {
 		/**
-		 * Für Fehler während In Background Funktion
+		 * Fï¿½r Fehler wï¿½hrend In Background Funktion
 		 */
 		private boolean check = true;
 
@@ -96,7 +96,7 @@ public class Config extends Activity {
 		protected Xsone doInBackground(String... params) {
 
 			// Das Xsone Objekt baut beim Anlegen eine Verbindung auf
-			// und aktualisiert sich selbstständig
+			// und aktualisiert sich selbststï¿½ndig
 			Xsone tmpXsone = null;
 			try {
 				tmpXsone = new Xsone(params[0], params[1], params[2]);
@@ -112,12 +112,12 @@ public class Config extends Activity {
 			dialog.dismiss();
 			// falls bisher alles ok war
 			if (check && result != null) {
-				// Prüfen ob eine Verbindung hergestellt wurde. In dem Fall
+				// Prï¿½fen ob eine Verbindung hergestellt wurde. In dem Fall
 				// wurde die MAC neu beschrieben
 				if (result.getMac() != null) {
 					// Das HauptXsOne Objekt setzen
 					RuntimeStorage.setMyXsone(result);
-					// Alle Daten wurden gelesen, Verbindung ist nun geprüft
+					// Alle Daten wurden gelesen, Verbindung ist nun geprï¿½ft
 					setConn_validated(true);
 					finish();
 				} else {

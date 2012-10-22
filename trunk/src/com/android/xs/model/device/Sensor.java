@@ -15,6 +15,8 @@ public class Sensor extends AorS_Object {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 
+	String status = "unknown";
+
 	/**
 	 * Konstruktoren
 	 ***********************************************************************************************************************************************************/
@@ -37,20 +39,21 @@ public class Sensor extends AorS_Object {
 	 * @param fl
 	 *            - Function List
 	 */
-	public Sensor(int nu, String n, String t, double v, long ut, String u) {
+	public Sensor(int nu, String n, String t, double v, long ut, String u, String st) {
 		this.setNumber(nu);
 		this.setName(n);
 		this.setType(t);
 		this.setValue(v, false);
 		this.setUtime(ut);
 		this.setUnit(u);
+		this.setStatus(st);
 	}
 
 	/**
 	 * Default Konstruktor
 	 */
 	public Sensor() {
-		// Type ist standarmäßig disabled
+		// Type ist standarmï¿½ï¿½ig disabled
 		this.setType("disabled");
 	};
 
@@ -81,7 +84,7 @@ public class Sensor extends AorS_Object {
 
 	/**
 	 * updatet den value des Sensors und sendet zugleich ein Befehl an die XS1
-	 * über das Http Objekt. Nur bei virtuellen Sensoren möglich!
+	 * ï¿½ber das Http Objekt. Nur bei virtuellen Sensoren mï¿½glich!
 	 * 
 	 * @param - der neue Wert als double
 	 * @return - boolean. TRUE bei Erfolg, sonst FALSE
@@ -95,6 +98,19 @@ public class Sensor extends AorS_Object {
 			return RuntimeStorage.getMyHttp().set_state_sensor(this);
 		else
 			return true;
+	}
+
+	/**
+	 * getter/setter
+	 ***********************************************************************************************************************************************************/
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		if (status != null && !status.equals(""))
+			this.status = status;
 	}
 
 }
