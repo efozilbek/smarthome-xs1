@@ -1,0 +1,13 @@
+#How to use your own App and Intents to send commands to your XS1
+
+= Intents can be used in android to send commands through the smarthome app from your own app and receive status information =
+
+more information will follow
+
+
+= How to use Intents =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
