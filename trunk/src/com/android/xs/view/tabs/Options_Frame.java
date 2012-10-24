@@ -8,6 +8,7 @@ import com.android.xs.view.setting.Abo;
 import com.android.xs.view.setting.About;
 import com.android.xs.view.setting.Add;
 import com.android.xs.view.setting.Config;
+import com.android.xs.view.setting.DonationsActivity;
 import com.android.xs.view.setting.GInfo;
 import com.android.xs.view.setting.Remove;
 
@@ -27,7 +28,7 @@ public class Options_Frame extends ListActivity {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 	private String[] options = { "Ger�teinfo", "Konfiguration", "Hinzuf�gen", "Entfernen",
-			"Abonnement", "�ber" };
+			"Abonnement", "�ber" , "Spenden"};
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
@@ -88,6 +89,10 @@ public class Options_Frame extends ListActivity {
 				case 5:
 					Intent intent5 = new Intent(Options_Frame.this, About.class);
 					startActivity(intent5);
+					break;
+				case 6:
+					Intent intent6 = new Intent(Options_Frame.this, DonationsActivity.class);
+					startActivity(intent6);
 					break;
 				}
 			}
