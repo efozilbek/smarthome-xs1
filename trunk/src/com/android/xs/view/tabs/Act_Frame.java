@@ -13,19 +13,25 @@ import com.android.xs.model.device.components.MakroFunction;
 import com.android.xs.model.device.components.XS_Object;
 import com.android.xs.model.error.XsError;
 import com.android.xs.view.R;
+
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.StrictMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -46,7 +52,7 @@ import android.widget.ToggleButton;
  * @author Viktor Mayer
  * 
  */
-public class Act_Frame extends Activity {
+public class Act_Frame extends Fragment {
 
 	/**
 	 * Variablen
@@ -57,7 +63,7 @@ public class Act_Frame extends Activity {
 	// Eine Liste von Views, welche mit der Anzahl ausgelesener Aktuatoren
 	// angepasst und erweitert wird. Beinhaltet Schalter etc
 	private LinkedList<View> object_list = new LinkedList<View>();
-	LinkedList<Actuator> act_list = new LinkedList<Actuator>();
+	private LinkedList<Actuator> act_list = new LinkedList<Actuator>();
 	private TableLayout table;
 	private TableRow row;
 	private TextView tv;
@@ -65,8 +71,11 @@ public class Act_Frame extends Activity {
 	private Actuator longClickAct;
 	private int old_size = 0;
 	private View toBeUpdated = null;
+	private List<View> views = new LinkedList<View>();
 
 	private final int ID_BUFFER = 500;
+
+	public static Activity activity;
 
 	/**
 	 * Konstruktoren
@@ -77,6 +86,16 @@ public class Act_Frame extends Activity {
 	 ***********************************************************************************************************************************************************/
 
 	/**
+	 * 
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+		// Das Grundlayout des tabs ist ein TableLayout, welches Scrollbar ist.
+		return inflater.inflate(R.layout.tab_table_layout, container, false);
+	}
+
+	/**
 	 * Die OnCreate Funtion stellt den Einstiegspunkt dieser Activity dar. Alle
 	 * Aktuatoren werden nochmals einzeln aus der XS1 ausgelesen (Zustand etc)
 	 * um die einzelnen ToggleButtons und die Beschriftung entsprechend setzen
@@ -85,12 +104,13 @@ public class Act_Frame extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Das Grundlayout des tabs ist ein TableLayout, welches Scrollbar ist.
-		setContentView(R.layout.tab_table_layout);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
 		myXsone = RuntimeStorage.getMyXsone();
+		// if (savedInstanceState != null)
+		// object_list = (LinkedList<View>)
+		// savedInstanceState.getSerializable("object_list");
 	}
 
 	/**
@@ -98,8 +118,10 @@ public class Act_Frame extends Activity {
 	 * falls WIFI aktiviert ist, sonst nicht, um Netzlast zu sparen
 	 */
 	@SuppressWarnings("unchecked")
-	public void onResume() {
-		super.onResume();
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		Act_Frame.activity = getActivity();
 
 		// falls sich die L�nge der Aktuatorliste ge�ndert hat muss dennoch
 		// upgedatet werden. Zuerst werden die Aktuatoren neu ausgelesen
@@ -114,8 +136,7 @@ public class Act_Frame extends Activity {
 		// und die L�nge �berpr�ft
 		if (act_list.size() != old_size) {
 			// Ladevorgang anzeigen
-			dialog = ProgressDialog.show(Act_Frame.this, "",
-					"Aktuatoren aktualisieren...", true, false);
+			dialog = ProgressDialog.show(getActivity(), "", "Aktuatoren aktualisieren...", true, false);
 			dialog.show();
 			// den Add Objects Prozess starten, der die Buttons ausliest und
 			// setzt
@@ -124,27 +145,31 @@ public class Act_Frame extends Activity {
 		} else {
 			// Die st�ndige Pr�fung der Buttons erfolgt nur bei eingeschaltetem
 			// WLAN und wenn nich alles aktualisiert wurde wegen hocher Netzlast
-			WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+			WifiManager wifi = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
 			if (wifi.isWifiEnabled() || !RuntimeStorage.isStatusValid()) {
-				update_all();
+//				update_all();
+				new AddObjects().execute(act_list);
 				// Status ist nun wieder valide
 				RuntimeStorage.setStatusValid(true);
-			}
+			} else
+				new AddObjects().onPostExecute(object_list);
 		}
 	}
 
-	/**
-	 * update all ist eine ausgelagerte Funktion, welche alle gelisteten
-	 * Schalter Dimmer etc aktualisiert
-	 */
-	private void update_all() {
-		// jedes View wird geholt und der Status entsprechende dem Actuator
-		// Objekt gesetzt
-		for (View v : object_list) {
-			update_view(v);
-		}
-	}
-
+//	/**
+//	 * update all ist eine ausgelagerte Funktion, welche alle gelisteten
+//	 * Schalter Dimmer etc aktualisiert
+//	 */
+//	private void update_all() {
+//		// jedes View wird geholt und der Status entsprechende dem Actuator
+//		// Objekt gesetzt
+//		for (View v : object_list) {
+//			update_view(v);
+//
+//		}
+//		// new AddObjects().onPostExecute(object_list);
+//	}
+//
 	/**
 	 * update view aktualisiert einen �bergebenen view indem der Zustand des
 	 * zugeh�reigen Aktuators neu geladen wird
@@ -166,9 +191,15 @@ public class Act_Frame extends Activity {
 			if (actual.isDimmable()) {
 				((SeekBar) v).setProgress((int) actual.getValue());
 				// update Dimmers TextView
-				TextView tv = (TextView) findViewById(v.getId() + ID_BUFFER);
-				tv.setText(actual.getName() + " ("
-						+ Double.valueOf(actual.getValue()).intValue() + "%)");
+				// for (View view : views){
+				// if (view.getId() == v.getId()+ID_BUFFER)
+				// ((TextView)view).setText(actual.getName() + " (" +
+				// Double.valueOf(actual.getValue()).intValue() + "%)");
+				// }
+				// TextView tv = (TextView) getActivity().findViewById(v.getId()
+				// + ID_BUFFER);
+				// tv.setText(actual.getName() + " (" +
+				// Double.valueOf(actual.getValue()).intValue() + "%)");
 			} else if (actual.getType().equals("temperature")) {
 				// Mit der Funktion (x -10)/2 werden die Temperaturwerte
 				// zwischen 10 und 34 Grad auf die Listenwerte des
@@ -197,8 +228,7 @@ public class Act_Frame extends Activity {
 	 * @author Viktor Mayer
 	 * 
 	 */
-	private class AddObjects extends
-			AsyncTask<LinkedList<Actuator>, Boolean, LinkedList<View>> {
+	private class AddObjects extends AsyncTask<LinkedList<Actuator>, Boolean, LinkedList<View>> {
 		/**
 		 * Der Parameter zur Pr�fung der Verbindung
 		 */
@@ -212,6 +242,8 @@ public class Act_Frame extends Activity {
 		 */
 		@Override
 		protected LinkedList<View> doInBackground(LinkedList<Actuator>... acts) {
+			Looper.prepare();
+
 			LinkedList<View> views = new LinkedList<View>();
 			// Alle Objekte der Liste werden betrachet
 			for (final Actuator rem : acts[0]) {
@@ -221,27 +253,24 @@ public class Act_Frame extends Activity {
 				 * werden......................................................
 				 */
 				if (rem.isDimmable()) {
-					final SeekBar seek = new SeekBar(Act_Frame.this);
+					final SeekBar seek = new SeekBar(getActivity());
 					seek.setId(rem.getNumber());
 					seek.setMinimumWidth(250);
 
 					// der Seekbar wird ein Listener hinzugef�gt
 					seek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
-						public void onProgressChanged(SeekBar seekBar,
-								int progress, boolean fromUser) {
+						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 							// l�dt der Dialog gerade stimmt der Kontext nicht!
 							// der Text darf dann nicht neu gesetzt werden!
 							if (!dialog.isShowing()) {
 								// den Textview aktualisieren direkt bei der
 								// Bewegung
-								TextView tv = (TextView) findViewById(seekBar
-										.getId() + ID_BUFFER);
+								TextView tv = (TextView) getActivity().findViewById(seekBar.getId() + ID_BUFFER);
 								// n�tig, da bei erstem Aufruf noch nicht
 								// vorhanden!!
 								if (tv != null)
-									tv.setText(rem.getName() + " ("
-											+ seekBar.getProgress() + "%)");
+									tv.setText(rem.getName() + " (" + seekBar.getProgress() + "%)");
 							}
 						}
 
@@ -255,20 +284,15 @@ public class Act_Frame extends Activity {
 						public void onStopTrackingTouch(SeekBar seekBar) {
 							if (rem.setValue(seek.getProgress(), true)) {
 								// Der Neue alte Wert f�r die Seekbar
-								seek.setTag(R.string.tag_seekbar,
-										seek.getProgress());
+								seek.setTag(R.string.tag_seekbar, seek.getProgress());
 								// den Textview aktualisieren
-								TextView tv = (TextView) findViewById(seekBar
-										.getId() + ID_BUFFER);
-								tv.setText(rem.getName() + " ("
-										+ Double.valueOf(rem.getValue()).intValue()
-										+ "%)");
+								TextView tv = (TextView) getActivity().findViewById(seekBar.getId() + ID_BUFFER);
+								tv.setText(rem.getName() + " (" + Double.valueOf(rem.getValue()).intValue() + "%)");
 								// Makro aufzeichnen falls eingestellt
 								makro_call(rem, seek.getProgress());
 							} else {
-								seek.setProgress((Integer) seek
-										.getTag(R.string.tag_seekbar));
-								XsError.printError(getBaseContext());
+								seek.setProgress((Integer) seek.getTag(R.string.tag_seekbar));
+								XsError.printError(getActivity().getBaseContext());
 							}
 						}
 					});
@@ -277,8 +301,7 @@ public class Act_Frame extends Activity {
 					if (!rem.update())
 						check = false;
 					seek.setProgress((int) rem.getValue());
-					seek.setTag(rem.getName() + " ("
-							+ Double.valueOf(rem.getValue()).intValue() + "%)");
+					seek.setTag(rem.getName() + " (" + Double.valueOf(rem.getValue()).intValue() + "%)");
 					// der alte Stand falls zur�ck gesetzt werden muss
 					// (Verbindungfehler)
 					seek.setTag(R.string.tag_seekbar, seek.getProgress());
@@ -293,49 +316,38 @@ public class Act_Frame extends Activity {
 				 */
 				else if (rem.getType().equals("temperature")) {
 					// Die Werte f�r den Temperatur Spinner setzen
-					String[] vals = { "10", "12", "14", "16", "18", "20", "22",
-							"24", "26", "28", "30", "32", "34" };
+					String[] vals = { "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34" };
 					// Den Spinner anlegen
-					final Spinner temp_spin = new Spinner(Act_Frame.this);
+					final Spinner temp_spin = new Spinner(getActivity());
 					// Name und ID setzen
 					temp_spin.setTag(rem.getName());
 					temp_spin.setId(rem.getNumber());
 					// Den Adapter f�r den Spinner anlegen
-					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-							Act_Frame.this,
-							android.R.layout.simple_spinner_item, vals);
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, vals);
 					// und setzen
 					temp_spin.setAdapter(adapter);
 					// Den Listener f�r �nderungen setzen
-					temp_spin
-							.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-								public void onItemSelected(
-										AdapterView<?> parent, View view,
-										int pos, long id) {
-									// Der gesetzte Wert wird geholt
-									String selected_val = (String) parent
-											.getItemAtPosition(pos);
-									int val = Integer.parseInt(selected_val);
-									// Den Wert setzen
-									if (rem.setValue(val, true)) {
-										// Den alten Wert neu setzen
-										temp_spin
-												.setTag(R.string.tag_spin, pos);
-										// Makro speichern falls eingestellt
-										makro_call(rem, val);
-									} else {
-										// den alten Wert wieder herstellen
-										temp_spin
-												.setSelection((Integer) temp_spin
-														.getTag(R.string.tag_spin));
-										XsError.printError(getBaseContext());
-									}
-								}
+					temp_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+						public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+							// Der gesetzte Wert wird geholt
+							String selected_val = (String) parent.getItemAtPosition(pos);
+							int val = Integer.parseInt(selected_val);
+							// Den Wert setzen
+							if (rem.setValue(val, true)) {
+								// Den alten Wert neu setzen
+								temp_spin.setTag(R.string.tag_spin, pos);
+								// Makro speichern falls eingestellt
+								makro_call(rem, val);
+							} else {
+								// den alten Wert wieder herstellen
+								temp_spin.setSelection((Integer) temp_spin.getTag(R.string.tag_spin));
+								XsError.printError(getActivity().getBaseContext());
+							}
+						}
 
-								public void onNothingSelected(
-										AdapterView<?> parent) {
-								}
-							});
+						public void onNothingSelected(AdapterView<?> parent) {
+						}
+					});
 					if (!rem.update())
 						check = false;
 					// Mit der Funktion (x -10)/2 werden die Temperaturwerte
@@ -360,8 +372,7 @@ public class Act_Frame extends Activity {
 				 * werden...............................................
 				 */
 				else {
-					final ToggleButton tbutton = new ToggleButton(
-							Act_Frame.this);
+					final ToggleButton tbutton = new ToggleButton(getActivity());
 					tbutton.setWidth(150);
 					tbutton.setGravity(Gravity.CENTER_VERTICAL);
 					tbutton.setId(rem.getNumber());
@@ -379,14 +390,14 @@ public class Act_Frame extends Activity {
 									makro_call(rem, 100.0);
 								else {
 									tbutton.setChecked(false);
-									XsError.printError(getBaseContext());
+									XsError.printError(getActivity().getBaseContext());
 								}
 							} else {
 								if (rem.setValue(0.0, true))
 									makro_call(rem, 0.0);
 								else {
 									tbutton.setChecked(true);
-									XsError.printError(getBaseContext());
+									XsError.printError(getActivity().getBaseContext());
 								}
 							}
 						}
@@ -417,20 +428,21 @@ public class Act_Frame extends Activity {
 			object_list = result;
 
 			// das bestehende Layout f�r den Tab holen
-			table = (TableLayout) findViewById(R.id.tab_table);
+			table = (TableLayout) getActivity().findViewById(R.id.tab_table);
 			table.removeAllViews();
 
+			int count = 0;
 			// alle angelegten Views ausgeben
 			for (View obj : object_list) {
 
 				// eine neue Zeile anlegen
-				row = new TableRow(Act_Frame.this);
+				row = new TableRow(getActivity());
 				row.setVerticalGravity(Gravity.CENTER);
-				row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.WRAP_CONTENT));
+				row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+				row.setId(count + 999);
 
 				// einen neuen Textview mit dem Namen des Buttons anlegen
-				tv = new TextView(Act_Frame.this);
+				tv = new TextView(getActivity());
 				tv.setWidth(350);
 				tv.setHeight(70);
 				// id der TexteObjekte darf sich nicht �berschneiden mit der der
@@ -453,12 +465,14 @@ public class Act_Frame extends Activity {
 				row.addView(tv);
 
 				// die Zeile zum TabelLayout hinzu f�gen
+				views.add(tv);
 				table.addView(row);
+				count++;
 			}
 			if (dialog.isShowing())
 				dialog.dismiss();
 			if (!check)
-				XsError.printError(getBaseContext());
+				XsError.printError(getActivity().getBaseContext());
 		}
 	}
 
@@ -468,8 +482,7 @@ public class Act_Frame extends Activity {
 	 * Auswahl ausgegeben
 	 */
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		boolean no_functions = true;
 		// den View f�r den folgenden update setzen
 		toBeUpdated = v;
@@ -510,10 +523,10 @@ public class Act_Frame extends Activity {
 			// muss ausgef�hrt werden, da sonst die Views nicht mehr �berein
 			// stimmen, jedoch nur bei Erfolg und falls View gesetzt
 			if (check && toBeUpdated != null)
-				update_view(findViewById(toBeUpdated.getId() - ID_BUFFER));
+				update_view(getActivity().findViewById(toBeUpdated.getId() - ID_BUFFER));
 			// sonst wird ein Fehlertext ausgegeben
 			else
-				XsError.printError(getBaseContext());
+				XsError.printError(getActivity().getBaseContext());
 			toBeUpdated = null;
 			return check;
 		}
@@ -556,13 +569,25 @@ public class Act_Frame extends Activity {
 	}
 
 	/**
+	 * speichern der Views um sie beim neu-laden des Tabs wiederherstellen zu
+	 * können
+	 */
+	public void onDestroyView() {
+		super.onDestroyView();
+		// myContainer.removeAllViews();
+		for (View v : object_list) {
+			((ViewGroup) v.getParent()).removeAllViews();
+		}
+
+	}
+
+	/**
 	 * Der Tab �bernimmt die Aktionen des Tabhost f�r Menu und Back Button
 	 */
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// is activity withing a tabactivity
-		if (getParent() != null) {
-			return getParent().onKeyDown(keyCode, event);
+		if (getActivity().getParent() != null) {
+			return getActivity().getParent().onKeyDown(keyCode, event);
 		}
 		return false;
 	}

@@ -10,19 +10,22 @@ import com.android.xs.view.tabs.Script_Frame;
 import com.android.xs.view.tabs.Sens_Frame;
 import com.android.xs.view.tabs.Tim_Frame;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 /**
@@ -31,69 +34,60 @@ import android.widget.Toast;
  * @author Viktor Mayer
  * 
  */
-public class MainFrame extends TabActivity {
+public class MainFrame extends Activity {
 
-	private static TabHost tabHost;
+	private static ActionBar actionbar;
 	private static int tab_num = 0;
+	public static Context appcontext;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_frame);
-
-		Resources res = getResources(); // Resource object to get Drawables
-		tabHost = getTabHost(); // The activity TabHost
-		TabHost.TabSpec spec; // Resusable TabSpec for each tab
-
-		Intent intent; // Reusable Intent for each tab
-
-		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(this, Act_Frame.class);
+		setContentView(R.layout.actionbar);
 
 		// Ladevorgang anzeigen
 		ProgressDialog dialog = ProgressDialog.show(this, "", "Laden...", true);
 		dialog.show();
 
-		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost
-				.newTabSpec("actuators")
-				.setIndicator("Aktuatoren",
-						res.getDrawable(R.drawable.actuators_tab))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		appcontext = this.getBaseContext();
 
-		// Do the same for the other tabs
-		intent = new Intent().setClass(this, Sens_Frame.class);
-		spec = tabHost
-				.newTabSpec("sensors")
-				.setIndicator("Sensoren",
-						res.getDrawable(R.drawable.sensors_tab))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		// ActionBar gets initiated
+		actionbar = getActionBar();
+		// Tell the ActionBar we want to use Tabs.
+		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		intent = new Intent().setClass(this, Tim_Frame.class);
-		spec = tabHost.newTabSpec("timers")
-				.setIndicator("Timer", res.getDrawable(R.drawable.timers_tab))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		// initiating five tabs and set text to it.
+		ActionBar.Tab actuatorsTab = actionbar.newTab().setText("Aktuatoren")
+				.setIcon(R.drawable.actuators_tab);
+		ActionBar.Tab sensorsTab = actionbar.newTab().setText("Sensoren")
+				.setIcon(R.drawable.sensors_tab);
+		ActionBar.Tab timersTab = actionbar.newTab().setText("Timer")
+				.setIcon(R.drawable.timers_tab);
+		ActionBar.Tab scriptsTab = actionbar.newTab().setText("Skripte")
+				.setIcon(R.drawable.script_tab);
+		ActionBar.Tab optionsTab = actionbar.newTab().setText("Optionen")
+				.setIcon(R.drawable.options_tab);
 
-		intent = new Intent().setClass(this, Script_Frame.class);
-		spec = tabHost
-				.newTabSpec("scripts")
-				.setIndicator("Skripte", res.getDrawable(R.drawable.script_tab))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		// create the five fragments we want to use for display content
+		Fragment actuatorsFragment = new Act_Frame();
+		Fragment sensorsFragment = new Sens_Frame();
+		Fragment timersFragment = new Tim_Frame();
+		Fragment scriptsFragment = new Script_Frame();
+		Fragment optionsFragment = new Options_Frame();
 
-		intent = new Intent().setClass(this, Options_Frame.class);
-		spec = tabHost
-				.newTabSpec("options")
-				.setIndicator("Optionen",
-						res.getDrawable(R.drawable.options_tab))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		// set the Tab listener. Now we can listen for clicks.
+		actuatorsTab.setTabListener(new MyTabsListener(actuatorsFragment));
+		sensorsTab.setTabListener(new MyTabsListener(sensorsFragment));
+		timersTab.setTabListener(new MyTabsListener(timersFragment));
+		scriptsTab.setTabListener(new MyTabsListener(scriptsFragment));
+		optionsTab.setTabListener(new MyTabsListener(optionsFragment));
 
-		tabHost.setCurrentTab(tab_num);
+		actionbar.addTab(actuatorsTab);
+		actionbar.addTab(sensorsTab);
+		actionbar.addTab(timersTab);
+		actionbar.addTab(scriptsTab);
+		actionbar.addTab(optionsTab);
 
 		dialog.dismiss();
 	}
@@ -117,28 +111,30 @@ public class MainFrame extends TabActivity {
 			ad.setTitle("Hinweis");
 			ad.setMessage("Anwendung wirklich beenden?");
 			// Die beiden Auswahlbuttons setzen
-			ad.setButton("Beenden", new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-					// Makro l�schen falls noch aktiv
-					if (MakroController.getInstance().MakroEnabled() != null)
-						MakroController.getInstance().stopMakro(null);
-					// Dialog schlie�en und Activity beenden
-					dialog.dismiss();
-					finish();
-				}
-			});
-			ad.setButton2("Zur�ck", new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-					// Dialog schlie�en
-					dialog.dismiss();
-				}
-			});
+			ad.setButton(AlertDialog.BUTTON_POSITIVE, "Beenden",
+					new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+							// Makro l�schen falls noch aktiv
+							if (MakroController.getInstance().MakroEnabled() != null)
+								MakroController.getInstance().stopMakro(null);
+							// Dialog schlie�en und Activity beenden
+							dialog.dismiss();
+							finish();
+						}
+					});
+			ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Zur�ck",
+					new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+							// Dialog schlie�en
+							dialog.dismiss();
+						}
+					});
 			ad.show();
 		}
 
-		if ((keyCode == KeyEvent.KEYCODE_MENU && tabHost.getCurrentTab() == 0)) {
+		if ((keyCode == KeyEvent.KEYCODE_MENU && actionbar.getSelectedNavigationIndex() == 0)) {
 			openOptionsMenu();
 		}
 		return true;
@@ -162,7 +158,7 @@ public class MainFrame extends TabActivity {
 					Toast.LENGTH_SHORT).show();
 			MakroController.getInstance().newMakro();
 		}
-		
+
 		if (item.getTitle().equals("stoppen")) {
 			if (MakroController.getInstance().MakroEnabled() != null) {
 				// Namen holen f�r Makro
@@ -172,17 +168,19 @@ public class MainFrame extends TabActivity {
 				alert.setTitle("Aufzeichnung beenden..");
 				alert.setMessage("Makro benennen:");
 
-				// Set an EditText view to get user input 
+				// Set an EditText view to get user input
 				final EditText input = new EditText(this);
 				alert.setView(input);
 
-				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-				  String value = input.getText().toString();
-				  MakroController.getInstance().stopMakro(value);
-				  }
-				});
-				alert.show();				
+				alert.setPositiveButton("Ok",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								String value = input.getText().toString();
+								MakroController.getInstance().stopMakro(value);
+							}
+						});
+				alert.show();
 			}
 		}
 		if (item.getTitle().equals("Makros")) {
@@ -191,6 +189,28 @@ public class MainFrame extends TabActivity {
 		}
 
 		return true;
+	}
+
+	class MyTabsListener implements ActionBar.TabListener {
+		public Fragment fragment;
+
+		public MyTabsListener(Fragment fragment) {
+			this.fragment = fragment;
+		}
+
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			Toast.makeText(MainFrame.appcontext, "Reselected!",
+					Toast.LENGTH_LONG).show();
+		}
+
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			ft.replace(R.id.fragment_container, fragment);
+		}
+
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			ft.remove(fragment);
+		}
+
 	}
 
 }

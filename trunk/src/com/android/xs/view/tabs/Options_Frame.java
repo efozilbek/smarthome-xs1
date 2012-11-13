@@ -12,17 +12,19 @@ import com.android.xs.view.setting.DonationsActivity;
 import com.android.xs.view.setting.GInfo;
 import com.android.xs.view.setting.Remove;
 
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class Options_Frame extends ListActivity {
+public class Options_Frame extends ListFragment {
 
 	/**
 	 * Variablen
@@ -43,16 +45,25 @@ public class Options_Frame extends ListActivity {
 	 * 
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 		// Das Grundlayout des tabs ist ein TableLayout, welches Scrollbar ist.
-		setContentView(R.layout.tab_list_layout);
+        return inflater.inflate(R.layout.tab_list_layout, container, false);
+    }
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 		// Die Optionen setzen
-		options_list.addAll(Arrays.asList(options));
+		if (options_list.size() == 0)
+			options_list.addAll(Arrays.asList(options));
 
 		// Die Liste ausgeben
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				R.layout.list_item_medium, options_list);
 		setListAdapter(adapter);
 
@@ -66,32 +77,32 @@ public class Options_Frame extends ListActivity {
 				// werden
 				switch ((int) id) {
 				case 0:
-					Intent intent0 = new Intent(Options_Frame.this, GInfo.class);
+					Intent intent0 = new Intent(getActivity(), GInfo.class);
 					startActivity(intent0);
 					break;
 				case 1:
-					Intent intent1 = new Intent(Options_Frame.this,
+					Intent intent1 = new Intent(getActivity(),
 							Config.class);
 					startActivity(intent1);
 					break;
 				case 2:
-					Intent intent2 = new Intent(Options_Frame.this, Add.class);
+					Intent intent2 = new Intent(getActivity(), Add.class);
 					startActivity(intent2);
 					break;
 				case 3:
-					Intent intent3 = new Intent(Options_Frame.this, Remove.class);
+					Intent intent3 = new Intent(getActivity(), Remove.class);
 					startActivity(intent3);
 					break;
 				case 4:
-					Intent intent4 = new Intent(Options_Frame.this, Abo.class);
+					Intent intent4 = new Intent(getActivity(), Abo.class);
 					startActivity(intent4);
 					break;
 				case 5:
-					Intent intent5 = new Intent(Options_Frame.this, About.class);
+					Intent intent5 = new Intent(getActivity(), About.class);
 					startActivity(intent5);
 					break;
 				case 6:
-					Intent intent6 = new Intent(Options_Frame.this, DonationsActivity.class);
+					Intent intent6 = new Intent(getActivity(), DonationsActivity.class);
 					startActivity(intent6);
 					break;
 				}
@@ -99,14 +110,14 @@ public class Options_Frame extends ListActivity {
 		});
 	}
 	
+	//TODO: funktioniert nicht mehr
 	/**
 	 * Der Tab �bernimmt die Aktionen des Tabhost f�r Menu und Back Button
 	 */
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// is activity withing a tabactivity
-		if (getParent() != null) {
-			return getParent().onKeyDown(keyCode, event);
+		if (getActivity().getParent() != null) {
+			return getActivity().getParent().onKeyDown(keyCode, event);
 		}
 		return false;
 	}

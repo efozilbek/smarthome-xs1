@@ -13,10 +13,13 @@ import com.android.xs.view.R;
 import com.markupartist.android.widget.PullToRefreshListView;
 import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 /**
@@ -29,7 +32,7 @@ import android.widget.ArrayAdapter;
  * @author Viktor Mayer
  * 
  */
-public class Script_Frame extends ListActivity {
+public class Script_Frame extends ListFragment {
 
 	/**
 	 * Variablen
@@ -52,10 +55,18 @@ public class Script_Frame extends ListActivity {
 	 * 
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 		// Das Grundlayout des tabs ist ein TableLayout, welches Scrollbar ist.
-		setContentView(R.layout.pull_to_refresh);
+        return inflater.inflate(R.layout.pull_to_refresh, container, false);
+    }
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
@@ -76,7 +87,7 @@ public class Script_Frame extends ListActivity {
 		script_list = get_scriptList();
 
 		// Die Liste ausgeben
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				R.layout.list_item_medium, script_list);
 		setListAdapter(adapter);
 	}
@@ -142,7 +153,7 @@ public class Script_Frame extends ListActivity {
 			List<XS_Object> tmp = Http.getInstance().get_list_scripts();
 			// falls ein Verbinsungsfehler bestand kommt null zur�ck
 			if (tmp == null) {
-				XsError.printError(getBaseContext());
+				XsError.printError(getActivity().getBaseContext());
 			} else {
 				myXsone.add_RemObj(tmp);
 
@@ -156,14 +167,14 @@ public class Script_Frame extends ListActivity {
 		}
 	}
 
+	//TODO: funktioniert nicht mehr
 	/**
 	 * Der Tab �bernimmt die Aktionen des Tabhost f�r Menu und Back Button
 	 */
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// is activity withing a tabactivity
-		if (getParent() != null) {
-			return getParent().onKeyDown(keyCode, event);
+		if (getActivity().getParent() != null) {
+			return getActivity().getParent().onKeyDown(keyCode, event);
 		}
 		return false;
 	}
