@@ -106,7 +106,7 @@ public class Makros_Frame extends ListActivity {
 				ad.setTitle("Hinweis");
 				ad.setMessage("Makro l�schen?");
 				// Die beiden Auswahlbuttons setzen
-				ad.setButton("Ja", new DialogInterface.OnClickListener() {
+				ad.setButton(AlertDialog.BUTTON_POSITIVE, "Ja", new DialogInterface.OnClickListener() {
 					
 					public void onClick(DialogInterface dialog, int which) {
 						// Dialog schlie�en
@@ -117,7 +117,7 @@ public class Makros_Frame extends ListActivity {
 						finish();
 					}
 				});
-				ad.setButton2("Nein", new DialogInterface.OnClickListener() {
+				ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
 					
 					public void onClick(DialogInterface dialog, int which) {
 						// Dialog schlie�en

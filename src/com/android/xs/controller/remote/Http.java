@@ -1,6 +1,7 @@
 package com.android.xs.controller.remote;
 
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.xs.model.device.Actuator;
@@ -38,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 
 /**
  * Die Http Klasse stellt die Schnittstell zum Internet dar. Anfragen werden an
@@ -116,8 +118,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -185,8 +186,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -211,17 +211,13 @@ public class Http {
 
 				for (int y = 0; y < json_functions.length(); y++) {
 					json_function = json_functions.getJSONObject(y);
-					fn_list.add(new Function(json_function.getString("type"),
-							json_function.getString("dsc")));
+					fn_list.add(new Function(json_function.getString("type"), json_function.getString("dsc")));
 				}
 
 				// Actuator wird angelegt und der Liste der Aktuatoren hinzu
 				// gef�gt
-				act.add(new Actuator(num + 1, json_actual.getString("name"),
-						json_actual.getString("type"), json_actual
-								.getDouble("value"), json_actual
-								.getLong("utime"), json_actual
-								.getString("unit"), fn_list));
+				act.add(new Actuator(num + 1, json_actual.getString("name"), json_actual.getString("type"), json_actual.getDouble("value"),
+						json_actual.getLong("utime"), json_actual.getString("unit"), fn_list));
 
 			} catch (JSONException e) {
 				return null;
@@ -242,16 +238,14 @@ public class Http {
 	public boolean set_state_actuator(Actuator act) {
 
 		// Die Abfrage wird angelegt
-		Uri uri = CommandBuilder.buildUri(String.valueOf(act.getValue()),
-				String.valueOf(act.getNumber()), "set_value_actuator");
+		Uri uri = CommandBuilder.buildUri(String.valueOf(act.getValue()), String.valueOf(act.getNumber()), "set_value_actuator");
 
 		JSONObject json_main;
 		try {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -271,8 +265,7 @@ public class Http {
 	public boolean set_state_actuator(Actuator act, int num) {
 
 		// Die Abfrage wird angelegt
-		Uri uri = CommandBuilder.buildUri(String.valueOf(num),
-				String.valueOf(act.getNumber()), "set_function_actuator");
+		Uri uri = CommandBuilder.buildUri(String.valueOf(num), String.valueOf(act.getNumber()), "set_function_actuator");
 
 		JSONObject json_main;
 		try {
@@ -280,8 +273,7 @@ public class Http {
 			// Pr�fen ob Befehl ausgef�hrt wurde und true zur�ck geben
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -303,8 +295,7 @@ public class Http {
 	public Actuator get_state_actuator(Actuator act) {
 
 		// Die Abfrage wird angelegt
-		Uri uri = CommandBuilder.buildUri(String.valueOf(act.getNumber()),
-				"get_state_actuator");
+		Uri uri = CommandBuilder.buildUri(String.valueOf(act.getNumber()), "get_state_actuator");
 
 		// Das JSON Hauptobjekt wird geholt
 		JSONObject json_main;
@@ -314,8 +305,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -366,8 +356,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -391,11 +380,8 @@ public class Http {
 				// Sensor wird angelegt und der Liste der Remote Objects hinzu
 				// gef�gt
 				// if (!json_actual.getString("type").equals("disabled"))
-				sens.add(new Sensor(num + 1, json_actual.getString("name"),
-						json_actual.getString("type"), json_actual
-								.getDouble("value"), json_actual
-								.getLong("utime"), json_actual
-								.getString("unit"), state));
+				sens.add(new Sensor(num + 1, json_actual.getString("name"), json_actual.getString("type"), json_actual.getDouble("value"),
+						json_actual.getLong("utime"), json_actual.getString("unit"), state));
 
 			} catch (JSONException e) {
 				return null;
@@ -415,8 +401,7 @@ public class Http {
 	 */
 	public Sensor get_state_sensor(Sensor sens) {
 		// Die Abfrage wird angelegt
-		Uri uri = CommandBuilder.buildUri(String.valueOf(sens.getNumber()),
-				"get_state_sensor");
+		Uri uri = CommandBuilder.buildUri(String.valueOf(sens.getNumber()), "get_state_sensor");
 
 		// Das JSON Hauptobjekt wird geholt
 		JSONObject json_main;
@@ -426,8 +411,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -466,16 +450,14 @@ public class Http {
 	public boolean set_state_sensor(Sensor sens) {
 
 		// Die Abfrage wird angelegt
-		Uri uri = CommandBuilder.buildUri(String.valueOf(sens.getValue()),
-				String.valueOf(sens.getNumber()), "set_state_sensor");
+		Uri uri = CommandBuilder.buildUri(String.valueOf(sens.getValue()), String.valueOf(sens.getNumber()), "set_state_sensor");
 
 		JSONObject json_main;
 		try {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -507,8 +489,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -527,9 +508,7 @@ public class Http {
 				// Timer wird angelegt und der Liste der Timer hinzu
 				// gef�gt
 				// if (!json_actual.getString("type").equals("disabled"))
-				tim.add(new Timer(json_actual.getString("name"), json_actual
-						.getString("type"), json_actual.getLong("next"),
-						num + 1));
+				tim.add(new Timer(json_actual.getString("name"), json_actual.getString("type"), json_actual.getLong("next"), num + 1));
 
 			} catch (JSONException e) {
 				return null;
@@ -561,8 +540,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -580,8 +558,7 @@ public class Http {
 				// Script wird angelegt und der Liste der Scripts hinzu
 				// gef�gt
 				// if (!json_actual.getString("type").equals("disabled"))
-				script_list.add(new Script(json_actual.getString("name"),
-						num + 1, json_actual.getString("type")));
+				script_list.add(new Script(json_actual.getString("name"), num + 1, json_actual.getString("type")));
 
 			} catch (JSONException e) {
 				return null;
@@ -612,8 +589,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -659,8 +635,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -729,8 +704,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -768,8 +742,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -815,6 +788,9 @@ public class Http {
 		// Die Abfrage wird angelegt
 		Uri uri = CommandBuilder.buildUri("subscribe");
 
+		String userPassword = user_BASIC + ":" + pass_BASIC;
+		String encoding = Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT);
+
 		// die HttpURLConnection wird angelegt und konfiguriert
 		url = new URL(uri.toString());
 		url_subscribe_c = (HttpURLConnection) url.openConnection();
@@ -825,6 +801,7 @@ public class Http {
 		url_subscribe_c.setUseCaches(false);
 		url_subscribe_c.setRequestProperty("Connection", "close");
 		url_subscribe_c.setChunkedStreamingMode(0);
+		url_subscribe_c.setRequestProperty("Authorization", "Basic " + encoding);
 
 		// Verbindung aufbauen
 		url_subscribe_c.connect();
@@ -871,8 +848,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -913,8 +889,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return null;
 			}
 
@@ -926,9 +901,7 @@ public class Http {
 
 		// die Ausgelesenen Werte setzen und zur�ck geben
 		try {
-			dat_tim.set(date.getInt("year"), date.getInt("month"),
-					date.getInt("day"), time.getInt("hour"),
-					time.getInt("min"), time.getInt("sec"));
+			dat_tim.set(date.getInt("year"), date.getInt("month"), date.getInt("day"), time.getInt("hour"), time.getInt("min"), time.getInt("sec"));
 		} catch (JSONException e) {
 			return null;
 		}
@@ -951,8 +924,7 @@ public class Http {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -978,8 +950,7 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 
@@ -998,16 +969,14 @@ public class Http {
 	 */
 	public boolean add_timer(List<String> data, int number) {
 
-		Uri uri = CommandBuilder.buildUri(data, String.valueOf(number),
-				"add_timer");
+		Uri uri = CommandBuilder.buildUri(data, String.valueOf(number), "add_timer");
 
 		JSONObject json_main;
 		try {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -1026,16 +995,14 @@ public class Http {
 	 */
 	public boolean add_script(String[] data, int number) {
 
-		Uri uri = CommandBuilder.buildUri(data, String.valueOf(number),
-				"add_script");
+		Uri uri = CommandBuilder.buildUri(data, String.valueOf(number), "add_script");
 
 		JSONObject json_main;
 		try {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -1063,8 +1030,7 @@ public class Http {
 			json_main = request(uri);
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest",
-						new XsError(json_main.getInt("error")).getError());
+				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
 				return false;
 			}
 		} catch (JSONException e) {
@@ -1109,8 +1075,7 @@ public class Http {
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		int timeoutConnection = 10000;
-		HttpConnectionParams.setConnectionTimeout(httpParameters,
-				timeoutConnection);
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 		// Set the default socket timeout (SO_TIMEOUT)
 		// in milliseconds which is the timeout for waiting for data.
 		int timeoutSocket = 7000;
@@ -1121,9 +1086,7 @@ public class Http {
 
 		// BASIC authent
 		if (!pass_BASIC.equals("")) {
-			client.getCredentialsProvider().setCredentials(
-					new AuthScope(uri.getHost(), uri.getPort(),
-							AuthScope.ANY_SCHEME),
+			client.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort(), AuthScope.ANY_SCHEME),
 					new UsernamePasswordCredentials(user_BASIC, pass_BASIC));
 		}
 
@@ -1144,8 +1107,7 @@ public class Http {
 		// cname mit Klammern entfernt
 		String str = null;
 		try {
-			str = new Scanner(response.getEntity().getContent()).useDelimiter(
-					"\\A").next();
+			str = new Scanner(response.getEntity().getContent()).useDelimiter("\\A").next();
 		} catch (IllegalStateException e1) {
 
 		} catch (IOException e1) {
@@ -1155,8 +1117,7 @@ public class Http {
 		// der Index der Klammern wird gesucht um diese zu entfernen
 		int begin = str.indexOf("(");
 		int end = str.indexOf(")");
-		char[] buf = new char[str.length() - (begin + 1)
-				- (str.length() - (end))];
+		char[] buf = new char[str.length() - (begin + 1) - (str.length() - (end))];
 		str.getChars(begin + 1, end, buf, 0);
 
 		// Der JSONTOkener legt das JSONObjekt an

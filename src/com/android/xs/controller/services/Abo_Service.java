@@ -81,8 +81,7 @@ public class Abo_Service extends Service {
 
 		// Die Liste leeren
 		RuntimeStorage.getAbo_data_list().clear();
-		Toast.makeText(this, "XS Abo Service beendet...", Toast.LENGTH_LONG)
-				.show();
+		Toast.makeText(this, "XS Abo Service beendet...", Toast.LENGTH_LONG).show();
 	}
 
 	/**
@@ -104,8 +103,7 @@ public class Abo_Service extends Service {
 						myXsone.subscribe(RuntimeStorage.getAbo_data_list());
 				} catch (IOException e) {
 					// Thread gestoppt. Die Exception kommt vom subscribe
-					RuntimeStorage.getAbo_data_list().add(
-							"Verbindung abgebrochen!\n");
+					RuntimeStorage.getAbo_data_list().add("Verbindung abgebrochen!\n");
 					return;
 				} catch (Exception e) {
 					// bei den �brigen Exceptions ist nichts zu tun
@@ -118,8 +116,7 @@ public class Abo_Service extends Service {
 		check_timer = new Timer(true);
 		check_timer.schedule(checker, 5000, 30000);
 
-		Toast.makeText(this, "XS Abo Service gestartet...", Toast.LENGTH_LONG)
-				.show();
+		Toast.makeText(this, "XS Abo Service gestartet...", Toast.LENGTH_LONG).show();
 
 		// Die Liste leeren
 		RuntimeStorage.getAbo_data_list().clear();
@@ -131,14 +128,12 @@ public class Abo_Service extends Service {
 		public void run() {
 			if (!t.isAlive()) {
 				// alle 30 Sek Verbindung versuchen neu aufzubauen
-				RuntimeStorage.getAbo_data_list().add(
-						"Verbindung wird versucht herzustellen...\n");
+				RuntimeStorage.getAbo_data_list().add("Verbindung wird versucht herzustellen...\n");
 				try {
 					myXsone.subscribe(RuntimeStorage.getAbo_data_list());
 				} catch (IOException e) {
 					// Thread gestoppt. Die Exception kommt vom subscribe
-					RuntimeStorage.getAbo_data_list().add(
-							"Verbindung abgebrochen!\n");
+					RuntimeStorage.getAbo_data_list().add("Verbindung abgebrochen!\n");
 				} catch (Exception e) {
 					// bei den �brigen Exceptions ist nichts zu tun
 				}

@@ -134,7 +134,7 @@ public class Abo extends Activity {
 			ad.setTitle("Hinweis");
 			ad.setMessage("M�chten sie den XS Abo Service aktiv lassen?");
 			// Die beiden Auswahlbuttons setzen
-			ad.setButton("Nein", new DialogInterface.OnClickListener() {
+			ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					stopService(new Intent(getBaseContext(), Abo_Service.class));
@@ -143,7 +143,7 @@ public class Abo extends Activity {
 					finish();
 				}
 			});
-			ad.setButton2("Ja", new DialogInterface.OnClickListener() {
+			ad.setButton(AlertDialog.BUTTON_POSITIVE, "Ja", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// Dialog schlie�en

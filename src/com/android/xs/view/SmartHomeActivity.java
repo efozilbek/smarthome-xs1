@@ -117,7 +117,7 @@ public class SmartHomeActivity extends Activity {
 		ad.setTitle("Warnung");
 		ad.setMessage(txt);
 		// Die beiden Auswahlbuttons setzen
-		ad.setButton("Beenden", new DialogInterface.OnClickListener() {
+		ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Beenden", new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				// Dialog schlie�en und Activity beenden
@@ -125,7 +125,7 @@ public class SmartHomeActivity extends Activity {
 				finish();
 			}
 		});
-		ad.setButton2("Konfigurieren", new DialogInterface.OnClickListener() {
+		ad.setButton(AlertDialog.BUTTON_NEUTRAL, "Konfigurieren", new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				// Dialog schlie�en und Konfiguration starten

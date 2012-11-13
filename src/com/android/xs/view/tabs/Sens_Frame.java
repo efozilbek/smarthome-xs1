@@ -14,10 +14,13 @@ import com.android.xs.view.R;
 import com.markupartist.android.widget.PullToRefreshListView;
 import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 /**
@@ -30,7 +33,7 @@ import android.widget.ArrayAdapter;
  * @author Viktor Mayer
  * 
  */
-public class Sens_Frame extends ListActivity {
+public class Sens_Frame extends ListFragment {
 
 	/**
 	 * Variablen
@@ -50,16 +53,24 @@ public class Sens_Frame extends ListActivity {
 	 ***********************************************************************************************************************************************************/
 
 	/**
+	 * 
+	 */
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+		// Das Grundlayout des tabs ist ein TableLayout, welches Scrollbar ist.
+        return inflater.inflate(R.layout.pull_to_refresh, container, false);
+    }
+	
+	/**
 	 * Die OnCreate Funtion stellt den Einstiegspunkt dieser Activity dar. Alle
 	 * Aktuatoren werden nochmals einzeln aus der XS1 ausgelesen (Zustand etc)
 	 * um die einzelnen ToggleButtons und die Beschriftung entsprechend setzen
 	 * zu k�nnen.
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// Das Grundlayout des tabs ist ein LinearLayout, welches Scrollbar ist.
-		setContentView(R.layout.pull_to_refresh);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
@@ -84,7 +95,7 @@ public class Sens_Frame extends ListActivity {
 		sens_list = get_sensList();
 
 		// Die Liste ausgeben
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				R.layout.list_item_medium, sens_list);
 		setListAdapter(adapter);
 	}
@@ -118,6 +129,7 @@ public class Sens_Frame extends ListActivity {
 				Calendar time = Calendar.getInstance();
 				// da, Java in Millis hier * 1000!!
 				time.setTimeInMillis(remS.getUtime() * 1000);
+				@SuppressWarnings("deprecation")
 				String recv = time.getTime().toLocaleString();
 				// Den Text f�r die Ausgabe setzen falls typ nicht disabled
 				sensor_dataList.add("Empfangszeit: " + recv + "\nSensortyp: " + typ
@@ -160,7 +172,7 @@ public class Sens_Frame extends ListActivity {
 			List<XS_Object> tmp = Http.getInstance().get_list_sensors();
 			// falls ein Verbinsungsfehler bestand kommt null zur�ck
 			if (tmp == null) {
-				XsError.printError(getBaseContext());
+				XsError.printError(getActivity().getBaseContext());
 			} else {
 				myXsone.add_RemObj(tmp);
 
@@ -176,14 +188,14 @@ public class Sens_Frame extends ListActivity {
 		}
 	}
 
+	//TODO: funktioniert nicht mehr
 	/**
 	 * Der Tab �bernimmt die Aktionen des Tabhost f�r Menu und Back Button
 	 */
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// is activity withing a tabactivity
-		if (getParent() != null) {
-			return getParent().onKeyDown(keyCode, event);
+		if (getActivity().getParent() != null) {
+			return getActivity().getParent().onKeyDown(keyCode, event);
 		}
 		return false;
 	}
