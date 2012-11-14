@@ -40,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-
 /**
  * Die Http Klasse stellt die Schnittstell zum Internet dar. Anfragen werden an
  * die XS1 gsndet und Antworten ausgewrtet und in einem Passenden Format an die
@@ -801,7 +800,8 @@ public class Http {
 		url_subscribe_c.setUseCaches(false);
 		url_subscribe_c.setRequestProperty("Connection", "close");
 		url_subscribe_c.setChunkedStreamingMode(0);
-		url_subscribe_c.setRequestProperty("Authorization", "Basic " + encoding);
+		if (!pass_BASIC.equals(""))
+			url_subscribe_c.setRequestProperty("Authorization", "Basic " + encoding);
 
 		// Verbindung aufbauen
 		url_subscribe_c.connect();
