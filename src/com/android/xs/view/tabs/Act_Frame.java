@@ -108,9 +108,6 @@ public class Act_Frame extends Fragment {
 		// Das Xsone Objekt mit allen Daten holen aus dem Hauptprozess, welches
 		// diese bereit stellt
 		myXsone = RuntimeStorage.getMyXsone();
-		// if (savedInstanceState != null)
-		// object_list = (LinkedList<View>)
-		// savedInstanceState.getSerializable("object_list");
 	}
 
 	/**
@@ -190,16 +187,16 @@ public class Act_Frame extends Fragment {
 			// nun kann der View entsprechend gesetzt werden
 			if (actual.isDimmable()) {
 				((SeekBar) v).setProgress((int) actual.getValue());
-				// update Dimmers TextView
-				// for (View view : views){
-				// if (view.getId() == v.getId()+ID_BUFFER)
-				// ((TextView)view).setText(actual.getName() + " (" +
-				// Double.valueOf(actual.getValue()).intValue() + "%)");
-				// }
-				// TextView tv = (TextView) getActivity().findViewById(v.getId()
-				// + ID_BUFFER);
-				// tv.setText(actual.getName() + " (" +
-				// Double.valueOf(actual.getValue()).intValue() + "%)");
+				 //update Dimmers TextView
+				 for (View view : views){
+				 if (view.getId() == v.getId()+ID_BUFFER)
+				 ((TextView)view).setText(actual.getName() + " (" +
+				 Double.valueOf(actual.getValue()).intValue() + "%)");
+				 }
+				 TextView tv = (TextView) getActivity().findViewById(v.getId()
+				 + ID_BUFFER);
+				 tv.setText(actual.getName() + " (" +
+				 Double.valueOf(actual.getValue()).intValue() + "%)");
 			} else if (actual.getType().equals("temperature")) {
 				// Mit der Funktion (x -10)/2 werden die Temperaturwerte
 				// zwischen 10 und 34 Grad auf die Listenwerte des
