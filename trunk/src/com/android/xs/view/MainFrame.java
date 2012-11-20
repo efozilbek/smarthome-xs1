@@ -37,7 +37,6 @@ import android.widget.Toast;
 public class MainFrame extends Activity {
 
 	private static ActionBar actionbar;
-	private static int tab_num = 0;
 	public static Context appcontext;
 
 	/** Called when the activity is first created. */
