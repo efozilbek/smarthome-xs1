@@ -7,6 +7,7 @@ import com.android.xs.model.device.Actuator;
 import com.android.xs.model.device.Sensor;
 import com.android.xs.model.device.Xsone;
 import com.android.xs.model.device.components.AorS_Object;
+import com.android.xs.model.device.components.XS_Object;
 import com.android.xs.model.error.ConnectionException;
 import com.android.xs.view.R;
 
@@ -78,22 +79,32 @@ public class XSIntent extends Activity {
 
 		// Daten senden an das
 		// XS1-----------------------------------------------
-		ArrayList<String> Sens_vals = new ArrayList<String>();
-		for (int x = 0; x < names.size(); x++) {
-			AorS_Object obj = (AorS_Object) RuntimeStorage.getMyXsone().getObject(names.get(x));
-			if (obj != null) {
-				if (obj.getClass().equals(Actuator.class)) {
-					if (!obj.setValue(vals.get(x), true)) {
-						getIntent().putExtra("Status", "Verbindungsfehler!");
-					}else
-						result_data.putExtra("Status", "Erfolgreich!");
-				} else if (obj.getClass().equals(Sensor.class)) {
-					Sens_vals.add(obj.getName()+ ";" + obj.getValue());
-					result_data.putExtra("Status", "Erfolgreich!");
+		ArrayList<String> data = new ArrayList<String>();
+		// im Fall einer leeren Liste werden alle Namen zurückgegeben
+		if (names.size() == 0) {
+			for (XS_Object a : RuntimeStorage.getMyXsone().getMyActuatorList()){
+				data.add(a.getName());
+			}
+			for (XS_Object s : RuntimeStorage.getMyXsone().getMySensorList()){
+				data.add(s.getName());
+			}
+		} else {
+			// sonst wird je nach Aktuator oder Sensor Objekt ein Wert gesendet oder zurückgegeben
+			for (int x = 0; x < names.size(); x++) {
+				AorS_Object obj = (AorS_Object) RuntimeStorage.getMyXsone().getObject(names.get(x));
+				if (obj != null) {
+					if (obj.getClass().equals(Actuator.class)) {
+						if (!obj.setValue(vals.get(x), true)) {
+							getIntent().putExtra("Status", "Verbindungsfehler!");
+							return;
+						} 
+					} else if (obj.getClass().equals(Sensor.class)) {
+						data.add(obj.getName() + ";" + obj.getValue());
+					}
 				}
 			}
 		}
-		result_data.putStringArrayListExtra("Values", Sens_vals);
+		result_data.putStringArrayListExtra("Values", data);
 		result_data.putExtra("Status", "Erfolgreich!");
 		finish();
 		return;
