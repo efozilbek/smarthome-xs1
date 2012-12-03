@@ -82,9 +82,11 @@ public class XSIntent extends Activity {
 		ArrayList<String> data = new ArrayList<String>();
 		// im Fall einer leeren Liste werden alle Namen zurückgegeben
 		if (names.size() == 0) {
+			data.add("-from here actuators-");
 			for (XS_Object a : RuntimeStorage.getMyXsone().getMyActuatorList()){
 				data.add(a.getName());
 			}
+			data.add("-from here sensors-");
 			for (XS_Object s : RuntimeStorage.getMyXsone().getMySensorList()){
 				data.add(s.getName());
 			}
