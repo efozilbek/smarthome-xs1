@@ -110,7 +110,7 @@ public class Abo extends Activity {
 
 		// prï¿½fen ob service lï¿½uft
 		if (Abo_Service.isInstanceCreated())
-			Toast.makeText(this, "XS Abo Service lï¿½uft bereits...",
+			Toast.makeText(this, "XS Abo Service läuft bereits...",
 					Toast.LENGTH_LONG).show();
 		else {
 			startService(new Intent(this, Abo_Service.class));
@@ -132,7 +132,7 @@ public class Abo extends Activity {
 			AlertDialog ad = new AlertDialog.Builder(this).create();
 			ad.setCancelable(false); // This blocks the 'BACK' button
 			ad.setTitle("Hinweis");
-			ad.setMessage("Mï¿½chten sie den XS Abo Service aktiv lassen?");
+			ad.setMessage("Möchten sie den XS Abo Service aktiv lassen?");
 			// Die beiden Auswahlbuttons setzen
 			ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
 				
