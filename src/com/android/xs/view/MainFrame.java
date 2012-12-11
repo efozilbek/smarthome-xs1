@@ -122,7 +122,7 @@ public class MainFrame extends Activity {
 							finish();
 						}
 					});
-			ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Zurï¿½ck",
+			ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Zurück",
 					new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface dialog, int which) {

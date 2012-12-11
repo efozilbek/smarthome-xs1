@@ -28,8 +28,8 @@ public class Options_Frame extends ListFragment {
 	/**
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
-	private String[] options = { "Gerï¿½teinfo", "Konfiguration", "Hinzufï¿½gen", "Entfernen",
-			"Abonnement", "ï¿½ber" /**, "Spenden"*/};
+	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen",
+			"Abonnement", "Über" /**, "Spenden"*/};
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
