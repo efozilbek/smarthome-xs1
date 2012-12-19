@@ -117,7 +117,7 @@ public class Tim_Frame extends ListFragment {
 				String next = tim.getNext().toLocaleString();
 				// Den Text fï¿½r die Ausgabe setzen falls timer nicht disabled
 				timer_dataList.add(name + " (" + typ
-						+ ") \nNï¿½chstes Schaltereignis: " + next);
+						+ ") \nNächstes Schaltereignis: " + next);
 			}
 		}
 
