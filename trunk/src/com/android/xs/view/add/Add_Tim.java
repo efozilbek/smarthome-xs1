@@ -37,7 +37,6 @@ public class Add_Tim extends Activity {
 	/**
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
-	// TODO: Die deutschen Namen funktionieren beim senden als type nicht!!
 	Boolean[] days = new Boolean[7];
 	// Das Xsone Objekt f�r diese Aktivity
 	private Xsone myXsone;
@@ -94,6 +93,7 @@ public class Add_Tim extends Activity {
 		time.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				//TODO: shall be changed in later versions to fragments!!
 				showDialog(TIME_DIALOG_ID);
 			}
 		});
@@ -159,7 +159,7 @@ public class Add_Tim extends Activity {
 			public void onClick(View v) {
 				// Ladevorgang anzeigen
 				dialog = ProgressDialog.show(Add_Tim.this, "",
-						"Sensor anlegen...", true, false);
+						"Timer anlegen...", true, false);
 				dialog.show();
 
 				// Alle Werte auslesen
