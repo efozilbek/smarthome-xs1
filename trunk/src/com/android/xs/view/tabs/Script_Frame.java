@@ -13,8 +13,11 @@ import com.android.xs.view.R;
 import com.markupartist.android.widget.PullToRefreshListView;
 import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ListFragment;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +35,8 @@ import android.widget.ArrayAdapter;
  * @author Viktor Mayer
  * 
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
 public class Script_Frame extends ListFragment {
 
 	/**

@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 /**
@@ -92,8 +93,15 @@ public class SmartHomeActivity extends Activity {
 			RuntimeStorage.setXsdata(data);
 			// den Content f�r Spinner holen
 			RuntimeStorage.get_content();
+			Intent intent;
 			// Ist die Verbindung gelungen kann zum Mainframe gewechselt werden
-			Intent intent = new Intent(this, MainFrame.class);
+			// Hier muss unterschieden werden um welche Andriod Version es sich handelt
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			     // only for android older than honeycomb
+				intent = new Intent(this, MainFrameGBD.class);
+			}else{
+			intent = new Intent(this, MainFrameICS.class);
+			}
 			startActivity(intent);
 			finish();
 		} else {
@@ -172,7 +180,12 @@ public class SmartHomeActivity extends Activity {
 			RuntimeStorage.get_content();
 
 			// nun kann zum Hauptprozess gewechselt werden
-			Intent intent = new Intent(SmartHomeActivity.this, MainFrame.class);
+			Intent intent;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+				intent = new Intent(SmartHomeActivity.this, MainFrameGBD.class);
+			}else{
+				intent = new Intent(SmartHomeActivity.this, MainFrameICS.class);
+			}
 			startActivity(intent);
 			// Die Activity kann beendet werden
 			SmartHomeActivity.this.finish();

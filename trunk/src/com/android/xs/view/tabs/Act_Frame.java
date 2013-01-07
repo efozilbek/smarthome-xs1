@@ -14,12 +14,15 @@ import com.android.xs.model.device.components.XS_Object;
 import com.android.xs.model.error.XsError;
 import com.android.xs.view.R;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.StrictMode;
@@ -52,6 +55,8 @@ import android.widget.ToggleButton;
  * @author Viktor Mayer
  * 
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
 public class Act_Frame extends Fragment {
 
 	/**
