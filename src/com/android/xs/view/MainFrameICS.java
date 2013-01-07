@@ -10,16 +10,18 @@ import com.android.xs.view.tabs.Script_Frame;
 import com.android.xs.view.tabs.Sens_Frame;
 import com.android.xs.view.tabs.Tim_Frame;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -28,13 +30,16 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 /**
  * Die Activity MainFrame verwaltet alle Tabs.
  * 
  * @author Viktor Mayer
  * 
  */
-public class MainFrame extends Activity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
+public class MainFrameICS extends Activity {
 
 	private static ActionBar actionbar;
 	public static Context appcontext;
@@ -191,22 +196,25 @@ public class MainFrame extends Activity {
 	}
 
 	class MyTabsListener implements ActionBar.TabListener {
-		public Fragment fragment;
+		public android.app.Fragment fragment;
 
 		public MyTabsListener(Fragment fragment) {
 			this.fragment = fragment;
 		}
 
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			Toast.makeText(MainFrame.appcontext, "Reselected!",
+		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+			// TODO Auto-generated method stub
+			Toast.makeText(MainFrameICS.appcontext, "Reselected!",
 					Toast.LENGTH_LONG).show();
 		}
 
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+			// TODO Auto-generated method stub
 			ft.replace(R.id.fragment_container, fragment);
 		}
 
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
+			// TODO Auto-generated method stub
 			ft.remove(fragment);
 		}
 

@@ -11,8 +11,11 @@ import com.android.xs.view.setting.Config;
 import com.android.xs.view.setting.GInfo;
 import com.android.xs.view.setting.Remove;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,6 +26,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
 public class Options_Frame extends ListFragment {
 
 	/**
