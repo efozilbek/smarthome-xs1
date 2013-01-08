@@ -17,21 +17,30 @@ and includes all names of the actuators to be changed or sensors to be read.
 
 the other is of type 
 {{{ArrayList<Integer>}}} 
-and includes all values of the actuators to be set and 0 values for sensors. The two list have to symmetric!
+and includes all values of the actuators to be set and 0 values for sensors. The two list have to be of same length!
 
 ===get the status===
 after sending a command the app will answer with an Intent with extra *"Status"* and a string with information if the action succeeded. Furthermore the answer will contain a StringArrayListExtra named *"Values"*. In there the names and values of the requested sensors will be stored in the pattern "*[name*];*[value*]".
 
 ===get a list of all actuators & sensors===
 if the sent list of names is empty the app will return a list of all actuators and sensors in the Values Extra in the format
+
 -from here actuators-
+
 name1
+
 name2
+
 ...
+
 -from here sensors-
+
 name4
+
 name5
+
 ...
+
 
 ===restrictions===
 both lists have to be of same length and the names of the actuators or sensors to be changed/read must be the same as defined in the xs-1, otherwise status intent will contain an error-message
