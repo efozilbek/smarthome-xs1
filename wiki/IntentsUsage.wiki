@@ -26,12 +26,12 @@ after sending a command the app will answer with an Intent with extra *"Status"*
 if the sent list of names is empty the app will return a list of all actuators and sensors in the Values Extra in the format
 
 ||-from here actuators-||
-||[name1]||
-||[name2]||
+||*[name1*]||
+||*[name2*]||
 ||...||
-||[-from here sensors-]||
-||[name4]||
-||[name5]||
+||-from here sensors-||
+||*[name4*]||
+||*[name5*]||
 ||...||
 
 
