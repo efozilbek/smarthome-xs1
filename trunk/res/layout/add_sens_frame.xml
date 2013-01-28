@@ -7,7 +7,7 @@
     <TableLayout
         android:id="@+id/add_sens_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -106,9 +106,24 @@
                 android:singleLine="true"
                 android:maxLength="10"
                 android:text="@string/zero" />
-        </TableRow>
-
+            </TableRow>
+            
         <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="20dp" >
+
+            <Button
+                android:id="@+id/button_sens_learn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anlernen" />
+
+        </TableRow>
+         
+         <TableRow
             android:id="@+id/tableRow7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -206,6 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok" />
+
         </TableRow>
     </TableLayout>
 
