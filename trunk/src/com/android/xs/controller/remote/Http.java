@@ -58,8 +58,9 @@ public class Http {
 	private String user_BASIC = "";
 	private String pass_BASIC = "";
 
-	// die Verbidnung fï¿½r das subscribe
+	// die Verbidnung für das subscribe und learn
 	static HttpURLConnection url_subscribe_c = null;
+	static HttpURLConnection url_learn_c = null;
 
 	/**
 	 * Konstruktoren
@@ -76,8 +77,8 @@ public class Http {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * getInstance gibt das Objekt der Klasse zurï¿½ck, falls angelegt, sonst legt
-	 * es zuvor eins an (Singleton)
+	 * getInstance gibt das Objekt der Klasse zurï¿½ck, falls angelegt, sonst
+	 * legt es zuvor eins an (Singleton)
 	 * 
 	 * @return - Das Singlton Objekt der Klasse Http
 	 */
@@ -166,8 +167,8 @@ public class Http {
 	/**
 	 * Fragt bim XS1 alle gespeicherten Aktuatoren ab und gibt diese zurï¿½ck
 	 * 
-	 * @return - eine Liste von RemObjects, welche alle Aktuatoren enthï¿½lt, bei
-	 *         Fehler NULL, bei keinen Aktuatoren eine leere Liste
+	 * @return - eine Liste von RemObjects, welche alle Aktuatoren enthï¿½lt,
+	 *         bei Fehler NULL, bei keinen Aktuatoren eine leere Liste
 	 */
 	public List<XS_Object> get_list_actuators() {
 
@@ -337,8 +338,8 @@ public class Http {
 	 * 
 	 * @param device
 	 *            - Xsone. Das Xsone Objekt, welches die RemObjekte enthï¿½lt
-	 * @return - Gibt eine Liste von Remote Objekten mit allen Sensoren zurï¿½ck,
-	 *         null bei Fehler
+	 * @return - Gibt eine Liste von Remote Objekten mit allen Sensoren
+	 *         zurï¿½ck, null bei Fehler
 	 */
 	public List<XS_Object> get_list_sensors() {
 		LinkedList<XS_Object> sens = new LinkedList<XS_Object>();
@@ -437,10 +438,11 @@ public class Http {
 	}
 
 	/**
-	 * Nur in Ausnahmefï¿½llen bei ï¿½virtuellenï¿½ Sensoren sinnvoll. Es kï¿½nnen so
-	 * z.B. auch externe Datenquellen auf der Speicherkarte mitgeloggt werden
-	 * oder in Skriptentscheidungen miteinbezogen werden. Das Sensorsystem muss
-	 * vom Type virtual sein, damit die Werte gesetzt werden dï¿½rfen.
+	 * Nur in Ausnahmefï¿½llen bei ï¿½virtuellenï¿½ Sensoren sinnvoll. Es
+	 * kï¿½nnen so z.B. auch externe Datenquellen auf der Speicherkarte
+	 * mitgeloggt werden oder in Skriptentscheidungen miteinbezogen werden. Das
+	 * Sensorsystem muss vom Type virtual sein, damit die Werte gesetzt werden
+	 * dï¿½rfen.
 	 * 
 	 * @param sens
 	 *            - Das zu ï¿½ndernde Sensorobjekt
@@ -813,8 +815,8 @@ public class Http {
 		// Der Buffered Reader empfï¿½ngt die Daten der Verbindung zur XS1
 		subscribe_reader = new BufferedReader(isr);
 
-		// Charbuffer ist eine alternative Lï¿½sung, da readline blockierend
-		// aufgerufen wird, und dadurch immer eins verzï¿½gert, weil schon
+		// Charbuffer ist eine alternative Lösung, da readline blockierend
+		// aufgerufen wird, und dadurch immer eins verzögert, weil schon
 		// getInputStream blockiert
 		CharBuffer c = CharBuffer.allocate(100);
 		while (subscribe_reader.read(c) > 0) {
@@ -826,6 +828,58 @@ public class Http {
 	public void unsubscribe() {
 		// Verursachte eine Exception beim subscribe
 		url_subscribe_c.disconnect();
+	}
+
+	public LinkedList<String> learn(String system) throws IOException {
+
+		LinkedList<String> result = new LinkedList<String>();
+
+		InputStreamReader isr = null;
+		BufferedReader subscribe_reader = null;
+		URL url;
+
+		// Die Abfrage wird angelegt
+		Uri uri = CommandBuilder.buildUri(system, "learn");
+
+		String userPassword = user_BASIC + ":" + pass_BASIC;
+		String encoding = Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT);
+
+		// die HttpURLConnection wird angelegt und konfiguriert
+		url = new URL(uri.toString());
+		url_learn_c = (HttpURLConnection) url.openConnection();
+		url_learn_c.setDoOutput(false);
+		url_learn_c.setRequestMethod("GET");
+		url_learn_c.setReadTimeout(35000);
+		url_learn_c.setDoInput(true);
+		url_learn_c.setUseCaches(false);
+		url_learn_c.setRequestProperty("Connection", "close");
+		url_learn_c.setChunkedStreamingMode(0);
+		if (!pass_BASIC.equals(""))
+			url_learn_c.setRequestProperty("Authorization", "Basic " + encoding);
+
+		// Verbindung aufbauen
+		url_learn_c.connect();
+
+		isr = new InputStreamReader(url_learn_c.getInputStream());
+
+		// Der Buffered Reader empfï¿½ngt die Daten der Verbindung zur XS1
+		subscribe_reader = new BufferedReader(isr);
+
+		int count = 0;
+		// Charbuffer ist eine alternative Lösung, da readline blockierend
+		// aufgerufen wird, und dadurch immer eins verzögert, weil schon
+		// getInputStream blockiert
+		CharBuffer c = CharBuffer.allocate(200);
+		while (subscribe_reader.read(c) > 0) {
+			//ab dem 3. muss das Komma am anfang entfernt werden
+			c.flip();
+			if (count > 1)
+				c.position(2);
+			result.add(c + "\n");
+			c.clear();
+			count++;
+		}
+		return result;
 	}
 
 	/**
@@ -868,8 +922,8 @@ public class Http {
 	}
 
 	/**
-	 * Liest die XS1 interne Batterie gestï¿½tzte Echtzeit Uhr (RTC) arbeitet mit
-	 * UTC / GMT Zeit.
+	 * Liest die XS1 interne Batterie gestï¿½tzte Echtzeit Uhr (RTC) arbeitet
+	 * mit UTC / GMT Zeit.
 	 * 
 	 * @return - Die Zeit des XS1 als Calendar Objekt. NULL bei Fehler
 	 */
@@ -1041,8 +1095,8 @@ public class Http {
 	}
 
 	/**
-	 * Setter fï¿½r die IP, mit der Das Http Objekt zukï¿½nftig Verbindungen zum XS1
-	 * aufbaut. wird an den CommandBuilder durch gereicht
+	 * Setter fï¿½r die IP, mit der Das Http Objekt zukï¿½nftig Verbindungen zum
+	 * XS1 aufbaut. wird an den CommandBuilder durch gereicht
 	 * 
 	 * @param ip
 	 *            - String. Die IP des XS1 als String

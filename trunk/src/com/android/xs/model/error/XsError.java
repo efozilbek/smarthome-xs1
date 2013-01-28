@@ -92,5 +92,9 @@ public class XsError {
 	public static void printError(Context con) {
 		Toast.makeText(con, "Verbindungsfehler..", Toast.LENGTH_SHORT).show();
 	}
+	
+	public static void printError(Context con, String error) {
+		Toast.makeText(con, error, Toast.LENGTH_SHORT).show();
+	}
 
 }
