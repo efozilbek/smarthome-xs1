@@ -329,6 +329,18 @@ public class CommandBuilder {
 			return b.build();
 		}
 
+		else if (cmd.equals("learn")) {
+			Uri.Builder b = Uri.parse("http://" + ip).buildUpon();
+			b.path("control").appendQueryParameter("callback", "cname")
+			// return new
+			// Uri.Builder().scheme("http").authority(ip).path("control").appendQueryParameter("callback",
+			// "cname")
+			// .appendQueryParameter("user", user)
+			// .appendQueryParameter("pwd", pass)
+					.appendQueryParameter("cmd", "learn").appendQueryParameter("system", num);
+			return b.build();
+		}
+
 		return null;
 	}
 

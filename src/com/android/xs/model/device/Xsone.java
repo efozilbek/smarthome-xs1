@@ -457,6 +457,10 @@ public class Xsone {
 		for (int x = 0; x < this.getMaxScripts(); x++)
 			myScriptList.add(new Script());
 	}
+	
+	public LinkedList<String> learn(String system) throws IOException{
+		return myHttp.learn(system);
+	}
 
 	/**
 	 * Getter and Setter
