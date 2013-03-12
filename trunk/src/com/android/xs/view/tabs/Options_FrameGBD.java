@@ -9,6 +9,7 @@ import com.android.xs.view.setting.About;
 import com.android.xs.view.setting.Add;
 import com.android.xs.view.setting.Config;
 import com.android.xs.view.setting.GInfo;
+import com.android.xs.view.setting.Positioning;
 import com.android.xs.view.setting.Remove;
 
 import android.app.ListActivity;
@@ -26,8 +27,7 @@ public class Options_FrameGBD extends ListActivity {
 	/**
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
-	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen",
-			"Abonnement", "Über" };
+	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen", "Abonnement", "Positions-Tool", "Über" };
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
@@ -51,14 +51,12 @@ public class Options_FrameGBD extends ListActivity {
 		options_list.addAll(Arrays.asList(options));
 
 		// Die Liste ausgeben
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item_medium, options_list);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_medium, options_list);
 		setListAdapter(adapter);
 
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 				// je nach der row ID bzw view muss die Activity gestartet
 				// werden
@@ -68,8 +66,7 @@ public class Options_FrameGBD extends ListActivity {
 					startActivity(intent0);
 					break;
 				case 1:
-					Intent intent1 = new Intent(Options_FrameGBD.this,
-							Config.class);
+					Intent intent1 = new Intent(Options_FrameGBD.this, Config.class);
 					startActivity(intent1);
 					break;
 				case 2:
@@ -85,14 +82,22 @@ public class Options_FrameGBD extends ListActivity {
 					startActivity(intent4);
 					break;
 				case 5:
-					Intent intent5 = new Intent(Options_FrameGBD.this, About.class);
+					Intent intent5 = new Intent(Options_FrameGBD.this, Positioning.class);
 					startActivity(intent5);
 					break;
+				case 6:
+					Intent intent6 = new Intent(Options_FrameGBD.this, About.class);
+					startActivity(intent6);
+					break;
+				/**
+				 * case 7: Intent intent7 = new Intent(Options_FrameGBD.this,
+				 * DonationsActivity.class); startActivity(intent7); break;
+				 */
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Der Tab übernimmt die Aktionen des Tabhost für Menu und Back Button
 	 */
