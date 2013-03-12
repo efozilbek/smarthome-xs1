@@ -36,7 +36,7 @@ if the sent list of names is empty the app will return a list of all actuators a
 
 
 ===execute a makro===
-for executing a makro just leave the the lists names and vals null and add a list named makros with the makro names to be executed.
+for executing a makro just leave the the lists *names and *vals null and add a list named *makros with the makro names to be executed.
 
 
 ===restrictions===
