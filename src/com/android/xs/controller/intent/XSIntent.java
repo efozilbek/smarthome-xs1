@@ -3,16 +3,20 @@ package com.android.xs.controller.intent;
 import java.util.ArrayList;
 import com.android.xs.controller.storage.PersistantStorage;
 import com.android.xs.controller.storage.RuntimeStorage;
+import com.android.xs.controller.usage.MakroController;
 import com.android.xs.model.device.Actuator;
 import com.android.xs.model.device.Sensor;
 import com.android.xs.model.device.Xsone;
 import com.android.xs.model.device.components.AorS_Object;
+import com.android.xs.model.device.components.Makro;
 import com.android.xs.model.device.components.XS_Object;
 import com.android.xs.model.error.ConnectionException;
 import com.android.xs.view.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 public class XSIntent extends Activity {
@@ -20,6 +24,7 @@ public class XSIntent extends Activity {
 	 * Private Variablen
 	 ***********************************************************************************************************************************************************/
 	Intent result_data = new Intent();
+	boolean check = true;
 
 	/**
 	 * Konstruktoren
@@ -30,7 +35,7 @@ public class XSIntent extends Activity {
 	 ***********************************************************************************************************************************************************/
 
 	/**
-	 * wird beim Ausfï¿½hren zuerst aufgerufen.
+	 * wird beim Ausführen zuerst aufgerufen.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,16 +44,44 @@ public class XSIntent extends Activity {
 
 		ArrayList<String> names = getIntent().getStringArrayListExtra("names");
 		ArrayList<Integer> vals = getIntent().getIntegerArrayListExtra("vals");
+		ArrayList<String> makros = getIntent().getStringArrayListExtra("makros");
+		boolean makrosactiononentry = getIntent().getBooleanExtra("makrosactiononentry", true);
 
 		boolean invalid_data = false;
-		for (int val : vals) {
-			if (val < 0 || val > 100)
-				invalid_data = true;
+		boolean do_makro = false;
+
+		// prüfen auf Daten für einzelne Schalter
+		// Makos oder einzelen Aktuatoren?
+		if (vals == null || names == null) {
+			do_makro = true;
 		}
-		if (vals == null || names == null || (vals.size() != names.size()) || invalid_data) {
-			result_data.putExtra("Status", "ï¿½bergebene Daten Fehlerhaft!");
+
+		// Prüfung für Makro
+		if (do_makro) {
+			if (makros == null)
+				invalid_data = true;
+			else {
+				if (makros.size() < 1)
+					invalid_data = true;
+			}
+		}
+		// Prüfung für Aktuatorenliste
+		else {
+			if ((vals.size() != names.size()) && names.size() > 0)
+				invalid_data = true;
+			else {
+				for (int val : vals) {
+					if (val < 0 || val > 100)
+						invalid_data = true;
+				}
+			}
+		}
+
+		if (invalid_data) {
+			result_data.putExtra("Status", "Übergebene Daten Fehlerhaft!");
 			finish();
 			return;
+
 		}
 
 		// XSOne Objekt
@@ -77,37 +110,77 @@ public class XSIntent extends Activity {
 			return;
 		}
 
-		// Daten senden an das
-		// XS1-----------------------------------------------
 		ArrayList<String> data = new ArrayList<String>();
-		// im Fall einer leeren Liste werden alle Namen zurÃ¼ckgegeben
-		if (names.size() == 0) {
-			data.add("-from here actuators-");
-			for (XS_Object a : RuntimeStorage.getMyXsone().getMyActuatorList()){
-				data.add(a.getName());
+
+		// Makro
+		// ausführen-------------------------------------------------------------------
+
+		// beim verlassen oder betreten holen
+		String k = LocationManager.KEY_PROXIMITY_ENTERING;
+		// Key for determining whether user is leaving or entering.. default,
+		// also wenn nicht erfolgreich bestimmt werden konnte dann wird es nicht
+		// ausgeführt
+		boolean state = getIntent().getBooleanExtra(k, !makrosactiononentry);
+		// DEBUG
+		// boolean state = makrosactiononentry;
+
+		if (do_makro && makrosactiononentry == state) {
+			// nummer in dr Liste rausfinden
+			ArrayList<Makro> mlist = MakroController.loadMakros();
+			int id = 0;
+			for (String mname : makros) {
+				for (Makro m : mlist) {
+					if (m.getName().equals(mname)) {
+						new ExecuteMakro().execute((int) id);
+						// eine liste aller ausgeführten makros wird zurück
+						// gegeben
+						data.add(mname);
+					}
+					id++;
+				}
+				id = 0;
 			}
-			data.add("-from here sensors-");
-			for (XS_Object s : RuntimeStorage.getMyXsone().getMySensorList()){
-				data.add(s.getName());
-			}
-		} else {
-			// sonst wird je nach Aktuator oder Sensor Objekt ein Wert gesendet oder zurÃ¼ckgegeben
-			for (int x = 0; x < names.size(); x++) {
-				AorS_Object obj = (AorS_Object) RuntimeStorage.getMyXsone().getObject(names.get(x));
-				if (obj != null) {
-					if (obj.getClass().equals(Actuator.class)) {
-						if (!obj.setValue(vals.get(x), true)) {
-							getIntent().putExtra("Status", "Verbindungsfehler!");
-							return;
-						} 
-					} else if (obj.getClass().equals(Sensor.class)) {
-						data.add(obj.getName() + ";" + obj.getValue());
+		}
+
+		// Einzelne Komponenten
+		// ansprechen-------------------------------------------------------------------
+		else if (do_makro == false) {
+			// Daten senden an das
+			// XS1-----------------------------------------------
+			// im Fall einer leeren Liste werden alle Namen zurückgegeben
+			if (names.size() == 0) {
+				data.add("-from here actuators-");
+				for (XS_Object a : RuntimeStorage.getMyXsone().getMyActuatorList()) {
+					data.add(a.getName());
+				}
+				data.add("-from here sensors-");
+				for (XS_Object s : RuntimeStorage.getMyXsone().getMySensorList()) {
+					data.add(s.getName());
+				}
+			} else {
+				// sonst wird je nach Aktuator oder Sensor Objekt ein Wert
+				// gesendet oder zurückgegeben
+				for (int x = 0; x < names.size(); x++) {
+					AorS_Object obj = (AorS_Object) RuntimeStorage.getMyXsone().getObject(names.get(x));
+					if (obj != null) {
+						if (obj.getClass().equals(Actuator.class)) {
+							if (!obj.setValue(vals.get(x), true)) {
+								getIntent().putExtra("Status", "Verbindungsfehler!");
+								return;
+							}
+						} else if (obj.getClass().equals(Sensor.class)) {
+							data.add(obj.getName() + ";" + obj.getValue());
+						}
 					}
 				}
 			}
 		}
+
 		result_data.putStringArrayListExtra("Values", data);
-		result_data.putExtra("Status", "Erfolgreich!");
+		if (check = true)
+			result_data.putExtra("Status", "Erfolgreich!");
+		else
+			result_data.putExtra("Status", "Fehler bei Ausführung!");
 		finish();
 		return;
 
@@ -117,5 +190,24 @@ public class XSIntent extends Activity {
 	public void finish() {
 		setResult(RESULT_OK, result_data);
 		super.finish();
+	}
+
+	/**
+	 * Die Klasse führt das makro als eigenen Task aus.
+	 * 
+	 * @author Viktor Mayer
+	 * 
+	 */
+	private class ExecuteMakro extends AsyncTask<Integer, Boolean, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Integer... params) {
+			return RuntimeStorage.getMyXsone().getMyMakroList().get((int) params[0]).replay();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			check = result;
+		}
 	}
 }

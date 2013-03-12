@@ -42,7 +42,7 @@ public class Add_Act extends Activity {
 	String[] degree = new String[31];
 	// Das Xsone Objekt für diese Aktivity
 	private Xsone myXsone;
-	// Dialog fï¿½r Ladevorgang
+	// Dialog für Ladevorgang
 	private Dialog dialog;
 	// Zum anzeigen variabel benï¿½tigter Felder
 	private OnItemSelectedListener inputUnhider;

@@ -9,6 +9,7 @@ import com.android.xs.view.setting.About;
 import com.android.xs.view.setting.Add;
 import com.android.xs.view.setting.Config;
 import com.android.xs.view.setting.GInfo;
+import com.android.xs.view.setting.Positioning;
 import com.android.xs.view.setting.Remove;
 
 import android.annotation.SuppressLint;
@@ -34,7 +35,7 @@ public class Options_Frame extends ListFragment {
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
 	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen",
-			"Abonnement", "Über" /**, "Spenden"*/};
+			"Abonnement", "Positions-Tool", "Über" /**, "Spenden"*/};
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
@@ -102,12 +103,16 @@ public class Options_Frame extends ListFragment {
 					startActivity(intent4);
 					break;
 				case 5:
-					Intent intent5 = new Intent(getActivity(), About.class);
+					Intent intent5 = new Intent(getActivity(), Positioning.class);
 					startActivity(intent5);
 					break;
-				/**case 6:
-					Intent intent6 = new Intent(getActivity(), DonationsActivity.class);
+				case 6:
+					Intent intent6 = new Intent(getActivity(), About.class);
 					startActivity(intent6);
+					break;
+				/**case 7:
+					Intent intent7 = new Intent(getActivity(), DonationsActivity.class);
+					startActivity(intent7);
 					break;*/
 				}
 			}

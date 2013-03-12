@@ -68,11 +68,14 @@ public class About extends Activity {
 				+ "	Geräteinfo: Zeigt die Informationen, welche aus der XS1 ausgelesen wurden.\n\n"
 				+ "	Konfiguration: Hierüber kann eine Verbindung neu eingerichtet werden.\n\n"
 				+ "	Hinzufügen: Hier können neue Objekte in die XS1 geschrieben werden."
-				+ "Diese können Aktuatoren, Sensoren, Timer oder Skripte sein. Ggf. müssen hier Herstellerspezifische Daten eingegeben werden."
+				+ " Diese können Aktuatoren, Sensoren, Timer oder Skripte sein. Ggf. müssen hier Herstellerspezifische Daten eingegeben werden."
 				+ " Ab der Firmwareversion 3 des XS1 wird hier zusätzlich die Möglichkeit geboten die Codes anhand der Sender anzulernen.\n\n"
 				+ "	Entfernen: Hier können bestehende Objekte aus der XS1 gelöscht werden.\n\n"
 				+ "	Abonnement: Ein Dienst wird gestartet, welcher alle Aktivitäten der XS1 aufzeichnet und in dem Fenster ausgibt. Dieser läuft nach Wunsch auch nach"
 				+ "	Beendigung der Anwendung weiter. Beim Betätigen von 'Zurück' erfolgt eine Abfrage, ob der Dienst im Hintergrund fortgeführt werden soll.\n\n"
+				+ " Positions-Tool: !EXPERIMENTEL! Hier kann für die aktuelle Position ein bestimmtes Makro beim Verlassen oder Betreten automatisch ausgeführt werden." 
+				+ " Nähert sich der Nutzer der gesetzten Position auf 1KM oder verlässt den Radius von 1KM (je nach Einstellung) wird das gewähle Makro getriggert." 
+				+ " Die Anwendung muss dabei nicht laufen.\n\n"
 				+ "	Über: Zeigt diese Infoseite an.\n\n");
 		table.addView(tv);
 

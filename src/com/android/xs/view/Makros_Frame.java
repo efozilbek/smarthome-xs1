@@ -88,7 +88,7 @@ public class Makros_Frame extends ListActivity {
 					int position, long id) {
 				// geklickte Makro ausfï¿½hren
 				dialog1 = ProgressDialog.show(Makros_Frame.this, "",
-						"Makro wird ausgefï¿½hrt...", true, false);
+						"Makro wird ausgeführt...", true, false);
 				dialog1.show();
 				new ExecuteMakro().execute((int) id);
 			}
@@ -104,7 +104,7 @@ public class Makros_Frame extends ListActivity {
 
 				ad.setCancelable(false); // This blocks the 'BACK' button
 				ad.setTitle("Hinweis");
-				ad.setMessage("Makro lï¿½schen?");
+				ad.setMessage("Makro löschen?");
 				// Die beiden Auswahlbuttons setzen
 				ad.setButton(AlertDialog.BUTTON_POSITIVE, "Ja", new DialogInterface.OnClickListener() {
 					
@@ -120,7 +120,7 @@ public class Makros_Frame extends ListActivity {
 				ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
 					
 					public void onClick(DialogInterface dialog, int which) {
-						// Dialog schlieï¿½en
+						// Dialog schließen
 						dialog.dismiss();
 					}
 				});
@@ -131,7 +131,7 @@ public class Makros_Frame extends ListActivity {
 	}
 
 	/**
-	 * Die Klasse fï¿½hrt das makro als eigenen Task aus. Dabei wird eine
+	 * Die Klasse führt das makro als eigenen Task aus. Dabei wird eine
 	 * Ladeanzeige gezeigt
 	 * 
 	 * @author Viktor Mayer
@@ -147,7 +147,7 @@ public class Makros_Frame extends ListActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				Toast.makeText(getBaseContext(), "Makro wurde ausgefï¿½hrt!",
+				Toast.makeText(getBaseContext(), "Makro wurde ausgeführt!",
 						Toast.LENGTH_SHORT).show();
 				// Status invalidieren
 				RuntimeStorage.setStatusValid(false);
