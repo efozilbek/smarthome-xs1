@@ -120,7 +120,7 @@ public class XSIntent extends Activity {
 		// Key for determining whether user is leaving or entering.. default,
 		// also wenn nicht erfolgreich bestimmt werden konnte dann wird es nicht
 		// ausgeführt
-		boolean state = getIntent().getBooleanExtra(k, !makrosactiononentry);
+		boolean state = getIntent().getBooleanExtra(k, makrosactiononentry);
 		// DEBUG
 		// boolean state = makrosactiononentry;
 
