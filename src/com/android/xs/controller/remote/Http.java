@@ -89,8 +89,8 @@ public class Http {
 	}
 
 	/**
-	 * Liest die XS1 Daten aus dem Gerï¿½t aus und speichert sie in einem Xsone
-	 * Objekt ab, welches dann zurï¿½ck gegeben wird
+	 * Liest die XS1 Daten aus dem Gerät aus und speichert sie in einem Xsone
+	 * Objekt ab, welches dann zurück gegeben wird
 	 * 
 	 * @param device
 	 *            - Das abzufragende Objekt (mindestens IP muss gesetzt sein)
@@ -98,7 +98,7 @@ public class Http {
 	 *         bei Fehler NULL
 	 */
 	public Xsone get_config_info(Xsone device) {
-		// IP fï¿½r zukï¿½nftige Http Anfragen speichern
+		// IP für zukünftige Http Anfragen speichern
 		CommandBuilder.setIp(device.getMyIpSetting().getIp());
 		CommandBuilder.setUser(device.getUsername());
 		CommandBuilder.setPass(device.getPassword());
@@ -128,7 +128,7 @@ public class Http {
 			return null;
 		}
 
-		// Das ï¿½bergebene Xsone Objekt wird aktualisiert
+		// Das Übergebene Xsone Objekt wird aktualisiert
 		try {
 			device.setDeviceName(json_info.getString("devicename"));
 			device.setHardware(json_info.getString("hardware"));

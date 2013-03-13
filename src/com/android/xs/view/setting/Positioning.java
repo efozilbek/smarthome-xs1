@@ -10,10 +10,12 @@ import com.android.xs.model.error.XsError;
 import com.android.xs.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -27,6 +29,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -102,6 +105,18 @@ public class Positioning extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, vals);
 		spin.setAdapter(adapter);
 
+		// Liste mit vorhandenen Alerts befüllen
+		ArrayList<String> valss = new ArrayList<String>();
+		final Spinner spinn = (Spinner) findViewById(R.id.alerts_spinner);
+		final List<String> alerts = myXsone.getMyProxAlertsList();
+
+		for (String m : alerts) {
+			valss.add(m);
+		}
+		// Den Adapter für den Spinner anlegen
+		final ArrayAdapter<String> adapterr = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, valss);
+		spinn.setAdapter(adapterr);
+
 		// Positionserfassung
 		Button pos_button = (Button) findViewById(R.id.pos_button1);
 		Button sav_button = (Button) findViewById(R.id.pos_save);
@@ -130,7 +145,6 @@ public class Positioning extends Activity {
 		});
 
 		sav_button.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
 				if (latitude == 0 && longitude == 0) {
 					XsError.printError(getBaseContext(), "keine Position gesetzt!");
@@ -141,9 +155,10 @@ public class Positioning extends Activity {
 					return;
 				}
 
-				Toast.makeText(getBaseContext(), "wird gesetzt!", Toast.LENGTH_SHORT).show();
-
 				intent = new Intent("com.android.xs.controller.SEND_XS");
+
+				// id des neuen Intents
+				int id = myXsone.getMyProxAlertsList().size() + 1;
 
 				// prüfen welcher radiobutton gewählt ist
 				RadioButton leave = (RadioButton) findViewById(R.id.radioleave);
@@ -162,10 +177,29 @@ public class Positioning extends Activity {
 				mnames.add(makros.get(spin.getSelectedItemPosition()).getName());
 				intent.putStringArrayListExtra("makros", mnames);
 
-				proximityIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				proximityIntent = PendingIntent.getActivity(getApplicationContext(), id, intent, 0);
 				locationManager.addProximityAlert(latitude, longitude, POINT_RADIUS, PROX_ALERT_EXPIRATION, proximityIntent);
 
-				Toast.makeText(getBaseContext(), "gespeichert..", Toast.LENGTH_LONG).show();
+				// den Alert speichern
+				AlertDialog.Builder alert = new AlertDialog.Builder(Positioning.this);
+
+				alert.setTitle("Neuer Proximity Alert..");
+				alert.setMessage("Proximity-Alert benennen:");
+
+				// Set an EditText view to get user input
+				final EditText input = new EditText(Positioning.this);
+				alert.setView(input);
+
+				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String value = input.getText().toString();
+						myXsone.addProxAlert(value);
+						adapterr.add(value);
+
+						Toast.makeText(getBaseContext(), "gespeichert..", Toast.LENGTH_LONG).show();
+					}
+				});
+				alert.show();
 			}
 
 		});
@@ -173,7 +207,17 @@ public class Positioning extends Activity {
 		del_button.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				locationManager.removeProximityAlert(proximityIntent);
+
+				int id = spinn.getSelectedItemPosition();
+
+				Intent intent = new Intent("com.android.xs.controller.SEND_XS");
+				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), id, intent, 0);
+
+				locationManager.removeProximityAlert(pi);
+				locationManager.removeUpdates(pi);
+
+				adapterr.remove(myXsone.getMyProxAlertsList().get(id));
+				myXsone.removeProxAlert(id);
 				Toast.makeText(getBaseContext(), "ProximityAlert aufgehoben..", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -280,7 +324,10 @@ public class Positioning extends Activity {
 
 			if (isBetterLocation(location, currentBestLocation)) {
 				currentBestLocation = location;
-				Toast.makeText(Positioning.this, "got a location!", Toast.LENGTH_SHORT).show();
+				Toast t = Toast.makeText(Positioning.this, "got a location!", Toast.LENGTH_SHORT);
+				if (!t.getView().isShown())
+					t.show();
+				
 			}
 		}
 

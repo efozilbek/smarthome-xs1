@@ -2,7 +2,6 @@ package com.android.xs.controller.storage;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 import com.android.xs.controller.remote.Http;
 import com.android.xs.model.device.Xsone;
 import com.android.xs.model.device.components.RF_System;
@@ -22,7 +21,8 @@ public class RuntimeStorage {
 	private static PersistantStorage myPers;
 	// Stellt die Http Verbindungen bereit
 	private static Http myHttp;
-	// gibt nach Makros an, dass alle Daten aktualisiert werden müssen (für GPRS Verbindung)
+	// gibt nach Makros an, dass alle Daten aktualisiert werden müssen (für GPRS
+	// Verbindung)
 	private static boolean statusValid = true;
 	// Das Hauptobjekt, welches vom Speicher oder vom XS1 geladen wird und im
 	// Betrieb aktualisiert wird und an andere Activities weiter gereicht
@@ -42,9 +42,10 @@ public class RuntimeStorage {
 	private static final String XS_ACT_TYPE = "SmartHomeXS.actuators";
 	private static final String XS_SENS_TYPE = "SmartHomeXS.sensors";
 	private static final String XS_TIM_TYPE = "SmartHomeXS.timers";
+	private static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
 
 	// private static final String XS_FNCT = "SmarthomeXS.functions";
-	
+
 	// Die Datenliste für die Subscribe Methode (als Service ausgeführt)
 	private static LinkedList<String> abo_data_list = new LinkedList<String>();
 
@@ -55,7 +56,7 @@ public class RuntimeStorage {
 	/**
 	 * Funktionen
 	 ***********************************************************************************************************************************************************/
-	
+
 	/**
 	 * Hier werden die Daten für die Spinner ausgelesen. Dabei handelt es sich
 	 * um die Strings für Systeme, Typen u.A. Zuerst wird versucht diese aus dem
@@ -65,10 +66,9 @@ public class RuntimeStorage {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void get_content() {
-	
+
 		// Systeme werden abgefragt
-		ArrayList<RF_System> Systems = (ArrayList<RF_System>) RuntimeStorage
-				.getMyPers().getData(XS_SYS);
+		ArrayList<RF_System> Systems = (ArrayList<RF_System>) RuntimeStorage.getMyPers().getData(XS_SYS);
 		if (Systems == null) {
 			Systems = Http.getInstance().get_list_systems();
 			RuntimeStorage.getMyPers().saveData(Systems, XS_SYS);
@@ -76,8 +76,7 @@ public class RuntimeStorage {
 		RuntimeStorage.setSystems(Systems);
 
 		// Aktuatortypen werden abgefragt
-		ArrayList<String> Act_types = (ArrayList<String>) RuntimeStorage
-				.getMyPers().getData(XS_ACT_TYPE);
+		ArrayList<String> Act_types = (ArrayList<String>) RuntimeStorage.getMyPers().getData(XS_ACT_TYPE);
 		if (Act_types == null) {
 			Act_types = Http.getInstance().get_types_actuators();
 			RuntimeStorage.getMyPers().saveData(Act_types, XS_ACT_TYPE);
@@ -85,8 +84,7 @@ public class RuntimeStorage {
 		RuntimeStorage.setAct_types(Act_types);
 
 		// Timer Typen werden abgefragt
-		ArrayList<String> Tim_types = (ArrayList<String>) RuntimeStorage
-				.getMyPers().getData(XS_TIM_TYPE);
+		ArrayList<String> Tim_types = (ArrayList<String>) RuntimeStorage.getMyPers().getData(XS_TIM_TYPE);
 		if (Tim_types == null) {
 			Tim_types = Http.getInstance().get_types_timers();
 			RuntimeStorage.getMyPers().saveData(Tim_types, XS_TIM_TYPE);
@@ -94,13 +92,20 @@ public class RuntimeStorage {
 		RuntimeStorage.setTim_types(Tim_types);
 
 		// Sensor Typen werden abgefragt
-		ArrayList<String> Sens_types = (ArrayList<String>) RuntimeStorage
-				.getMyPers().getData(XS_SENS_TYPE);
+		ArrayList<String> Sens_types = (ArrayList<String>) RuntimeStorage.getMyPers().getData(XS_SENS_TYPE);
 		if (Sens_types == null) {
 			Sens_types = Http.getInstance().get_types_sensors();
 			RuntimeStorage.getMyPers().saveData(Sens_types, XS_SENS_TYPE);
 		}
 		RuntimeStorage.setSens_types(Sens_types);
+
+		// bestehende Prox Alerts abfragen
+		LinkedList<String> Prox_Alerts = (LinkedList<String>) RuntimeStorage.getMyPers().getData(XS_PROXALERTS_TYPE);
+		if (Prox_Alerts == null) {
+			Prox_Alerts = new LinkedList<String>();
+			RuntimeStorage.getMyPers().saveData(Prox_Alerts, XS_PROXALERTS_TYPE);
+		}
+		RuntimeStorage.setProx_Alerts(Prox_Alerts);
 
 		// Functions = (ArrayList<String>) myPers.getData(XS_FNCT);
 		// if (Functions == null) {
@@ -108,7 +113,6 @@ public class RuntimeStorage {
 		// myPers.saveData(Functions, XS_FNCT);
 		// }
 	}
-
 
 	/**
 	 * Getter und Setter
@@ -166,6 +170,10 @@ public class RuntimeStorage {
 	public static ArrayList<String> getSens_types() {
 		return Sens_types;
 	}
+	
+	public static void setProx_Alerts(LinkedList<String> prox_alerts) {
+		myXsone.setMyProxAlerts(prox_alerts);
+	}
 
 	public static void setTim_types(ArrayList<String> tim_types) {
 		Tim_types = tim_types;
@@ -186,7 +194,7 @@ public class RuntimeStorage {
 	public static void setMyHttp(Http myHttp) {
 		RuntimeStorage.myHttp = myHttp;
 	}
-	
+
 	public static void setMyHttp() {
 		RuntimeStorage.myHttp = Http.getInstance();
 	}

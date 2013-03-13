@@ -45,6 +45,9 @@ public class Xsone {
 	private List<Makro> myMakroList = new ArrayList<Makro>();
 	private Http myHttp;
 	private IpSetting myIpSetting;
+	private List<String> proxAlerts = new LinkedList<String>();
+
+	private static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
 
 	/**
 	 * Konstruktoren
@@ -63,8 +66,7 @@ public class Xsone {
 	 * @throws ConnectionException
 	 *             -
 	 */
-	public Xsone(String ip, String username, String pass)
-			throws ConnectionException {
+	public Xsone(String ip, String username, String pass) throws ConnectionException {
 		// Username wird gespeichert
 		this.setUsername(username);
 		// Passwort wird gespeichert;
@@ -116,7 +118,7 @@ public class Xsone {
 			throw new ConnectionException("Keine Internetverbindung!");
 		// Die Liste mit Timern wird hinzu gefügt
 		add_RemObj(script_list);
-		
+
 		// Makros werden geladen
 		this.setMyMakroList(MakroController.loadMakros());
 	}
@@ -154,6 +156,7 @@ public class Xsone {
 			this.Mac = new_data.getMac();
 			this.Autoip = new_data.getAutoip();
 			this.myIpSetting = new_data.getMyIpSetting();
+			this.setMyProxAlerts(new_data.getMyProxAlertsList());
 			return true;
 		} else
 			return false;
@@ -457,8 +460,8 @@ public class Xsone {
 		for (int x = 0; x < this.getMaxScripts(); x++)
 			myScriptList.add(new Script());
 	}
-	
-	public LinkedList<String> learn(String system) throws IOException{
+
+	public LinkedList<String> learn(String system) throws IOException {
 		return myHttp.learn(system);
 	}
 
@@ -640,6 +643,30 @@ public class Xsone {
 
 	public List<Makro> getMyMakroList() {
 		return myMakroList;
+	}
+
+	public void setMyProxAlerts(List<String> alerts) {
+		this.proxAlerts = alerts;
+	}
+
+	public void addProxAlert(String name) {
+		proxAlerts.add(name);
+
+		// persistent speichern
+		RuntimeStorage.getMyPers().saveData(proxAlerts, XS_PROXALERTS_TYPE);
+	}
+
+	public void removeProxAlert(int id) {
+		if (proxAlerts == null)
+			return;
+		proxAlerts.remove(id);
+
+		// speichern
+		RuntimeStorage.getMyPers().saveData(proxAlerts, XS_PROXALERTS_TYPE);
+	}
+
+	public List<String> getMyProxAlertsList() {
+		return proxAlerts;
 	}
 
 }
