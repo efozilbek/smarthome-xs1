@@ -324,11 +324,11 @@ public class Act_Frame extends Fragment {
 					// Name und ID setzen
 					temp_spin.setTag(rem.getName());
 					temp_spin.setId(rem.getNumber());
-					// Den Adapter fï¿½r den Spinner anlegen
+					// Den Adapter für den Spinner anlegen
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, vals);
 					// und setzen
 					temp_spin.setAdapter(adapter);
-					// Den Listener fï¿½r ï¿½nderungen setzen
+					// Den Listener für Änderungen setzen
 					temp_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 						public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 							// Der gesetzte Wert wird geholt
@@ -363,7 +363,7 @@ public class Act_Frame extends Fragment {
 					temp_spin.setSelection(selection);
 					// Der alte Wert, der gesetzt wird bei Verbindzngsfehlern
 					temp_spin.setTag(R.string.tag_spin, selection);
-					// Wichtig fï¿½r die spï¿½tere suche beim Longclick auf den Text
+					// Wichtig für die spätere suche beim Longclick auf den Text
 					temp_spin.setTag(R.string.obj_name, rem.getName());
 					views.add(temp_spin);
 
@@ -379,12 +379,12 @@ public class Act_Frame extends Fragment {
 					tbutton.setGravity(Gravity.CENTER_VERTICAL);
 					tbutton.setId(rem.getNumber());
 					tbutton.setTag(rem.getName());
-					// Wichtig fï¿½r die spï¿½tere suche beim Longclick auf den Text
+					// Wichtig für die spätere suche beim Longclick auf den Text
 					tbutton.setTag(R.string.obj_name, rem.getName());
 					tbutton.setTextOn("Schalter an");
 					tbutton.setTextOff("Schalter aus");
 					// dem Button wird ein Listener aller AktuatorButtons hinzu
-					// gefï¿½gt
+					// gefügt
 					tbutton.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							if (tbutton.isChecked()) {
@@ -426,10 +426,10 @@ public class Act_Frame extends Fragment {
 		 */
 		protected void onPostExecute(LinkedList<View> result) {
 			super.onPostExecute(result);
-			// Die Globale Objektliste setzen fï¿½r zukï¿½nftige ï¿½nderungen
+			// Die Globale Objektliste setzen für zukünftige Änderungen
 			object_list = result;
 
-			// das bestehende Layout fï¿½r den Tab holen
+			// das bestehende Layout für den Tab holen
 			table = (TableLayout) getActivity().findViewById(R.id.tab_table);
 			table.removeAllViews();
 
@@ -448,25 +448,25 @@ public class Act_Frame extends Fragment {
 				tv.setWidth(350);
 				tv.setHeight(70);
 				// id der TexteObjekte darf sich nicht ï¿½berschneiden mit der der
-				// ï¿½brigen Objekte!
+				// übrigen Objekte!
 				tv.setId(obj.getId() + ID_BUFFER);
 				tv.setPadding(20, 0, 0, 0);
 				tv.setGravity(Gravity.CENTER_VERTICAL);
 				tv.setTextSize(20);
-				// Der Object Tag enthï¿½lt den Namen zum Remote Objekt
+				// Der Object Tag enthält den Namen zum Remote Objekt
 				tv.setText((String) obj.getTag());
 				tv.setTag((String) obj.getTag(R.string.obj_name));
-				// Beim Click auf Textview werden die fï¿½r die Aktuatoren
+				// Beim Click auf Textview werden die für die Aktuatoren
 				// festgelegten functions gezeigt
 				tv.setClickable(true);
-				// Fï¿½r die LongClickOption registrieren
+				// Für die LongClickOption registrieren
 				registerForContextMenu(tv);
 
-				// den Button und Text zur Zeile hinzu fï¿½gen
+				// den Button und Text zur Zeile hinzu fügen
 				row.addView(obj);
 				row.addView(tv);
 
-				// die Zeile zum TabelLayout hinzu fï¿½gen
+				// die Zeile zum TabelLayout hinzu fügen
 				views.add(tv);
 				table.addView(row);
 				count++;
@@ -486,19 +486,19 @@ public class Act_Frame extends Fragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		boolean no_functions = true;
-		// den View fï¿½r den folgenden update setzen
+		// den View für den folgenden update setzen
 		toBeUpdated = v;
 		Actuator comparator = new Actuator();
 		comparator.setName((String) v.getTag());
 		int id = act_list.indexOf(comparator);
 		longClickAct = act_list.get(id);
-		// Die Liste mit den Funktionen fï¿½r das Objekt holen
+		// Die Liste mit den Funktionen für das Objekt holen
 		List<Function> fn_list = longClickAct.getMyFunction();
 		menu.setHeaderTitle("Funktionen");
 
 		int i = 1;
 		for (Function f : fn_list) {
-			// Fï¿½r jede Funktion, die nicht disabled ist wird ein Menï¿½punkt
+			// Für jede Funktion, die nicht disabled ist wird ein Menï¿½punkt
 			// gesetzt
 			if (!f.getType().equals("disabled")) {
 				menu.add(Menu.NONE, i, i, f.getDsc());
@@ -513,7 +513,7 @@ public class Act_Frame extends Fragment {
 
 	/**
 	 * In der Funktion wird beschrieben, was passiert, wenn nach dem Langen
-	 * Click auf einen Text eine Auswahl (Funktion) gewï¿½hlt wurde.
+	 * Click auf einen Text eine Auswahl (Funktion) gewählt wurde.
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -572,7 +572,7 @@ public class Act_Frame extends Fragment {
 
 	/**
 	 * speichern der Views um sie beim neu-laden des Tabs wiederherstellen zu
-	 * kÃ¶nnen
+	 * können
 	 */
 	public void onDestroyView() {
 		super.onDestroyView();
@@ -584,7 +584,7 @@ public class Act_Frame extends Fragment {
 	}
 
 	/**
-	 * Der Tab ï¿½bernimmt die Aktionen des Tabhost fï¿½r Menu und Back Button
+	 * Der Tab übernimmt die Aktionen des Tabhost für Menu und Back Button
 	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// is activity withing a tabactivity
