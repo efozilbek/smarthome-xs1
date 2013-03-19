@@ -51,13 +51,13 @@ public class Positioning extends Activity {
 	private WebView html;
 	private PendingIntent proximityIntent;
 	private Intent intent;
-	private Location currentBestLocation;
+	private volatile Location currentBestLocation;
 	// Dialog für Ladevorgang
 	private Dialog dialog;
 	private MyLocationListener gps_listener;
 	private MyLocationListener net_listener;
 
-	private static final long POINT_RADIUS = 1000; // in Meters
+	private static final long POINT_RADIUS = 25; // in Meters
 	private static final long PROX_ALERT_EXPIRATION = -1;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	private static final int SEARCH_TIME = 1000 * 20;
@@ -135,8 +135,8 @@ public class Positioning extends Activity {
 				// Updates von Netzwerk und GPS holen
 				gps_listener = new MyLocationListener();
 				net_listener = new MyLocationListener();
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, net_listener);
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0, gps_listener);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, net_listener);
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gps_listener);
 
 				html.setVisibility(View.GONE);
 
@@ -193,7 +193,7 @@ public class Positioning extends Activity {
 				alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
-						myXsone.addProxAlert(value);
+						RuntimeStorage.getMyXsone().addProxAlert(value);
 						adapterr.add(value);
 
 						Toast.makeText(getBaseContext(), "gespeichert..", Toast.LENGTH_LONG).show();
@@ -327,7 +327,6 @@ public class Positioning extends Activity {
 				Toast t = Toast.makeText(Positioning.this, "got a location!", Toast.LENGTH_SHORT);
 				if (!t.getView().isShown())
 					t.show();
-				
 			}
 		}
 

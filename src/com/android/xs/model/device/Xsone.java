@@ -66,6 +66,7 @@ public class Xsone {
 	 * @throws ConnectionException
 	 *             -
 	 */
+	@SuppressWarnings("unchecked")
 	public Xsone(String ip, String username, String pass) throws ConnectionException {
 		// Username wird gespeichert
 		this.setUsername(username);
@@ -121,6 +122,12 @@ public class Xsone {
 
 		// Makros werden geladen
 		this.setMyMakroList(MakroController.loadMakros());
+		
+		// Proximity Alerts laden
+		LinkedList<String> Prox_Alerts = (LinkedList<String>) RuntimeStorage.getMyPers().getData(XS_PROXALERTS_TYPE);
+		if (Prox_Alerts == null)
+			Prox_Alerts = new LinkedList<String>();
+		this.setMyProxAlerts(Prox_Alerts);
 	}
 
 	public Xsone() {
@@ -156,7 +163,7 @@ public class Xsone {
 			this.Mac = new_data.getMac();
 			this.Autoip = new_data.getAutoip();
 			this.myIpSetting = new_data.getMyIpSetting();
-			this.setMyProxAlerts(new_data.getMyProxAlertsList());
+//			this.setMyProxAlerts(new_data.getMyProxAlertsList());
 			return true;
 		} else
 			return false;
