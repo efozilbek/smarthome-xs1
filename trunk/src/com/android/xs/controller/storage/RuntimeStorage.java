@@ -26,7 +26,7 @@ public class RuntimeStorage {
 	private static boolean statusValid = true;
 	// Das Hauptobjekt, welches vom Speicher oder vom XS1 geladen wird und im
 	// Betrieb aktualisiert wird und an andere Activities weiter gereicht
-	private static Xsone myXsone;
+	private static volatile Xsone myXsone;
 	private static ArrayList<RF_System> Systems;
 	private static ArrayList<String> Act_types;
 	private static ArrayList<String> Sens_types;
@@ -42,7 +42,6 @@ public class RuntimeStorage {
 	private static final String XS_ACT_TYPE = "SmartHomeXS.actuators";
 	private static final String XS_SENS_TYPE = "SmartHomeXS.sensors";
 	private static final String XS_TIM_TYPE = "SmartHomeXS.timers";
-	private static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
 
 	// private static final String XS_FNCT = "SmarthomeXS.functions";
 
@@ -98,14 +97,6 @@ public class RuntimeStorage {
 			RuntimeStorage.getMyPers().saveData(Sens_types, XS_SENS_TYPE);
 		}
 		RuntimeStorage.setSens_types(Sens_types);
-
-		// bestehende Prox Alerts abfragen
-		LinkedList<String> Prox_Alerts = (LinkedList<String>) RuntimeStorage.getMyPers().getData(XS_PROXALERTS_TYPE);
-		if (Prox_Alerts == null) {
-			Prox_Alerts = new LinkedList<String>();
-			RuntimeStorage.getMyPers().saveData(Prox_Alerts, XS_PROXALERTS_TYPE);
-		}
-		RuntimeStorage.setProx_Alerts(Prox_Alerts);
 
 		// Functions = (ArrayList<String>) myPers.getData(XS_FNCT);
 		// if (Functions == null) {
