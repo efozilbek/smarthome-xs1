@@ -73,10 +73,12 @@ public class About extends Activity {
 				+ "	Entfernen: Hier können bestehende Objekte aus der XS1 gelöscht werden.\n\n"
 				+ "	Abonnement: Ein Dienst wird gestartet, welcher alle Aktivitäten der XS1 aufzeichnet und in dem Fenster ausgibt. Dieser läuft nach Wunsch auch nach"
 				+ "	Beendigung der Anwendung weiter. Beim Betätigen von 'Zurück' erfolgt eine Abfrage, ob der Dienst im Hintergrund fortgeführt werden soll.\n\n"
-				+ " Positions-Tool: !EXPERIMENTEL! Hier kann für die aktuelle Position ein bestimmtes Makro beim Verlassen oder Betreten automatisch ausgeführt werden." 
+				+ "   Positions-Tool: !EXPERIMENTEL! Hier kann für die aktuelle Position ein bestimmtes Makro beim Verlassen oder Betreten automatisch ausgeführt werden." 
 				+ " Nähert sich der Nutzer der gesetzten Position auf 1KM oder verlässt den Radius von 1KM (je nach Einstellung) wird das gewähle Makro getriggert." 
-				+ " Die Anwendung muss dabei nicht laufen.\n\n"
-				+ "	Über: Zeigt diese Infoseite an.\n\n");
+				+ " Die Anwendung muss dabei nicht laufen.\n\n" 
+				+ "   Alarm-Action: Hier können Makros zu bestimmten Uhrzeiten getriggert werden. So können z.B. jeden Morgen bestimmte Lichter und Geräte automatisch angeschalten werden." 
+				+ " Auch nach einem Neustart des Gerätes bleiben die Alarme erhalten.\n\n"
+				+ " Über: Zeigt diese Infoseite an.\n\n");
 		table.addView(tv);
 
 	}

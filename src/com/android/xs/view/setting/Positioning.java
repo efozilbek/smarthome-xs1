@@ -57,7 +57,7 @@ public class Positioning extends Activity {
 	private MyLocationListener gps_listener;
 	private MyLocationListener net_listener;
 
-	private static final long POINT_RADIUS = 25; // in Meters
+	private static final long POINT_RADIUS = 1000; // in Meters
 	private static final long PROX_ALERT_EXPIRATION = -1;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	private static final int SEARCH_TIME = 1000 * 20;

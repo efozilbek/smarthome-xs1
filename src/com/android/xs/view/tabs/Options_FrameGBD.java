@@ -7,6 +7,7 @@ import com.android.xs.view.R;
 import com.android.xs.view.setting.Abo;
 import com.android.xs.view.setting.About;
 import com.android.xs.view.setting.Add;
+import com.android.xs.view.setting.AlarmReceiver;
 import com.android.xs.view.setting.Config;
 import com.android.xs.view.setting.GInfo;
 import com.android.xs.view.setting.Positioning;
@@ -27,7 +28,7 @@ public class Options_FrameGBD extends ListActivity {
 	/**
 	 * Variablen
 	 ***********************************************************************************************************************************************************/
-	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen", "Abonnement", "Positions-Tool", "Über" };
+	private String[] options = { "Geräteinfo", "Konfiguration", "Hinzufügen", "Entfernen", "Abonnement", "Positions-Tool", "Alarm-Action", "Über" };
 	private LinkedList<String> options_list = new LinkedList<String>();
 
 	/**
@@ -86,8 +87,12 @@ public class Options_FrameGBD extends ListActivity {
 					startActivity(intent5);
 					break;
 				case 6:
-					Intent intent6 = new Intent(Options_FrameGBD.this, About.class);
+					Intent intent6 = new Intent(Options_FrameGBD.this, AlarmReceiver.class);
 					startActivity(intent6);
+					break;
+				case 7:
+					Intent intent7 = new Intent(Options_FrameGBD.this, About.class);
+					startActivity(intent7);
 					break;
 				/**
 				 * case 7: Intent intent7 = new Intent(Options_FrameGBD.this,
