@@ -15,13 +15,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * Wird genutzt um nach einem Neustart des Gerätes die Alarme neu zu setzen und
+ * die Näherungs-Alarme zu löschen
+ * 
+ * @author Viktor Mayer
+ * 
+ */
 public class BootReceiver extends BroadcastReceiver {
+
+	/**
+	 * Private Variablen
+	 ***********************************************************************************************************************************************************/
 
 	private final int ONE_DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 	private AlarmManager am;
 
 	public static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
 	public static final String XS_ALARMS_TYPE = "SmartHomeXS.alarms";
+
+	/**
+	 * Konstruktoren
+	 ***********************************************************************************************************************************************************/
+
+	/**
+	 * Funktionen
+	 ***********************************************************************************************************************************************************/
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,20 +78,20 @@ public class BootReceiver extends BroadcastReceiver {
 
 					// Create a new PendingIntent and add it to the AlarmManager
 					final Intent i = new Intent("com.android.xs.controller.SEND_XS");
-					
+
 					Log.i("XS_BOOTRECEIVER", "################### Intent angelegt");
 
 					ArrayList<String> mnames = new ArrayList<String>();
 					mnames.add(name);
 					i.putStringArrayListExtra("makros", mnames);
-					
+
 					Log.i("XS_BOOTRECEIVER", "################### Makros für Alarme geladen");
 
 					PendingIntent pendingIntent = PendingIntent
 							.getActivity(context.getApplicationContext(), id, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
 					am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), ONE_DAY_IN_MILLIS, pendingIntent);
-					
+
 					Log.i("XS_BOOTRECEIVER", "################### Alarme erfolgreich gestartet");
 
 					id++;
@@ -82,7 +101,7 @@ public class BootReceiver extends BroadcastReceiver {
 			// delete prox alerts list
 
 			RuntimeStorage.getMyPers().saveData(new LinkedList<String>(), XS_PROXALERTS_TYPE);
-			
+
 			Log.i("XS_BOOTRECEIVER", "################### Proximity-Alerts gelöscht");
 
 		} catch (Exception e) {
