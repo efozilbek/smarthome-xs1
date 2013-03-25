@@ -46,8 +46,10 @@ public class Xsone {
 	private Http myHttp;
 	private IpSetting myIpSetting;
 	private List<String> proxAlerts = new LinkedList<String>();
+	private List<String> alarms = new LinkedList<String>();
 
-	private static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
+	public static final String XS_PROXALERTS_TYPE = "SmartHomeXS.alerts";
+	public static final String XS_ALARMS_TYPE = "SmartHomeXS.alarms";
 
 	/**
 	 * Konstruktoren
@@ -122,12 +124,18 @@ public class Xsone {
 
 		// Makros werden geladen
 		this.setMyMakroList(MakroController.loadMakros());
-		
+
 		// Proximity Alerts laden
 		LinkedList<String> Prox_Alerts = (LinkedList<String>) RuntimeStorage.getMyPers().getData(XS_PROXALERTS_TYPE);
 		if (Prox_Alerts == null)
 			Prox_Alerts = new LinkedList<String>();
 		this.setMyProxAlerts(Prox_Alerts);
+		
+		//alarme laden
+		LinkedList<String> alarms = (LinkedList<String>) RuntimeStorage.getMyPers().getData(XS_ALARMS_TYPE);
+		if (alarms == null)
+			alarms = new LinkedList<String>();
+		this.setMyAlarms(alarms);
 	}
 
 	public Xsone() {
@@ -163,7 +171,7 @@ public class Xsone {
 			this.Mac = new_data.getMac();
 			this.Autoip = new_data.getAutoip();
 			this.myIpSetting = new_data.getMyIpSetting();
-//			this.setMyProxAlerts(new_data.getMyProxAlertsList());
+			// this.setMyProxAlerts(new_data.getMyProxAlertsList());
 			return true;
 		} else
 			return false;
@@ -674,6 +682,30 @@ public class Xsone {
 
 	public List<String> getMyProxAlertsList() {
 		return proxAlerts;
+	}
+
+	public void setMyAlarms(List<String> alarms) {
+		this.alarms = alarms;
+	}
+
+	public void addAlarm(String name) {
+		alarms.add(name);
+
+		// persistent speichern
+		RuntimeStorage.getMyPers().saveData(alarms, XS_ALARMS_TYPE);
+	}
+
+	public void removeAlarm(int id) {
+		if (alarms == null)
+			return;
+		alarms.remove(id);
+
+		// speichern
+		RuntimeStorage.getMyPers().saveData(alarms, XS_ALARMS_TYPE);
+	}
+
+	public List<String> getMyAlarmsList() {
+		return alarms;
 	}
 
 }
