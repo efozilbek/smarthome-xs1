@@ -116,8 +116,7 @@ public class Act_FrameGBD extends Activity {
 		// und die Länge überprüft
 		if (act_list.size() != old_size) {
 			// Ladevorgang anzeigen
-			dialog = ProgressDialog.show(Act_FrameGBD.this, "",
-					"Aktuatoren aktualisieren...", true, false);
+			dialog = ProgressDialog.show(Act_FrameGBD.this, "", "Aktuatoren aktualisieren...", true, false);
 			dialog.show();
 			// den Add Objects Prozess starten, der die Buttons ausliest und
 			// setzt
@@ -169,8 +168,7 @@ public class Act_FrameGBD extends Activity {
 				((SeekBar) v).setProgress((int) actual.getValue());
 				// update Dimmers TextView
 				TextView tv = (TextView) findViewById(v.getId() + ID_BUFFER);
-				tv.setText(actual.getName() + " ("
-						+ Double.valueOf(actual.getValue()).intValue() + "%)");
+				tv.setText(actual.getName() + " (" + Double.valueOf(actual.getValue()).intValue() + "%)");
 			} else if (actual.getType().equals("temperature")) {
 				// Mit der Funktion (x -10)/2 werden die Temperaturwerte
 				// zwischen 10 und 34 Grad auf die Listenwerte des
@@ -199,8 +197,7 @@ public class Act_FrameGBD extends Activity {
 	 * @author Viktor Mayer
 	 * 
 	 */
-	private class AddObjects extends
-			AsyncTask<LinkedList<Actuator>, Boolean, LinkedList<View>> {
+	private class AddObjects extends AsyncTask<LinkedList<Actuator>, Boolean, LinkedList<View>> {
 		/**
 		 * Der Parameter zur Prüfung der Verbindung
 		 */
@@ -230,20 +227,17 @@ public class Act_FrameGBD extends Activity {
 					// der Seekbar wird ein Listener hinzugefügt
 					seek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
-						public void onProgressChanged(SeekBar seekBar,
-								int progress, boolean fromUser) {
+						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 							// lädt der Dialog gerade stimmt der Kontext nicht!
 							// der Text darf dann nicht neu gesetzt werden!
 							if (!dialog.isShowing()) {
 								// den Textview aktualisieren direkt bei der
 								// Bewegung
-								TextView tv = (TextView) findViewById(seekBar
-										.getId() + ID_BUFFER);
+								TextView tv = (TextView) findViewById(seekBar.getId() + ID_BUFFER);
 								// nötig, da bei erstem Aufruf noch nicht
 								// vorhanden!!
 								if (tv != null)
-									tv.setText(rem.getName() + " ("
-											+ seekBar.getProgress() + "%)");
+									tv.setText(rem.getName() + " (" + seekBar.getProgress() + "%)");
 							}
 						}
 
@@ -257,19 +251,14 @@ public class Act_FrameGBD extends Activity {
 						public void onStopTrackingTouch(SeekBar seekBar) {
 							if (rem.setValue(seek.getProgress(), true)) {
 								// Der Neue alte Wert für die Seekbar
-								seek.setTag(R.string.tag_seekbar,
-										seek.getProgress());
+								seek.setTag(R.string.tag_seekbar, seek.getProgress());
 								// den Textview aktualisieren
-								TextView tv = (TextView) findViewById(seekBar
-										.getId() + ID_BUFFER);
-								tv.setText(rem.getName() + " ("
-										+ new Double(rem.getValue()).intValue()
-										+ "%)");
+								TextView tv = (TextView) findViewById(seekBar.getId() + ID_BUFFER);
+								tv.setText(rem.getName() + " (" + new Double(rem.getValue()).intValue() + "%)");
 								// Makro aufzeichnen falls eingestellt
 								makro_call(rem, seek.getProgress());
 							} else {
-								seek.setProgress((Integer) seek
-										.getTag(R.string.tag_seekbar));
+								seek.setProgress((Integer) seek.getTag(R.string.tag_seekbar));
 								XsError.printError(getBaseContext());
 							}
 						}
@@ -279,8 +268,7 @@ public class Act_FrameGBD extends Activity {
 					if (!rem.update())
 						check = false;
 					seek.setProgress((int) rem.getValue());
-					seek.setTag(rem.getName() + " ("
-							+ new Double(rem.getValue()).intValue() + "%)");
+					seek.setTag(rem.getName() + " (" + new Double(rem.getValue()).intValue() + "%)");
 					// der alte Stand falls zurück gesetzt werden muss
 					// (Verbindungfehler)
 					seek.setTag(R.string.tag_seekbar, seek.getProgress());
@@ -295,49 +283,40 @@ public class Act_FrameGBD extends Activity {
 				 */
 				else if (rem.getType().equals("temperature")) {
 					// Die Werte für den Temperatur Spinner setzen
-					String[] vals = { "10", "12", "14", "16", "18", "20", "22",
-							"24", "26", "28", "30", "32", "34" };
+					String[] vals = { "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34" };
 					// Den Spinner anlegen
 					final Spinner temp_spin = new Spinner(Act_FrameGBD.this);
 					// Name und ID setzen
 					temp_spin.setTag(rem.getName());
 					temp_spin.setId(rem.getNumber());
 					// Den Adapter für den Spinner anlegen
-					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-							Act_FrameGBD.this,
-							android.R.layout.simple_spinner_item, vals);
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(Act_FrameGBD.this, android.R.layout.simple_spinner_item, vals);
 					// und setzen
 					temp_spin.setAdapter(adapter);
 					// Den Listener für Änderungen setzen
-					temp_spin
-							.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-								public void onItemSelected(
-										AdapterView<?> parent, View view,
-										int pos, long id) {
-									// Der gesetzte Wert wird geholt
-									String selected_val = (String) parent
-											.getItemAtPosition(pos);
-									int val = Integer.parseInt(selected_val);
-									// Den Wert setzen
-									if (rem.setValue(val, true)) {
-										// Den alten Wert neu setzen
-										temp_spin
-												.setTag(R.string.tag_spin, pos);
-										// Makro speichern falls eingestellt
-										makro_call(rem, val);
-									} else {
-										// den alten Wert wieder herstellen
-										temp_spin
-												.setSelection((Integer) temp_spin
-														.getTag(R.string.tag_spin));
-										XsError.printError(getBaseContext());
-									}
-								}
+					temp_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+						public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+							// Der gesetzte Wert wird geholt
+							String selected_val = (String) parent.getItemAtPosition(pos);
+							//DEBUG
+//							Log.i("XS1", "TEMP SENT!!");
+							int val = Integer.parseInt(selected_val);
+							// Den Wert setzen
+							if (rem.setValue(val, true)) {
+								// Den alten Wert neu setzen
+								temp_spin.setTag(R.string.tag_spin, pos);
+								// Makro speichern falls eingestellt
+								makro_call(rem, val);
+							} else {
+								// den alten Wert wieder herstellen
+								temp_spin.setSelection((Integer) temp_spin.getTag(R.string.tag_spin));
+								XsError.printError(getBaseContext());
+							}
+						}
 
-								public void onNothingSelected(
-										AdapterView<?> parent) {
-								}
-							});
+						public void onNothingSelected(AdapterView<?> parent) {
+						}
+					});
 					if (!rem.update())
 						check = false;
 					// Mit der Funktion (x -10)/2 werden die Temperaturwerte
@@ -362,8 +341,7 @@ public class Act_FrameGBD extends Activity {
 				 * werden...............................................
 				 */
 				else {
-					final ToggleButton tbutton = new ToggleButton(
-							Act_FrameGBD.this);
+					final ToggleButton tbutton = new ToggleButton(Act_FrameGBD.this);
 					tbutton.setWidth(150);
 					tbutton.setGravity(Gravity.CENTER_VERTICAL);
 					tbutton.setId(rem.getNumber());
@@ -429,8 +407,7 @@ public class Act_FrameGBD extends Activity {
 				// eine neue Zeile anlegen
 				row = new TableRow(Act_FrameGBD.this);
 				row.setVerticalGravity(Gravity.CENTER);
-				row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.WRAP_CONTENT));
+				row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 				// einen neuen Textview mit dem Namen des Buttons anlegen
 				tv = new TextView(Act_FrameGBD.this);
@@ -471,8 +448,7 @@ public class Act_FrameGBD extends Activity {
 	 * Auswahl ausgegeben
 	 */
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		boolean no_functions = true;
 		// den View für den folgenden update setzen
 		toBeUpdated = v;

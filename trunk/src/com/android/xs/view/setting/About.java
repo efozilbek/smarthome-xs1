@@ -78,7 +78,12 @@ public class About extends Activity {
 				+ " Die Anwendung muss dabei nicht laufen.\n\n" 
 				+ "   Alarm-Action: Hier können Makros zu bestimmten Uhrzeiten getriggert werden. So können z.B. jeden Morgen bestimmte Lichter und Geräte automatisch angeschalten werden." 
 				+ " Auch nach einem Neustart des Gerätes bleiben die Alarme erhalten.\n\n"
-				+ " Über: Zeigt diese Infoseite an.\n\n");
+				+ " Über: Zeigt diese Infoseite an.\n" 
+				+ "\n" 
+				+ "Widget: Das Widget ermöglicht eine Sprachsteuerung der Anwendung. Um Kommandos optimal erkennen zu können müssen diese in einer bestimmten Form gesprochen werden\n" 
+				+ "  Für Makros gilt das Schema ['Makro'] + [Makroname]\n" 
+				+ "  Für Aktuatoren gilt das Schema [Aktuatorname] + ['an'|'anschalten'|'aus'|'ausschalten'|Wert] + ['Prozent'|'Grad' -> Optional]\n" 
+				+ "  Für Sensoren gilt das Schema [Sensorname] + ['abfragen']\n");
 		table.addView(tv);
 
 	}

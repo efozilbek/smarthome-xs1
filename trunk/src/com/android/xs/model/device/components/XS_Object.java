@@ -1,6 +1,7 @@
 package com.android.xs.model.device.components;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class XS_Object implements Serializable{
 
@@ -30,7 +31,7 @@ public class XS_Object implements Serializable{
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (((XS_Object) o).getName().equals(this.name)) {
+		if (((XS_Object) o).getName().toLowerCase(Locale.GERMAN).equals(this.name.toLowerCase())) {
 			return true;
 		}
 		return false;
