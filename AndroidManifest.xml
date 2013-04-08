@@ -158,6 +158,12 @@
             android:launchMode="standard"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.android.xs.controller.intent.Dictate"
+            android:launchMode="standard"
+            android:screenOrientation="portrait" 
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
 
         <receiver
             android:name="com.android.xs.controller.intent.BootReceiver"
@@ -169,6 +175,15 @@
         		<data android:scheme="file"/>
             </intent-filter>
         </receiver>
+        
+        <receiver android:name="com.android.xs.view.widget.SpeechWidget" >
+        <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        </intent-filter>
+        <meta-data
+            android:name="android.appwidget.provider"
+            android:resource="@xml/widget_info" />
+    </receiver>
     </application>
 
 </manifest>
