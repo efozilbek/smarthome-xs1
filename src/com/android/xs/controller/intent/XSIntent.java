@@ -1,6 +1,8 @@
 package com.android.xs.controller.intent;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
 import com.android.xs.controller.storage.PersistantStorage;
 import com.android.xs.controller.storage.RuntimeStorage;
 import com.android.xs.controller.usage.MakroController;
@@ -130,7 +132,7 @@ public class XSIntent extends Activity {
 			int id = 0;
 			for (String mname : makros) {
 				for (Makro m : mlist) {
-					if (m.getName().equals(mname)) {
+					if (m.getName().toLowerCase(Locale.GERMAN).equals(mname.toLowerCase())) {
 						new ExecuteMakro().execute((int) id);
 						// eine liste aller ausgeführten makros wird zurück
 						// gegeben
