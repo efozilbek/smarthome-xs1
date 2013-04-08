@@ -185,7 +185,6 @@ public class XSIntent extends Activity {
 			result_data.putExtra("Status", "Fehler bei Ausführung!");
 		finish();
 		return;
-
 	}
 
 	@Override
