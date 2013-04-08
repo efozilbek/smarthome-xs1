@@ -8,8 +8,8 @@ wih this widget it is possible to execute macros.. switch actuators and get sens
 = Details =
 
 for makros
-  * *['Makro'] + /[Makroname/]* 
+  * *['Makro'] + Makroname* 
 for actuators
-  * *[Aktuatorname] + ['an'|'anschalten'|'aus'|'ausschalten'|Wert] + ['Prozent'|'Grad' -> Optional]*
+  * *Aktuatorname + ['an'|'anschalten'|'aus'|'ausschalten'|Wert] + ['Prozent'|'Grad' -> Optional]*
 for sensors
-  * *[Sensorname] + ['abfragen']*
+  * *Sensorname + ['abfragen']*
