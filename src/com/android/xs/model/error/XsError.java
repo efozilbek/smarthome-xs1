@@ -1,5 +1,7 @@
 package com.android.xs.model.error;
 
+import com.android.xs.view.SmartHomeActivity;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -73,7 +75,11 @@ public class XsError {
 			break;
 		}
 	}
-
+	
+	/**
+	 * Funktionen
+	 ***********************************************************************************************************************************************************/
+	
 	/**
 	 * gibt den Fehler als lesbaren String zurück
 	 * 
@@ -95,6 +101,14 @@ public class XsError {
 	
 	public static void printError(Context con, String error) {
 		Toast.makeText(con, error, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static void printError(final String error){
+		SmartHomeActivity.smarthomeactivity.runOnUiThread(new Runnable() {
+			  public void run() {
+			    Toast.makeText(SmartHomeActivity.smarthomeactivity, error, Toast.LENGTH_SHORT).show();
+			  }
+			});
 	}
 
 }

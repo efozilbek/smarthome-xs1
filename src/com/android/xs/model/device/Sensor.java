@@ -77,6 +77,7 @@ public class Sensor extends AorS_Object {
 			this.setValue(updated.getValue(), false);
 			this.setUnit(updated.getUnit());
 			this.setUtime(updated.getUtime());
+			this.setStatus(updated.getStatus());
 		} else
 			return false;
 		return true;
