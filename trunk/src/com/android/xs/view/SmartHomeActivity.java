@@ -27,8 +27,10 @@ import android.os.Bundle;
 public class SmartHomeActivity extends Activity {
 
 	/**
-	 * Private Variablen
+	 * Variablen
 	 ***********************************************************************************************************************************************************/
+	
+	public static SmartHomeActivity smarthomeactivity;
 
 	/**
 	 * Konstruktoren
@@ -46,6 +48,9 @@ public class SmartHomeActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start);
+		
+		// Für zukünftige Fehlerbehandlung
+		smarthomeactivity = this;
 
 		// Die RuntimeStorage mit Persistant Storage setzen
 		if (RuntimeStorage.getMyPers() == null)

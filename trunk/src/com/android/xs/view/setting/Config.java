@@ -101,6 +101,7 @@ public class Config extends Activity {
 			try {
 				tmpXsone = new Xsone(params[0], params[1], params[2]);
 			} catch (ConnectionException e) {
+				XsError.printError(e.getMessage());
 				check = false;
 			}
 			return tmpXsone;
@@ -121,10 +122,12 @@ public class Config extends Activity {
 					setConn_validated(true);
 					finish();
 				} else {
+					XsError.printError("result MAC is NULL");
 					XsError.printError(getBaseContext());
 					return;
 				}
 			} else {
+				XsError.printError("check OR result is NULL");
 				XsError.printError(getBaseContext());
 				return;
 			}

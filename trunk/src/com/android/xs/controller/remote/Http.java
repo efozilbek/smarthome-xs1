@@ -118,13 +118,18 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
+				XsError e = new XsError(json_main.getInt("error"));
+				Log.e("XSRequest", e.getError());
+				// TODO: extended error report
+				XsError.printError(e.getError());
 				return null;
 			}
 
 			json_info = json_main.getJSONObject("info");
 			json_ip = json_info.getJSONObject("current");
 		} catch (Exception e) {
+			// TODO: extended error report!
+			XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -158,6 +163,8 @@ public class Http {
 			device.getMyIpSetting().setDns(json_ip.getString("dns"));
 
 		} catch (Exception e) {
+			// TODO: extended error report!
+			XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -186,13 +193,16 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
+				XsError e = new XsError(json_main.getInt("error"));
+				Log.e("XSRequest", e.getError());
+				XsError.printError(e.getError());
 				return null;
 			}
 
 			actuators = json_main.getJSONArray("actuator");
 
 		} catch (Exception e) {
+			XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -220,6 +230,7 @@ public class Http {
 						json_actual.getLong("utime"), json_actual.getString("unit"), fn_list));
 
 			} catch (JSONException e) {
+				XsError.printError(e.getMessage());
 				return null;
 			}
 		}
@@ -356,13 +367,16 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
+				XsError e = new XsError(json_main.getInt("error"));
+				Log.e("XSRequest", e.getError());
+				XsError.printError(e.getError());
 				return null;
 			}
 
 			senors = json_main.getJSONArray("sensor");
 
 		} catch (Exception e) {
+			XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -371,29 +385,37 @@ public class Http {
 
 			try {
 				json_actual = senors.getJSONObject(num);
-
+			} catch (JSONException e) {
+				XsError.printError(e.getMessage());
+				return null;
+			}
+			// wird gesondert behandelt.. nicht immer vorhanden!
+			String state = "unknown";
+			try {
 				// status ist neu in firmware 3
-				String state = null;
 				JSONArray status = json_actual.getJSONArray("state");
 				if (status.length() > 0)
 					state = status.getString(0);
-				// Sensor wird angelegt und der Liste der Remote Objects hinzu
-				// gefï¿½gt
-				// if (!json_actual.getString("type").equals("disabled"))
-				sens.add(new Sensor(num + 1, json_actual.getString("name"), json_actual.getString("type"), json_actual.getDouble("value"),
-						json_actual.getLong("utime"), json_actual.getString("unit"), state));
+			} catch (JSONException e) {
+				// wenn nicht vorhanden, dann eben nicht (alte firmware??)
+			}
 
+			// Sensor wird angelegt und der Liste der Remote Objects hinzu
+			// gefügt
+			// if (!json_actual.getString("type").equals("disabled"))
+			try {
+				sens.add(new Sensor(num + 1, json_actual.getString("name"), json_actual.getString("type"), json_actual.getDouble("value"), json_actual
+						.getLong("utime"), json_actual.getString("unit"), state));
 			} catch (JSONException e) {
 				return null;
 			}
 		}
-
 		return sens;
 	}
 
 	/**
-	 * Liest fï¿½r einen ï¿½bergebenen Sensor aktuelle Sensorwerte aus und gibt
-	 * diese als ein Sensorobjekt zurï¿½ck
+	 * Liest für einen übergebenen Sensor aktuelle Sensorwerte aus und gibt
+	 * diese als ein Sensorobjekt zurück
 	 * 
 	 * @param sens
 	 *            - Sensor. Das auszulesende Sensor Objekt
@@ -433,19 +455,29 @@ public class Http {
 		} catch (JSONException e) {
 			return null;
 		}
+		// wird gesondert behandelt.. nicht immer vorhanden je nach Firmware!
+		try {
+			String state = "unknown";
+			JSONArray status = json_sensor.getJSONArray("state");
+			if (status.length() > 0)
+				state = status.getString(0);
+			updated.setStatus(state);
+		} catch (JSONException e) {
+			return updated;
+		}
 
 		return updated;
 	}
 
 	/**
-	 * Nur in Ausnahmefï¿½llen bei ï¿½virtuellenï¿½ Sensoren sinnvoll. Es
-	 * kï¿½nnen so z.B. auch externe Datenquellen auf der Speicherkarte
+	 * Nur in Ausnahmefällen bei "virtuellen" Sensoren sinnvoll. Es
+	 * können so z.B. auch externe Datenquellen auf der Speicherkarte
 	 * mitgeloggt werden oder in Skriptentscheidungen miteinbezogen werden. Das
 	 * Sensorsystem muss vom Type virtual sein, damit die Werte gesetzt werden
-	 * dï¿½rfen.
+	 * dürfen.
 	 * 
 	 * @param sens
-	 *            - Das zu ï¿½ndernde Sensorobjekt
+	 *            - Das zu ändernde Sensorobjekt
 	 * @return - boolean. TRUE bei erfolg, sonst FALSE
 	 */
 	public boolean set_state_sensor(Sensor sens) {
@@ -470,7 +502,7 @@ public class Http {
 
 	/**
 	 * Liest alle Timer aus der XS1 und gibt diese als eine Liste aller Timer
-	 * Objekte zurï¿½ck
+	 * Objekte zurück
 	 * 
 	 * @param - Xsone. Stellt das auszulesende XS1 dar
 	 * @return - Eine Liste aller Timer, die nicht deaktiviert sind
@@ -490,13 +522,16 @@ public class Http {
 
 			// Fehlerbehandlung
 			if (json_main.getString("type").equals("void")) {
-				Log.e("XSRequest", new XsError(json_main.getInt("error")).getError());
+				XsError e = new XsError(json_main.getInt("error"));
+				XsError.printError(e.getError());
+				Log.e("XSRequest", e.getError());
 				return null;
 			}
 
 			timers = json_main.getJSONArray("timer");
 
 		} catch (Exception e) {
+			XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -512,6 +547,7 @@ public class Http {
 				tim.add(new Timer(json_actual.getString("name"), json_actual.getString("type"), json_actual.getLong("next"), num + 1));
 
 			} catch (JSONException e) {
+				XsError.printError(e.getMessage());
 				return null;
 			}
 		}
@@ -871,7 +907,7 @@ public class Http {
 		// getInputStream blockiert
 		CharBuffer c = CharBuffer.allocate(200);
 		while (subscribe_reader.read(c) > 0) {
-			//ab dem 3. muss das Komma am anfang entfernt werden
+			// ab dem 3. muss das Komma am anfang entfernt werden
 			c.flip();
 			if (count > 1)
 				c.position(2);
@@ -1139,7 +1175,7 @@ public class Http {
 		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 
 		// BASIC authent
-		if (!pass_BASIC.equals("")) {
+		if (pass_BASIC.trim().length() > 0) {
 			client.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort(), AuthScope.ANY_SCHEME),
 					new UsernamePasswordCredentials(user_BASIC, pass_BASIC));
 		}
@@ -1152,8 +1188,12 @@ public class Http {
 		try {
 			response = client.execute(request);
 		} catch (ClientProtocolException e) {
+			// TODO: extended error report!
+			XsError.printError(e.getMessage());
 			return new JSONObject();
 		} catch (IOException e) {
+			// TODO: extended error report!
+			XsError.printError(e.getMessage());
 			return new JSONObject();
 		}
 
@@ -1163,9 +1203,11 @@ public class Http {
 		try {
 			str = new Scanner(response.getEntity().getContent()).useDelimiter("\\A").next();
 		} catch (IllegalStateException e1) {
-
+			// TODO: extended error report!
+			XsError.printError(e1.getMessage());
 		} catch (IOException e1) {
-
+			// TODO: extended error report!
+			XsError.printError(e1.getMessage());
 		}
 
 		// der Index der Klammern wird gesucht um diese zu entfernen

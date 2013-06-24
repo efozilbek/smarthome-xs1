@@ -257,7 +257,7 @@ public class Xsone {
 		int num = this.getFirstFree(new Sensor());
 		Sensor new_s = new Sensor();
 		new_s.setNumber(num);
-		boolean check = myHttp.add_actuator(data, String.valueOf(num));
+		boolean check = myHttp.add_sensor(data, String.valueOf(num));
 		if (check) {
 			new_s.update();
 			this.add_RemObj(new_s);
