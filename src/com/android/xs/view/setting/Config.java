@@ -122,12 +122,12 @@ public class Config extends Activity {
 					setConn_validated(true);
 					finish();
 				} else {
-					XsError.printError("result MAC is NULL");
+					// XsError.printError("result MAC is NULL");
 					XsError.printError(getBaseContext());
 					return;
 				}
 			} else {
-				XsError.printError("check OR result is NULL");
+				// XsError.printError("check OR result is NULL");
 				XsError.printError(getBaseContext());
 				return;
 			}

@@ -121,7 +121,7 @@ public class Http {
 				XsError e = new XsError(json_main.getInt("error"));
 				Log.e("XSRequest", e.getError());
 				// TODO: extended error report
-				XsError.printError(e.getError());
+				// XsError.printError(e.getError());
 				return null;
 			}
 
@@ -129,7 +129,7 @@ public class Http {
 			json_ip = json_info.getJSONObject("current");
 		} catch (Exception e) {
 			// TODO: extended error report!
-			XsError.printError(e.getMessage());
+			// XsError.printError(e.getMessage());
 			return null;
 		}
 
@@ -164,7 +164,7 @@ public class Http {
 
 		} catch (Exception e) {
 			// TODO: extended error report!
-			XsError.printError(e.getMessage());
+			// XsError.printError(e.getMessage());
 			return null;
 		}
 
