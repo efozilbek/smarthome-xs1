@@ -145,7 +145,7 @@ public class MainFrameICS extends Activity {
 	}
 
 	/**
-	 * Das Menï¿½ fï¿½r Makros
+	 * Das Menü für Makros
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -203,18 +203,14 @@ public class MainFrameICS extends Activity {
 		}
 
 		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			Toast.makeText(MainFrameICS.appcontext, "Reselected!",
-					Toast.LENGTH_LONG).show();
+			
 		}
 
 		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
 			ft.replace(R.id.fragment_container, fragment);
 		}
 
 		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
 			ft.remove(fragment);
 		}
 
