@@ -172,17 +172,19 @@ public class XSIntent extends Activity {
 							}
 						} else if (obj.getClass().equals(Sensor.class)) {
 							data.add(obj.getName() + ";" + obj.getValue());
-						}
-					}
+						}else
+							check = false;
+					}else
+						check = false;
 				}
 			}
 		}
 
 		result_data.putStringArrayListExtra("Values", data);
-		if (check = true)
+		if (check == true)
 			result_data.putExtra("Status", "Erfolgreich!");
 		else
-			result_data.putExtra("Status", "Fehler bei Ausführung!");
+			result_data.putExtra("Status", "Komponente nicht gefunden!");
 		finish();
 		return;
 	}

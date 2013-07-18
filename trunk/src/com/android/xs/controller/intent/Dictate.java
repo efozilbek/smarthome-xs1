@@ -61,7 +61,7 @@ public class Dictate extends Activity {
 					makro.add(audio);
 					intent.putStringArrayListExtra("makros", makro);
 
-					Toast.makeText(this.getApplicationContext(), "Makro wird ausgeführt: " + audio, Toast.LENGTH_SHORT).show();
+					Toast.makeText(this.getApplicationContext(), "Makro wird ausgeführt: " + audio, Toast.LENGTH_LONG).show();
 				}
 				// einzelnen Aktuator/Sensor ansprechen-----------------------
 				else {
@@ -100,7 +100,7 @@ public class Dictate extends Activity {
 								val = Integer.parseInt(value);
 							}
 						} catch (NumberFormatException e) {
-							Toast.makeText(this.getApplicationContext(), "Wert nicht erkannt!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(this.getApplicationContext(), "Wert nicht erkannt!", Toast.LENGTH_LONG).show();
 							this.finish();
 							return;
 						}
@@ -134,7 +134,7 @@ public class Dictate extends Activity {
 					intent.putStringArrayListExtra("names", names);
 					intent.putIntegerArrayListExtra("vals", vals);
 
-					Toast.makeText(this.getApplicationContext(), "Kommando wird ausgeführt: " + audio, Toast.LENGTH_SHORT).show();
+					Toast.makeText(this.getApplicationContext(), "Kommando wird ausgeführt: " + audio, Toast.LENGTH_LONG).show();
 				}
 
 				startActivityForResult(intent, XS_REMOTE_COMMAND);
@@ -145,7 +145,7 @@ public class Dictate extends Activity {
 		} else if (requestCode == XS_REMOTE_COMMAND) {
 			if (null != data && data.getExtras() != null) {
 				String result = data.getExtras().getString("Status");
-				Toast.makeText(this.getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this.getApplicationContext(), result, Toast.LENGTH_LONG).show();
 
 				if (data.getStringArrayListExtra("Values").size() > 0)
 					Toast.makeText(this, "Sensorwert: " + data.getStringArrayListExtra("Values").get(0), Toast.LENGTH_LONG).show();
